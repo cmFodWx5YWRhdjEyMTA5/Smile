@@ -11,12 +11,14 @@
         android:layout_height="wrap_content"
         android:hint="请输入加密明文"
         android:padding="6dp"
+        android:visibility="gone"
         />
     <Button
         android:id="@+id/btn_encrypt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="加密"
+        android:visibility="gone"
         />
 
     <TextView
@@ -24,11 +26,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="解密信息："
+        android:visibility="gone"
         />
     <Button
         android:id="@+id/btn_decode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="解密"
+        android:visibility="gone"
         />
 </LinearLayout>
