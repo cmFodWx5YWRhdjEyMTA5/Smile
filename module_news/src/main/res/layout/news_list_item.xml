@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:binding="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="com.zzj.open.library_news.viewmodel.NewsItemViewModel"/>
+        <variable
+            name="viewModel"
+            type="com.zzj.open.library_news.viewmodel.NewsItemViewModel"/>
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        binding:onClickCommand="@{viewModel.itemClick}"
+        binding:onLongClickCommand="@{viewModel.itemLongClick}"
+        >
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="70dp"
+            android:src="@{viewModel.drawableImg}"
+            binding:url="@{viewModel.dataBean.thumbnail_pic_s}" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:text="@{viewModel.dataBean.title}" />
+    </LinearLayout>
+</layout>
