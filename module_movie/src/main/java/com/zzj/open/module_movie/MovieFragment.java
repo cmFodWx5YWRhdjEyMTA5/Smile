@@ -16,7 +16,7 @@ import me.goldze.mvvmhabit.base.BaseFragment;
  * @author : zzj
  * @e-mail : zhangzhijun@pansoft.com
  * @date : 2019/2/13 9:44
- * @desc :
+ * @desc :http://123.207.150.253/ygcms/getLineMovie.php?type=科幻&page=1&pagesize=18
  * @version: 1.0
  */
 @Route(path = RouterFragmentPath.Movie.MOVIE_HOME)
