@@ -15,6 +15,22 @@ public class RouterFragmentPath {
         /*首页*/
         public static final String PAGER_HOME = HOME + "/Home";
     }
+    /**
+     * 新闻组件
+     */
+    public static class News {
+        private static final String NEWS = "/news";
+        /*首页*/
+        public static final String NEWS_HOME = NEWS + "/News";
+    }
+    /**
+     * 影视组件
+     */
+    public static class Movie {
+        private static final String MOVIE = "/movie";
+        /*首页*/
+        public static final String MOVIE_HOME = MOVIE + "/Movie";
+    }
 
     /**
      * 指纹组件

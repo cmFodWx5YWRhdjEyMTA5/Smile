@@ -68,5 +68,7 @@ dependencies {
         implementation project(':module_main')
         //新闻模块
         implementation project(':module_news')
+        //影视模块
+        implementation project(':module_movie')
     }
 }

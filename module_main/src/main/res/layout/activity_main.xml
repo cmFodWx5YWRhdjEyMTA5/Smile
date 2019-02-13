@@ -25,7 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="bottom"
-            android:visibility="gone"
             android:background="@color/colorPrimaryDark">
         </com.zzj.open.module_main.view.BottomTabLayout>
     </FrameLayout>

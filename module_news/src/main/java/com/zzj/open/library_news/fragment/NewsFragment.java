@@ -22,7 +22,7 @@ import me.goldze.mvvmhabit.base.BaseViewModel;
  * @desc :
  * @version: 1.0
  */
-@Route(path = RouterFragmentPath.Home.PAGER_HOME)
+@Route(path = RouterFragmentPath.News.NEWS_HOME)
 public class NewsFragment extends BaseFragment<NewsFragmentNewsBinding,NewsViewModel> {
     @Override
     public int initContentView(LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
