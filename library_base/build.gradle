@@ -48,6 +48,6 @@ dependencies {
     //底部栏
     api 'com.ashokvarma.android:bottom-navigation-bar:2.1.0'
     //轮播图
-    api 'cn.bingoogolapple:bga-banner:latestVersion@aar'
+//    api 'cn.bingoogolapple:bga-banner:latestVersion@aar'
 
 }
