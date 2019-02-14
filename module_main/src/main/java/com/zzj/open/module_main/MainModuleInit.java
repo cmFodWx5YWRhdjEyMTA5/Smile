@@ -8,7 +8,7 @@ import com.zzj.open.base.base.IModuleInit;
 import me.goldze.mvvmhabit.utils.KLog;
 
 /**
- * Created by goldze on 2018/6/21 0021.
+ * @author JamesZhang .
  */
 
 public class MainModuleInit implements IModuleInit {

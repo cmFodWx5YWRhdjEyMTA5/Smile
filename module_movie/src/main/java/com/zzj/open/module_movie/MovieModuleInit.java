@@ -1,4 +1,4 @@
-package com.zzj.open.library_news;
+package com.zzj.open.module_movie;
 
 import android.app.Application;
 
@@ -8,19 +8,19 @@ import me.goldze.mvvmhabit.utils.KLog;
 
 
 /**
- * Created by goldze on 2018/6/21 0021.
+ * @author JamesZhang .
  */
 
-public class NewsModuleInit implements IModuleInit {
+public class MovieModuleInit implements IModuleInit {
     @Override
     public boolean onInitAhead(Application application) {
-        KLog.e("新闻模块初始化 -- onInitAhead");
+        KLog.e("影视模块初始化 -- onInitAhead");
         return false;
     }
 
     @Override
     public boolean onInitLow(Application application) {
-        KLog.e("新闻模块初始化 -- onInitLow");
+        KLog.e("影视模块初始化 -- onInitLow");
         return false;
     }
 }

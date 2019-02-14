@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/library_res" />
             <option value="$PROJECT_DIR$/module_fingerprint" />
             <option value="$PROJECT_DIR$/module_main" />
+            <option value="$PROJECT_DIR$/module_mine" />
             <option value="$PROJECT_DIR$/module_movie" />
             <option value="$PROJECT_DIR$/module_news" />
           </set>

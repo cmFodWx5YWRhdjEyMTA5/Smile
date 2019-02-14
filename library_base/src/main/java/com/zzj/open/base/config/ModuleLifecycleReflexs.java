@@ -21,7 +21,15 @@ public class ModuleLifecycleReflexs {
      * 指纹模块
      */
     private static final String FingerPrintInit = "com.zzj.open.module_fingerprint.FingerPrintModuleInit";
+    /**
+     * 影视模块
+     */
+    private static final String MovieInit = "com.zzj.open.module_movie.MovieModuleInit";
+    /**
+     * 我的模块
+     */
+    private static final String MineInit = "com.zzj.open.module_mine.MineModuleInit";
 
 
-    public static String[] initModuleNames = {BaseInit, MainInit,NewsInit,FingerPrintInit};
+    public static String[] initModuleNames = {BaseInit, MainInit,NewsInit,MovieInit,MineInit};
 }

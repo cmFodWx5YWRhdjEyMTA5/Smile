@@ -1,4 +1,4 @@
-package com.zzj.open.library_news;
+package com.zzj.open.module_mine;
 
 import android.app.Application;
 
@@ -6,21 +6,21 @@ import com.zzj.open.base.base.IModuleInit;
 
 import me.goldze.mvvmhabit.utils.KLog;
 
-
 /**
- * Created by goldze on 2018/6/21 0021.
+ * @author JamesZhang .
+ * 我的
  */
 
-public class NewsModuleInit implements IModuleInit {
+public class MineModuleInit implements IModuleInit {
     @Override
     public boolean onInitAhead(Application application) {
-        KLog.e("新闻模块初始化 -- onInitAhead");
+        KLog.e("我的模块初始化 -- onInitAhead");
         return false;
     }
 
     @Override
     public boolean onInitLow(Application application) {
-        KLog.e("新闻模块初始化 -- onInitLow");
+        KLog.e("我的模块初始化 -- onInitLow");
         return false;
     }
 }
