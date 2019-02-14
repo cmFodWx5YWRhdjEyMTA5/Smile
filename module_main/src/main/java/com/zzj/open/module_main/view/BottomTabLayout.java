@@ -214,8 +214,11 @@ public class BottomTabLayout extends LinearLayout implements View.OnClickListene
                 if (bottomItemOnClickListener != null) {
                     //通知回调
                     bottomItemOnClickListener.bottomItemOnClick(view, i, bottomItem);
-                    //设置点击的ViewPager的Item
-                    viewPager.setCurrentItem(i,false);
+                    if(viewPager!=null){
+                        //设置点击的ViewPager的Item
+                        viewPager.setCurrentItem(i,false);
+                    }
+
                 }
             }
         }

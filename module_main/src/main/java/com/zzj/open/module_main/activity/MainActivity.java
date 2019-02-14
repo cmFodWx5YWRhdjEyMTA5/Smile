@@ -7,6 +7,9 @@ import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.ashokvarma.bottomnavigation.BottomNavigationBar;
+import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.blankj.utilcode.util.FragmentUtils;
 import com.zzj.open.base.router.RouterActivityPath;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.module_main.BR;
@@ -37,26 +40,43 @@ import me.goldze.mvvmhabit.base.BaseViewModel;
 public class MainActivity extends BaseActivity<ActivityMainBinding,BaseViewModel> {
 
     List<Fragment> items = new ArrayList<>();
-    private ViewPagerAdapter viewPagerAdapter;
 
+    private int hidePosition = 0;
     @Override
     public void initData() {
         super.initData();
         keystore();
-        viewPagerAdapter  = new ViewPagerAdapter(getSupportFragmentManager(),getFragments());
-        binding.viewPager.setAdapter(viewPagerAdapter);
-        binding.tabBottom.setBottomItems(getBottomItem());
-        binding.tabBottom.setBottomItemOnClickListener(new BottomTabLayout.BottomItemOnClickListener() {
+        getFragments();
+        binding.tabBottom.setMode(BottomNavigationBar.MODE_FIXED);
+        binding.tabBottom.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
+        binding.tabBottom.setBarBackgroundColor(R.color.colorPrimaryDark);
+        binding.tabBottom.addItem(new BottomNavigationItem(R.mipmap.ic_launcher_round, "资讯").setActiveColorResource(R.color.white))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_launcher_round, "影视").setActiveColorResource(R.color.white))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_launcher_round, "我的").setActiveColorResource(R.color.white))
+                .setFirstSelectedPosition(0)
+                .initialise(); //所有的设置需在调用该方法前完成
+        binding.tabBottom.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
             @Override
-            public void bottomItemOnClick(View view, int i, BottomItem item) {
+            public void onTabSelected(int position) {
+                FragmentUtils.showHide(items.get(position),items.get(hidePosition));
+                hidePosition = position;
+            }
+
+            @Override
+            public void onTabUnselected(int position) {
+
+            }
+
+            @Override
+            public void onTabReselected(int position) {
+
             }
         });
-        binding.tabBottom.setShowIndex(0);
-
-        binding.tabBottom.bindViewPager(binding.viewPager);
+        FragmentUtils.add(getSupportFragmentManager(),items,R.id.fl_container,0);
     }
 
     private List<Fragment> getFragments(){
+
         items.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.News.NEWS_HOME).navigation());
         items.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Movie.MOVIE_HOME).navigation());
         items.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_HOME).navigation());

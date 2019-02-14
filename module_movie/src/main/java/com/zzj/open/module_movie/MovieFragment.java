@@ -36,4 +36,5 @@ public class MovieFragment extends BaseFragment<MovieFragmentMovieBinding,MovieV
         super.initData();
         viewModel.requestNetWork();
     }
+
 }

@@ -45,5 +45,9 @@ dependencies {
     api rootProject.ext.dependencies["arouter-api"]
     //工具类
     api 'com.blankj:utilcode:1.23.4'
+    //底部栏
+    api 'com.ashokvarma.android:bottom-navigation-bar:2.1.0'
+    //轮播图
+    api 'cn.bingoogolapple:bga-banner:latestVersion@aar'
 
 }
