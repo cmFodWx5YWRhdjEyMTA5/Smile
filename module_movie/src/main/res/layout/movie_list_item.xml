@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:binding="http://schemas.android.com/apk/res-auto">
 
     <data>
         <import type="com.zzj.open.module_movie.viewmodel.MovieItemViewModel"/>
@@ -9,10 +9,29 @@
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="wrap_parent">
+        android:orientation="vertical" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        binding:onClickCommand="@{viewModel.itemClick}"
+        binding:onLongClickCommand="@{viewModel.itemLongClick}"
+        android:layout_margin="10dp"
+        >
 
-
+        <ImageView
+            android:layout_width="90dp"
+            android:layout_height="120dp"
+            android:scaleType="centerCrop"
+            android:src="@{viewModel.drawableImg}"
+            binding:url="@{viewModel.dataBean.downimgurl}"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.dataBean.downLoadName}"
+            android:textColor="@color/gray"
+            android:textSize="13dp"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            />
     </LinearLayout>
 
 </layout>

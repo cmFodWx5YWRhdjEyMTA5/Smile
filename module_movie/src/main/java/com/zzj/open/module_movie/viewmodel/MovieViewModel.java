@@ -5,12 +5,19 @@ import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 
+import com.zzj.open.base.http.RetrofitClient;
 import com.zzj.open.module_movie.BR;
 import com.zzj.open.module_movie.R;
+import com.zzj.open.module_movie.api.MovieApiService;
+import com.zzj.open.module_movie.bean.MovieBean;
 
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 import me.goldze.mvvmhabit.base.BaseViewModel;
 import me.goldze.mvvmhabit.binding.command.BindingAction;
 import me.goldze.mvvmhabit.binding.command.BindingCommand;
+import me.goldze.mvvmhabit.utils.RxUtils;
 import me.goldze.mvvmhabit.utils.ToastUtils;
 import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter;
 import me.tatarka.bindingcollectionadapter2.ItemBinding;
@@ -72,7 +79,42 @@ public class MovieViewModel extends BaseViewModel {
         }
     });
 
-    private void requestNetWork() {
+    public void requestNetWork() {
+        RetrofitClient.getInstance().create(MovieApiService.class)
+                .getMovieList("科幻",1,18)
+                //请求与View周期同步
+                .compose(RxUtils.bindToLifecycle(getLifecycleProvider()))
+                //线程调度
+                .compose(RxUtils.schedulersTransformer())
+                // 网络错误的异常转换, 这里可以换成自己的ExceptionHandle
+                .compose(RxUtils.exceptionTransformer())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        showDialog("正在请求...");
+                    }
+                }).subscribe(new Consumer<MovieBean>() {
+            @Override
+            public void accept(MovieBean movieBean) throws Exception {
+                for (MovieBean.DataBean dataBean : movieBean.getData()) {
+                    MovieItemViewModel itemViewModel = new MovieItemViewModel(MovieViewModel.this, dataBean);
+                    //双向绑定动态添加Item
+                    observableList.add(itemViewModel);
+                }
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                dismissDialog();
+                ToastUtils.showShort(throwable.getMessage());
+            }
+        }, new Action() {
+            @Override
+            public void run() throws Exception {
+                dismissDialog();
+
+            }
+        });
     }
 
 }

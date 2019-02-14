@@ -30,4 +30,10 @@ public class MovieFragment extends BaseFragment<MovieFragmentMovieBinding,MovieV
     public int initVariableId() {
         return BR.viewModel;
     }
+
+    @Override
+    public void initData() {
+        super.initData();
+        viewModel.requestNetWork();
+    }
 }
