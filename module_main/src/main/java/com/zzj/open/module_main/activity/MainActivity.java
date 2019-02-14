@@ -59,6 +59,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,BaseViewModel
     private List<Fragment> getFragments(){
         items.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.News.NEWS_HOME).navigation());
         items.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Movie.MOVIE_HOME).navigation());
+        items.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_HOME).navigation());
 
         return items;
     }
@@ -67,6 +68,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,BaseViewModel
         List<BottomItem> items = new ArrayList<>();
         items.add(new BottomItem("新闻",R.mipmap.ic_launcher));
         items.add(new BottomItem("影视",R.mipmap.ic_launcher));
+        items.add(new BottomItem("我的",R.mipmap.ic_launcher));
 
         return items;
     }

@@ -31,6 +31,14 @@ public class RouterFragmentPath {
         /*首页*/
         public static final String MOVIE_HOME = MOVIE + "/Movie";
     }
+    /**
+     * 影视组件
+     */
+    public static class Mine {
+        private static final String MINE = "/mine";
+        /*首页*/
+        public static final String MINE_HOME = MINE + "/Mine";
+    }
 
     /**
      * 指纹组件
