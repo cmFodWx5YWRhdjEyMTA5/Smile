@@ -49,10 +49,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,BaseViewModel
         getFragments();
         binding.tabBottom.setMode(BottomNavigationBar.MODE_FIXED);
         binding.tabBottom.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
-        binding.tabBottom.setBarBackgroundColor(R.color.colorPrimaryDark);
-        binding.tabBottom.addItem(new BottomNavigationItem(R.mipmap.ic_launcher_round, "资讯").setActiveColorResource(R.color.white))
-                .addItem(new BottomNavigationItem(R.mipmap.ic_launcher_round, "影视").setActiveColorResource(R.color.white))
-                .addItem(new BottomNavigationItem(R.mipmap.ic_launcher_round, "我的").setActiveColorResource(R.color.white))
+        binding.tabBottom.setBarBackgroundColor(R.color.white);
+            binding.tabBottom.addItem(new BottomNavigationItem(R.mipmap.ic_news, "资讯").setActiveColorResource(R.color.colorPrimary))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_movie, "影视").setActiveColorResource(R.color.colorPrimary))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_mine, "我的").setActiveColorResource(R.color.colorPrimary))
                 .setFirstSelectedPosition(0)
                 .initialise(); //所有的设置需在调用该方法前完成
         binding.tabBottom.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {

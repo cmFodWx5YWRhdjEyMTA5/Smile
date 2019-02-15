@@ -22,6 +22,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             binding:title="最新资讯"
+            binding:titleTextColor="@color/white"
             >
 
         </android.support.v7.widget.Toolbar>
