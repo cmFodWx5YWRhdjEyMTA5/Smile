@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
 import com.zzj.open.module_movie.R;
+import com.zzj.open.module_movie.activity.MovieDetailsActivity;
 import com.zzj.open.module_movie.bean.MovieBean;
 
 import me.goldze.mvvmhabit.base.ItemViewModel;
@@ -29,6 +30,9 @@ public class MovieItemViewModel extends ItemViewModel<MovieViewModel> {
     public BindingCommand itemClick = new BindingCommand(new BindingAction() {
         @Override
         public void call() {
+
+
+            MovieDetailsActivity.start(viewModel.getApplication(),dataBean);
             //这里可以通过一个标识,做出判断，已达到跳入不能界面的逻辑
 //            if (entity.getId() == -1) {
 //                ToastUtils.showShort(entity.getName());

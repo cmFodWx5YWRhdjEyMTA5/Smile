@@ -1,5 +1,6 @@
 package com.zzj.open.module_movie.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * @desc :
  * @version: 1.0
  */
-public class MovieBean {
+public class MovieBean implements Serializable{
 
     /**
      * Code : 200
@@ -45,7 +46,7 @@ public class MovieBean {
         this.Data = Data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         /**
          * movClass : 科幻片
          * downLoadName : 流浪地球[高清]
@@ -140,4 +141,6 @@ public class MovieBean {
             this.mv_md5_id = mv_md5_id;
         }
     }
+
+
 }
