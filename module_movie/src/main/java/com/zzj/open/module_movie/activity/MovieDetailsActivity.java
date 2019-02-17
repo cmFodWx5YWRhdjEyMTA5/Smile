@@ -33,6 +33,7 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
     public static void start(Context context,MovieBean.DataBean dataBean) {
         Intent starter = new Intent(context, MovieDetailsActivity.class);
         starter.putExtra("dataBean",dataBean);
+        starter.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
         context.startActivity(starter);
     }
     @Override
@@ -60,7 +61,7 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        binding.videoplayer.setUp(url
+        binding.videoplayer.setUp("https://www.hongxinhuaxue.com/20190131/KKwx0Lml/index.m3u8"
                 , dataBean.getDownLoadName(), JzvdStd.SCREEN_WINDOW_NORMAL);
         LogUtils.e("播放地址--》"+dataBean.getDownLoadUrl());
 

@@ -51,4 +51,5 @@ dependencies {
     api 'cn.bingoogolapple:bga-banner:2.2.5@aar'
     //视频播放器
     api 'cn.jzvd:jiaozivideoplayer:6.4.1'
+
 }
