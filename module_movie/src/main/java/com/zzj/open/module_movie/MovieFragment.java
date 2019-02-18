@@ -19,8 +19,18 @@ import me.goldze.mvvmhabit.base.BaseFragment;
  * @desc :http://123.207.150.253/ygcms/getLineMovie.php?type=科幻&page=1&pagesize=18
  * @version: 1.0
  */
-@Route(path = RouterFragmentPath.Movie.MOVIE_HOME)
+
 public class MovieFragment extends BaseFragment<MovieFragmentMovieBinding,MovieViewModel> {
+
+    public static MovieFragment newInstance() {
+        
+        Bundle args = new Bundle();
+        
+        MovieFragment fragment = new MovieFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+    
     @Override
     public int initContentView(LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
         return R.layout.movie_fragment_movie;

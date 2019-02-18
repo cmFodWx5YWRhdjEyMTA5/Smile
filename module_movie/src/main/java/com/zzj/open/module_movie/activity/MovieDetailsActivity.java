@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.jzvd.Jzvd;
 import cn.jzvd.JzvdStd;
 import me.goldze.mvvmhabit.BR;
 import me.goldze.mvvmhabit.base.BaseActivity;
@@ -66,5 +67,19 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
         LogUtils.e("播放地址--》"+dataBean.getDownLoadUrl());
 
         Glide.with(this).load(dataBean.getDownimgurl()).into(binding.videoplayer.thumbImageView);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Jzvd.releaseAllVideos();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (Jzvd.backPress()) {
+            return;
+        }
+        super.onBackPressed();
     }
 }
