@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             app:titleTextColor="@color/white"
-            app:title="@{viewModel.dataBean.downdtitle}"
+            app:title="@{viewModel.movieBean.title}"
             >
 
         </android.support.v7.widget.Toolbar>

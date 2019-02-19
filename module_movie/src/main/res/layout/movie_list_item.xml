@@ -21,12 +21,12 @@
             android:layout_height="120dp"
             android:scaleType="centerCrop"
             android:src="@{viewModel.drawableImg}"
-            binding:url="@{viewModel.dataBean.downimgurl}"
+            binding:url="@{viewModel.dataBean.img}"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.dataBean.downLoadName}"
+            android:text="@{viewModel.dataBean.title}"
             android:textColor="@color/gray"
             android:textSize="13dp"
             android:layout_gravity="center"

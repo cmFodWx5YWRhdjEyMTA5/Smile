@@ -39,8 +39,9 @@ public class RetrofitClient {
     private static final int DEFAULT_TIMEOUT = 20;
     //缓存时间
     private static final int CACHE_TIMEOUT = 10 * 1024 * 1024;
+//    public static String BASE_URL = "http://192.168.0.108:8080/api/";
     //服务端根路径
-    public static String baseUrl = "https://www.oschina.net/";
+    public static String baseUrl = "http://192.168.0.108:8080/api/";
 
     private static Context mContext = Utils.getContext();
 

@@ -5,11 +5,14 @@ import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 
+import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.http.RetrofitClient;
 import com.zzj.open.module_movie.BR;
 import com.zzj.open.module_movie.R;
 import com.zzj.open.module_movie.api.MovieApiService;
 import com.zzj.open.module_movie.bean.MovieBean;
+
+import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
@@ -59,29 +62,10 @@ public class MovieViewModel extends BaseViewModel {
 
     //给RecyclerView添加Adpter，请使用自定义的Adapter继承BindingRecyclerViewAdapter，重写onBindBinding方法
     public final BindingRecyclerViewAdapter<MovieItemViewModel> adapter = new BindingRecyclerViewAdapter<>();
-    //下拉刷新
-    public BindingCommand onRefreshCommand = new BindingCommand(new BindingAction() {
-        @Override
-        public void call() {
-            ToastUtils.showShort("下拉刷新");
-            requestNetWork();
-        }
 
-
-
-    });
-    //上拉加载
-    public BindingCommand onLoadMoreCommand = new BindingCommand(new BindingAction() {
-        @Override
-        public void call() {
-            ToastUtils.showShort("上拉加载");
-
-        }
-    });
-
-    public void requestNetWork() {
+    public void requestNetWork(String type, final int page) {
         RetrofitClient.getInstance().create(MovieApiService.class)
-                .getMovieList("科幻",1,18)
+                .getNesMovieList(type,page)
                 //请求与View周期同步
                 .compose(RxUtils.bindToLifecycle(getLifecycleProvider()))
                 //线程调度
@@ -93,14 +77,21 @@ public class MovieViewModel extends BaseViewModel {
                     public void accept(Disposable disposable) throws Exception {
                         showDialog("正在请求...");
                     }
-                }).subscribe(new Consumer<MovieBean>() {
+                }).subscribe(new Consumer<Result<List<MovieBean>>>() {
             @Override
-            public void accept(MovieBean movieBean) throws Exception {
-                for (MovieBean.DataBean dataBean : movieBean.getData()) {
-                    MovieItemViewModel itemViewModel = new MovieItemViewModel(MovieViewModel.this, dataBean);
-                    //双向绑定动态添加Item
-                    observableList.add(itemViewModel);
+            public void accept(Result<List<MovieBean>> movieBean) throws Exception {
+                if(movieBean.getCode() == 1){
+                    if(page == 0){
+                        observableList.clear();
+                    }
+                    for (MovieBean dataBean : movieBean.getResult()) {
+
+                        MovieItemViewModel itemViewModel = new MovieItemViewModel(MovieViewModel.this, dataBean);
+                        //双向绑定动态添加Item
+                        observableList.add(itemViewModel);
+                    }
                 }
+
             }
         }, new Consumer<Throwable>() {
             @Override

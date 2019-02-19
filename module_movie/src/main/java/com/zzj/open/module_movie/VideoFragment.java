@@ -45,9 +45,9 @@ public class VideoFragment extends BaseFragment<MovieFragmentVideoBinding,VideoV
     @Override
     public void initData() {
         super.initData();
-        fragmentList.add(MovieFragment.newInstance());
-        fragmentList.add(MovieFragment.newInstance());
-        fragmentList.add(MovieFragment.newInstance());
+        fragmentList.add(MovieFragment.newInstance("最新电影"));
+        fragmentList.add(MovieFragment.newInstance("最新电视剧"));
+        fragmentList.add(MovieFragment.newInstance("最新综艺"));
         adapter = new VideoFragmentAdapter(getChildFragmentManager());
         binding.viewPager.setAdapter(adapter);
         binding.tabLayout.setupWithViewPager(binding.viewPager);

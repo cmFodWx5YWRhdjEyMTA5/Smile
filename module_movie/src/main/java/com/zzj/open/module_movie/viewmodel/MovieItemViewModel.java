@@ -16,9 +16,9 @@ import me.goldze.mvvmhabit.binding.command.BindingCommand;
  * @author JamesZhang
  */
 public class MovieItemViewModel extends ItemViewModel<MovieViewModel> {
-    public MovieBean.DataBean dataBean;
+    public MovieBean dataBean;
     public Drawable drawableImg;
-    public MovieItemViewModel(@NonNull MovieViewModel viewModel,MovieBean.DataBean dataBean) {
+    public MovieItemViewModel(@NonNull MovieViewModel viewModel,MovieBean dataBean) {
         super(viewModel);
         this.dataBean = dataBean;
         //ImageView的占位图片，可以解决RecyclerView中图片错误问题
