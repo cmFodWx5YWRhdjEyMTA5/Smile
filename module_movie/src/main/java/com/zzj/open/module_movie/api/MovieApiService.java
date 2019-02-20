@@ -43,6 +43,14 @@ public interface MovieApiService {
     @POST("movie/newMovie")
     Observable<Result<List<MovieBean>>> getNesMovieList(@Field("type") String type, @Field("page")int page);
     /**
+     * 获取电影解码后的url
+     * "outputstring"
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("http://www.convertstring.com/zh_CN/EncodeDecode/UrlDecode")
+    Observable<Result<MovieDetailsBean>> getMovieDecoderUrl(@Field("input") String url,@Field("outputtype")String outputString);
+    /**
      * 获取电影详情
      * @return
      */

@@ -45,11 +45,11 @@ public class MovieViewModel extends BaseViewModel {
         /**
          * 下拉刷新完成
          */
-        public ObservableBoolean finishRefreshing = new ObservableBoolean(false);
+        public ObservableBoolean finishRefreshing = new ObservableBoolean(true);
         /**
          * 上拉加载完成
          */
-        public ObservableBoolean finishLoadmore = new ObservableBoolean(false);
+        public ObservableBoolean finishLoadmore = new ObservableBoolean(true);
     }
 
     public MovieViewModel(@NonNull Application application) {
@@ -75,12 +75,14 @@ public class MovieViewModel extends BaseViewModel {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
-                        showDialog("正在请求...");
+//                        showDialog("正在请求...");
                     }
                 }).subscribe(new Consumer<Result<List<MovieBean>>>() {
             @Override
             public void accept(Result<List<MovieBean>> movieBean) throws Exception {
+                uc.finishLoadmore.set(!uc.finishLoadmore.get());
                 if(movieBean.getCode() == 1){
+
                     if(page == 0){
                         observableList.clear();
                     }
@@ -96,12 +98,14 @@ public class MovieViewModel extends BaseViewModel {
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-                dismissDialog();
+                uc.finishLoadmore.set(!uc.finishLoadmore.get());
+//                dismissDialog();
                 ToastUtils.showShort(throwable.getMessage());
             }
         }, new Action() {
             @Override
             public void run() throws Exception {
+                uc.finishLoadmore.set(!uc.finishLoadmore.get());
                 dismissDialog();
 
             }

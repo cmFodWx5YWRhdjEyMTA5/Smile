@@ -1,5 +1,6 @@
 package com.zzj.open.module_movie;
 
+import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.LogUtils;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zzj.open.base.router.RouterFragmentPath;
@@ -69,6 +71,15 @@ public class MovieFragment extends BaseFragment<MovieFragmentMovieBinding,MovieV
 
                 page = 0;
                 viewModel.requestNetWork(type,page);
+            }
+        });
+
+        viewModel.uc.finishLoadmore.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                LogUtils.e("6666666666"+propertyId+sender.toString());
+                binding.refreshLayout.finishRefresh();
+                binding.refreshLayout.finishLoadMore();
             }
         });
     }
