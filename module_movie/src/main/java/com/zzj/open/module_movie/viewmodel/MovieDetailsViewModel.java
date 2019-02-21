@@ -1,14 +1,19 @@
 package com.zzj.open.module_movie.viewmodel;
 
 import android.app.Application;
+import android.databinding.ObservableArrayList;
+import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
 import com.zzj.open.base.bean.CallBack;
 import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.http.RetrofitClient;
+import com.zzj.open.module_movie.BR;
+import com.zzj.open.module_movie.R;
 import com.zzj.open.module_movie.api.MovieApiService;
 import com.zzj.open.module_movie.bean.MovieBean;
 import com.zzj.open.module_movie.bean.MovieDetailsBean;
+import com.zzj.open.module_movie.bean.MovieDetailsItemBean;
 
 import java.util.List;
 
@@ -18,6 +23,8 @@ import io.reactivex.functions.Consumer;
 import me.goldze.mvvmhabit.base.BaseViewModel;
 import me.goldze.mvvmhabit.utils.RxUtils;
 import me.goldze.mvvmhabit.utils.ToastUtils;
+import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter;
+import me.tatarka.bindingcollectionadapter2.ItemBinding;
 
 /**
  * @author : zzj
@@ -29,6 +36,15 @@ import me.goldze.mvvmhabit.utils.ToastUtils;
 public class MovieDetailsViewModel extends BaseViewModel {
     public MovieDetailsBean dataBean;
     public MovieBean movieBean;
+
+    public ObservableField<MovieDetailsItemBean> playUrl = new ObservableField<>();
+    public ObservableArrayList<MovieDetailsItemViewModel> observableList = new ObservableArrayList<>();
+    //给RecyclerView添加ItemBinding
+    public ItemBinding<MovieDetailsItemViewModel> itemBinding = ItemBinding.of(BR.viewModel, R.layout.movie_details_seriec_list_item);
+
+    //给RecyclerView添加Adpter，请使用自定义的Adapter继承BindingRecyclerViewAdapter，重写onBindBinding方法
+    public final BindingRecyclerViewAdapter<MovieDetailsItemViewModel> adapter = new BindingRecyclerViewAdapter<>();
+
     public MovieDetailsViewModel(@NonNull Application application) {
         super(application);
     }
@@ -61,6 +77,7 @@ public class MovieDetailsViewModel extends BaseViewModel {
             public void accept(Result<MovieDetailsBean> movieBean) throws Exception {
                 if(movieBean.getCode() == 1){
                     dataBean = movieBean.getResult();
+                    disposePlayUrl();
                     callBack.success(movieBean.getResult());
                 }
 
@@ -81,4 +98,27 @@ public class MovieDetailsViewModel extends BaseViewModel {
         });
 
     }
+
+    /**
+     * 处理连续剧的集数
+     */
+    private void disposePlayUrl(){
+        if(dataBean.getType().equals("连续剧")||dataBean.getType().equals("综艺片")){
+            List<MovieDetailsBean.PlayUrlsBean> playUrlsBeans = dataBean.getPlayUrls();
+            if(playUrlsBeans!=null&&playUrlsBeans.size()>0){
+                for(MovieDetailsBean.PlayUrlsBean playUrlsBean : playUrlsBeans){
+                    String data = playUrlsBean.getPlayUrl();
+                    if(data.contains("$")){
+                        MovieDetailsItemBean movieDetailsItemBean = new MovieDetailsItemBean();
+                        movieDetailsItemBean.setTitle(data.split("\\$")[0]);
+                        movieDetailsItemBean.setUrl(data.split("\\$")[1]);
+                        MovieDetailsItemViewModel movieDetailsItemViewModel = new MovieDetailsItemViewModel(this,movieDetailsItemBean);
+                        observableList.add(movieDetailsItemViewModel);
+                    }
+
+                }
+            }
+        }
+    }
+
 }

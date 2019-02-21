@@ -2,6 +2,7 @@ package com.zzj.open.module_movie.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.Observable;
 import android.os.Bundle;
 import android.util.Patterns;
 
@@ -66,28 +67,22 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
         viewModel.getMovieDetais(dataBean.getId(), new CallBack<MovieDetailsBean>() {
             @Override
             public void success(MovieDetailsBean result) {
-                String url = new String(EncodeUtils.base64Decode(result.getPlayUrl()));
-                LogUtils.e("getMovieDetais--->" + url);
-                String burl = convertPercent(url);
-                String curl = null;
-                LogUtils.e("getMovieDetais--->" + burl);
-                curl = URLDecoder.decode(burl);
-                LogUtils.e("getMovieDetais--->" + curl);
-                String[] surl = curl.split("\\$");
-                LogUtils.e("getMovieDetais--->" + surl[0] + "-----" + surl[1]);
-
-
-                LogUtils.e("播放地址--》" + surl[1].substring(0, surl[1].length() - 3));
-
-                try {
-
-                    LogUtils.e("\"播放地址--》\""+ URLDecoder.decode(surl[1].substring(0, surl[1].length() - 3).replaceAll("%(?![0-9a-fA-F]{2})", "%25"),"utf-8"));
-                    binding.videoplayer.setUp(URLDecoder.decode(surl[1].substring(0, surl[1].length() - 3).replaceAll("%(?![0-9a-fA-F]{2})", "%25"),"utf-8")
-                            , dataBean.getTitle(), JzvdStd.SCREEN_WINDOW_NORMAL);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                String url ="";
+                String title = "";
+                if(result.getType().equals("电影片")){
+                   url = result.getPlayUrl();
+                    title = result.getTitle();
+                }else {
+                    if(result.getPlayUrls()!=null&&result.getPlayUrls().size()>0){
+                        String data= result.getPlayUrls().get(0).getPlayUrl();
+                        if(data.contains("$")){
+                            url =   data.split("\\$")[1];
+                            title = data.split("\\$")[0];
+                        }
+                    }
                 }
-
+                binding.videoplayer.setUp(url
+                        ,title, JzvdStd.SCREEN_WINDOW_NORMAL);
             }
 
             @Override
@@ -96,6 +91,14 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
             }
         });
         Glide.with(this).load(dataBean.getImg()).into(binding.videoplayer.thumbImageView);
+
+        viewModel.playUrl.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                binding.videoplayer.setUp(viewModel.playUrl.get().getUrl(),viewModel.playUrl.get().getTitle(),Jzvd.SCREEN_WINDOW_FULLSCREEN);
+                binding.videoplayer.startVideo();
+            }
+        });
     }
 
     @Override
@@ -111,38 +114,4 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
         }
         super.onBackPressed();
     }
-
-    //判断是否为16进制数
-    public static boolean isHex(char c) {
-        if (((c >= '0') && (c <= '9')) ||
-                ((c >= 'a') && (c <= 'f')) ||
-                ((c >= 'A') && (c <= 'F')))
-            return true;
-        else
-            return false;
-    }
-
-    public static String convertPercent(String str) {
-        StringBuilder sb = new StringBuilder(str);
-
-        for (int i = 0; i < sb.length(); i++) {
-            char c = sb.charAt(i);
-            //判断是否为转码符号%
-            if (c == '%') {
-                if (((i + 1) < sb.length() - 1) && ((i + 2) < sb.length() - 1)) {
-                    char first = sb.charAt(i + 1);
-                    char second = sb.charAt(i + 2);
-                    //如只是普通的%则转为%25
-                    if (!(isHex(first) && isHex(second)))
-                        sb.insert(i + 1, "25");
-                } else {//如只是普通的%则转为%25
-                    sb.insert(i + 1, "25");
-                }
-
-            }
-        }
-
-        return sb.toString();
-    }
-
 }

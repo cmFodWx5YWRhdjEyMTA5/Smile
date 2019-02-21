@@ -47,25 +47,21 @@ import me.goldze.mvvmhabit.http.interceptor.logging.Logger;
  * @author : zzj
  * @e-mail : zhangzhijun@pansoft.com
  * @date : 2018/12/7 15:23
- * @desc :
+ * @desc :启动页
  * @version: 1.0
  */
-public class SplashActivity extends AppCompatActivity implements AuthenticationCallback {
+public class SplashActivity extends AppCompatActivity  {
 
     private static final String DEFAULT_KEY_NAME = "default_key";
 
-    KeyStore keyStore;
-    private String password;
-    private TextView tvDecodeInfo;
-    private int purpose;
-    FingerprintDialogFragment fragment;
-    EditText editText;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_splash);
         AdManager.getInstance(this).init("71c36cd5b46e3637", "17a8d95f274dc224", true);
-        initView();
 //        inMain();
 //        if (supportFingerprint()) {
 //
@@ -88,60 +84,6 @@ public class SplashActivity extends AppCompatActivity implements AuthenticationC
                 });
     }
 
-    private void initView() {
-        editText = findViewById(R.id.et_password);
-        tvDecodeInfo = findViewById(R.id.tv_info);
-
-        findViewById(R.id.btn_encrypt).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                password = editText.getText().toString().trim();
-                purpose = KeyProperties.PURPOSE_ENCRYPT;
-                showFingerPrintDialog(password,KeyProperties.PURPOSE_ENCRYPT);
-                Log.e("Cipher","--明文-->"+password);
-            }
-        });
-        findViewById(R.id.btn_decode).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                purpose = KeyProperties.PURPOSE_DECRYPT;
-                showFingerPrintDialog("",KeyProperties.PURPOSE_DECRYPT);
-            }
-        });
-
-    }
-
-    public boolean supportFingerprint() {
-        if (Build.VERSION.SDK_INT < 23) {
-            Toast.makeText(this, "您的系统版本过低，不支持指纹功能", Toast.LENGTH_SHORT).show();
-            return false;
-        } else {
-            KeyguardManager keyguardManager = getSystemService(KeyguardManager.class);
-            FingerprintManager fingerprintManager = getSystemService(FingerprintManager.class);
-            if (!fingerprintManager.isHardwareDetected()) {
-                Toast.makeText(this, "您的手机不支持指纹功能", Toast.LENGTH_SHORT).show();
-                return false;
-            } else if (!keyguardManager.isKeyguardSecure()) {
-                Toast.makeText(this, "您还未设置锁屏，请先设置锁屏并添加一个指纹", Toast.LENGTH_SHORT).show();
-                return false;
-            } else if (!fingerprintManager.hasEnrolledFingerprints()) {
-                Toast.makeText(this, "您至少需要在系统设置中添加一个指纹", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-    private void showFingerPrintDialog(String password,int purpose) {
-
-        fragment = new FingerprintDialogFragment();
-        fragment.setCallback(this);
-        fragment.setEncryptContent(password);
-        fragment.setPurpose(purpose);
-        fragment.show(getSupportFragmentManager(), "fingerprint");
-    }
-
     /**
      * 进入主页面
      */
@@ -150,24 +92,6 @@ public class SplashActivity extends AppCompatActivity implements AuthenticationC
         finish();
     }
 
-    @Override
-    public void onAuthenticationSucceeded(String value) {
-
-        fragment.dismiss();
-        Log.e("onAuthenticationSuccess","onAuthenticationSucceeded---->"+value);
-        if( purpose == KeyProperties.PURPOSE_DECRYPT){
-            tvDecodeInfo.setText("解密信息："+value);
-        }else {
-            tvDecodeInfo.setText("加密信息："+value);
-        }
-//        inMain();
-    }
-
-    @Override
-    public void onAuthenticationFail() {
-        Log.e("onAuthenticationFail","onAuthenticationFail---->");
-
-    }
 
     /**
      * 预加载广告
@@ -188,13 +112,13 @@ public class SplashActivity extends AppCompatActivity implements AuthenticationC
                 LogUtils.e("请求插屏广告失败，errorCode: %s", errorCode);
                 switch (errorCode) {
                     case ErrorCode.NON_NETWORK:
-                        ToastUtils.showShort("网络异常");
+                        LogUtils.e("网络异常");
                         break;
                     case ErrorCode.NON_AD:
-                        ToastUtils.showShort("暂无插屏广告");
+                        LogUtils.e("暂无插屏广告");
                         break;
                     default:
-                        ToastUtils.showShort("请稍后再试");
+                        LogUtils.e("请稍后再试");
                         break;
                 }
             }

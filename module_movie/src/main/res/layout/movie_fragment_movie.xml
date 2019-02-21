@@ -9,7 +9,8 @@
 
         <import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
 
-        <import type="me.goldze.mvvmhabit.binding.viewadapter.recyclerview.LineManagers" />    </data>
+        <import type="me.goldze.mvvmhabit.binding.viewadapter.recyclerview.LineManagers" />
+    </data>
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

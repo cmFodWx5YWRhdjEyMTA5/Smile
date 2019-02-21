@@ -65,7 +65,7 @@ public class MovieViewModel extends BaseViewModel {
 
     public void requestNetWork(String type, final int page) {
         RetrofitClient.getInstance().create(MovieApiService.class)
-                .getNesMovieList(type,page)
+                .getNesMovieList(type,page,12)
                 //请求与View周期同步
                 .compose(RxUtils.bindToLifecycle(getLifecycleProvider()))
                 //线程调度

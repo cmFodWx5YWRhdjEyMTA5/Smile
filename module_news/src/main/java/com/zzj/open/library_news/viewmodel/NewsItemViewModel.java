@@ -46,6 +46,7 @@ public class NewsItemViewModel extends ItemViewModel<NewsViewModel> {
 //                mBundle.putParcelable("entity", entity);
 //                viewModel.startContainerActivity(DetailFragment.class.getCanonicalName(), mBundle);
 //            }
+
         }
     });
     //条目的长按事件

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:binding="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="com.zzj.open.module_movie.viewmodel.MovieDetailsItemViewModel"/>
+        <variable
+            name="viewModel"
+            type="com.zzj.open.module_movie.viewmodel.MovieDetailsItemViewModel"/>
+    </data>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{viewModel.dataBean.title}"
+        binding:onClickCommand="@{viewModel.itemClick}"
+        android:textColor="@color/white"
+        android:padding="10dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/movie_bg_details_seriec_list_iten_tv"
+        >
+    </TextView>
+</layout>
