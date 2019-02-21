@@ -15,7 +15,11 @@ import com.zzj.open.module_movie.bean.MovieBean;
 import com.zzj.open.module_movie.bean.MovieDetailsBean;
 import com.zzj.open.module_movie.bean.MovieDetailsItemBean;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
@@ -106,6 +110,17 @@ public class MovieDetailsViewModel extends BaseViewModel {
         if(dataBean.getType().equals("连续剧")||dataBean.getType().equals("综艺片")){
             List<MovieDetailsBean.PlayUrlsBean> playUrlsBeans = dataBean.getPlayUrls();
             if(playUrlsBeans!=null&&playUrlsBeans.size()>0){
+                Collections.sort(playUrlsBeans, new Comparator<MovieDetailsBean.PlayUrlsBean>() {
+                    @Override
+                    public int compare(MovieDetailsBean.PlayUrlsBean o1, MovieDetailsBean.PlayUrlsBean o2) {
+                        Pattern p = Pattern.compile("[^0-9]");
+                        Matcher m = p.matcher(o1.getPlayUrl().split("\\$")[0]);
+                        String result1 = m.replaceAll("");
+                        Matcher m2 = p.matcher(o2.getPlayUrl().split("\\$")[0]);
+                        String result2 = m2.replaceAll("");
+                        return Integer.valueOf(result1)-Integer.valueOf(result2);
+                    }
+                });
                 for(MovieDetailsBean.PlayUrlsBean playUrlsBean : playUrlsBeans){
                     String data = playUrlsBean.getPlayUrl();
                     if(data.contains("$")){

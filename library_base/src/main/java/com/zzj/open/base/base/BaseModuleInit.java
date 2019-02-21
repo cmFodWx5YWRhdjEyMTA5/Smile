@@ -1,8 +1,10 @@
 package com.zzj.open.base.base;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.danikula.videocache.HttpProxyCacheServer;
 import com.zzj.open.base.BuildConfig;
 
 import me.goldze.mvvmhabit.utils.KLog;
@@ -13,8 +15,14 @@ import me.goldze.mvvmhabit.utils.KLog;
  */
 
 public class BaseModuleInit implements IModuleInit {
+    public Application application;
+
+    private static BaseModuleInit instance;
+
+
     @Override
     public boolean onInitAhead(Application application) {
+        this.application = application;
         //开启打印日志
         KLog.init(true);
         //初始化阿里路由框架
@@ -32,4 +40,23 @@ public class BaseModuleInit implements IModuleInit {
         KLog.e("基础层初始化 -- onInitLow");
         return false;
     }
+
+    private HttpProxyCacheServer proxy;
+
+    public static HttpProxyCacheServer getProxy() {
+        BaseModuleInit app = getInstance();
+        return app.proxy == null ? (app.proxy = app.newProxy()) : app.proxy;
+    }
+
+    private HttpProxyCacheServer newProxy() {
+        return new HttpProxyCacheServer(application);
+    }
+
+    public static BaseModuleInit getInstance() {
+        if(instance == null){
+            instance = new BaseModuleInit();
+        }
+        return instance;
+    }
+
 }

@@ -95,16 +95,27 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
         viewModel.playUrl.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
-                binding.videoplayer.setUp(viewModel.playUrl.get().getUrl(),viewModel.playUrl.get().getTitle(),Jzvd.SCREEN_WINDOW_FULLSCREEN);
-                binding.videoplayer.startVideo();
+                //直接全屏播放
+                JzvdStd.startFullscreen(MovieDetailsActivity.this, JzvdStd.class,viewModel.playUrl.get().getUrl(),viewModel.playUrl.get().getTitle());
+
+
             }
         });
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //home back
+        JzvdStd.goOnPlayOnResume();
+    }
     @Override
     protected void onPause() {
         super.onPause();
-        Jzvd.releaseAllVideos();
+        //home back
+        JzvdStd.goOnPlayOnPause();
+
     }
 
     @Override
