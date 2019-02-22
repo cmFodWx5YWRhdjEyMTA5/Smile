@@ -9,6 +9,8 @@ import android.util.Patterns;
 import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.bumptech.glide.Glide;
+import com.xcy8.ads.view.BannerAdView;
+import com.xcy8.ads.view.FixedAdView;
 import com.zzj.open.base.bean.CallBack;
 import com.zzj.open.module_movie.R;
 import com.zzj.open.module_movie.bean.MovieBean;
@@ -37,9 +39,12 @@ import me.goldze.mvvmhabit.base.BaseActivity;
  * @version: 1.0
  */
 public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetailsBinding, MovieDetailsViewModel> {
-
+    // FixedAd
+    private static final String BANNER_AD_ID = "42705";
+    private static final String FIXED_AD_ID = "42707";
     private MovieBean dataBean;
-
+    private FixedAdView mAd1Fav;
+    private BannerAdView mAd1Bav;
     public static void start(Context context, MovieBean dataBean) {
         Intent starter = new Intent(context, MovieDetailsActivity.class);
         starter.putExtra("dataBean", dataBean);
@@ -60,6 +65,13 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
     @Override
     public void initData() {
         super.initData();
+        mAd1Fav = findViewById(R.id.ad_1_fav);
+        mAd1Fav.loadAd(FIXED_AD_ID);
+
+        mAd1Bav = new BannerAdView(this);
+        mAd1Bav.setFloat(false);
+        mAd1Bav.loadAd(BANNER_AD_ID);
+
         dataBean = (MovieBean) getIntent().getSerializableExtra("dataBean");
         viewModel.setDataBean(dataBean);
         String url = "";
@@ -124,5 +136,11 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        JzvdStd.releaseAllVideos();
     }
 }

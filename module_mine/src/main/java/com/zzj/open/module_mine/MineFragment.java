@@ -9,6 +9,9 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
+import com.xcy8.ads.listener.OnPermissionListener;
+import com.xcy8.ads.view.BannerAdView;
+import com.xcy8.ads.view.IconAd;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.module_mine.BR;
 import com.zzj.open.module_mine.databinding.MineFragmentMineBinding;
@@ -28,6 +31,11 @@ import me.goldze.mvvmhabit.base.BaseFragment;
  */
 @Route(path = RouterFragmentPath.Mine.MINE_HOME)
 public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewModel> {
+    private static final String BANNER_AD_ID = "42705";
+
+
+    private BannerAdView mAd1Bav;
+    private IconAd mIconAd;
     @Override
     public int initContentView(LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
         return R.layout.mine_fragment_mine;
@@ -41,6 +49,20 @@ public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewM
     @Override
     public void initData() {
         super.initData();
+
+        mIconAd = new IconAd(getActivity());
+        mIconAd.setOnPermissionListener(new OnPermissionListener() {
+            @Override
+            public void permissionDenied() {
+
+            }
+
+            @Override
+            public void permissionGranted() {
+
+            }
+        });
+        mIconAd.loadAd(BANNER_AD_ID);
         //	设置插屏图片类型，默认竖图
         //		//	横图
         SpotManager.getInstance(getActivity()).setImageType(SpotManager

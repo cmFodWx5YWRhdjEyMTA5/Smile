@@ -28,6 +28,11 @@ android {
         }
     }
 
+    repositories{
+        flatDir{
+            dir 'libs'
+        }
+    }
 }
 
 dependencies {
@@ -53,5 +58,9 @@ dependencies {
     api 'cn.jzvd:jiaozivideoplayer:6.4.1'
     //缓存
     api 'com.danikula:videocache:2.7.0'
+
+    //adapter
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
+    api 'net.qiujuer.genius:res:2.0.0'
 
 }

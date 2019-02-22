@@ -26,6 +26,9 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.xcy8.ads.view.BannerAdView;
+import com.xcy8.ads.view.FullScreenAdView;
+import com.xcy8.ads.view.skipview.OnFullScreenListener;
 import com.zzj.open.base.imp.AuthenticationCallback;
 import com.zzj.open.module_main.R;
 import com.zzj.open.module_main.activity.MainActivity;
@@ -54,13 +57,18 @@ public class SplashActivity extends AppCompatActivity  {
 
     private static final String DEFAULT_KEY_NAME = "default_key";
 
-
+    FullScreenAdView fullScreenView;
+    private BannerAdView mAd1Bav;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_splash);
+
+        fullScreenView = findViewById(R.id.full_screen_view);
+
+        mAd1Bav = new BannerAdView(this);
+        mAd1Bav.setFloat(false);
+        mAd1Bav.loadAd("42709");
         AdManager.getInstance(this).init("71c36cd5b46e3637", "17a8d95f274dc224", true);
 //        inMain();
 //        if (supportFingerprint()) {
@@ -74,9 +82,19 @@ public class SplashActivity extends AppCompatActivity  {
                         Manifest.permission.READ_PHONE_STATE)
                 .subscribe(granted -> {
                     if (granted) {
-                        preloadAd();
-                        setupSplashAd(); // 如果需要首次展示开屏，请注释掉本句代码
-                        // All requested permissions are granted
+
+                        fullScreenView.setFullScreenListener(new OnFullScreenListener() {
+                            @Override
+                            public void onSkip() {
+                                // 页面跳转并结束当前页面
+                                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                                finish();
+                            }
+                        });
+                        fullScreenView.loadAd("42579");
+//                        preloadAd();
+//                        setupSplashAd(); // 如果需要首次展示开屏，请注释掉本句代码
+//                        // All requested permissions are granted
                     } else {
                         // At least one permission is denied
                         finish();
@@ -193,5 +211,7 @@ public class SplashActivity extends AppCompatActivity  {
         super.onDestroy();
         // 开屏展示界面的 onDestroy() 回调方法中调用
         SpotManager.getInstance(this).onDestroy();
+        fullScreenView.clean();
+
     }
 }
