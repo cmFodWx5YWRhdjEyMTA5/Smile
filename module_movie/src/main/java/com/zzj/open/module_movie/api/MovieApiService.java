@@ -9,6 +9,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -57,4 +58,11 @@ public interface MovieApiService {
     @FormUrlEncoded
     @POST("video/videoDetails")
     Observable<Result<MovieDetailsBean>> getMovieDetails(@Field("movieId") String movieId);
+    /**
+     * 搜索电影
+     * @param content  搜索的内容
+     * @return
+     */
+    @GET("video/search")
+    Observable<Result<List<MovieBean>>> searchMovie(@Query("content") String content);
 }

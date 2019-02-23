@@ -2,9 +2,11 @@ package com.zzj.open.base.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.danikula.videocache.HttpProxyCacheServer;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.zzj.open.base.BuildConfig;
 
 import me.goldze.mvvmhabit.utils.KLog;
@@ -20,9 +22,11 @@ public class BaseModuleInit implements IModuleInit {
     private static BaseModuleInit instance;
 
 
+
     @Override
     public boolean onInitAhead(Application application) {
         this.application = application;
+        MultiDex.install(application);
         //开启打印日志
         KLog.init(true);
         //初始化阿里路由框架
@@ -32,6 +36,8 @@ public class BaseModuleInit implements IModuleInit {
         }
         ARouter.init(application); // 尽可能早，推荐在Application中初始化
         KLog.e("基础层初始化 -- onInitAhead");
+
+        CrashReport.initCrashReport(application.getApplicationContext(), "9ad07ee8f6", BuildConfig.DEBUG);
         return false;
     }
 

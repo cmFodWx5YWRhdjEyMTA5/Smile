@@ -1,15 +1,20 @@
 package com.zzj.open.smile;
 
 
+import android.content.Context;
+import android.support.multidex.MultiDex;
+
 import com.zzj.open.base.config.ModuleLifecycleConfig;
 
 import me.goldze.mvvmhabit.base.BaseApplication;
 
 /**
- * Created by goldze on 2018/6/21 0021.
+ * Created by zzj on 2019/1/11 0021.
  */
 
 public class AppApplication extends BaseApplication {
+
+
     @Override
     public void onCreate() {
         super.onCreate();

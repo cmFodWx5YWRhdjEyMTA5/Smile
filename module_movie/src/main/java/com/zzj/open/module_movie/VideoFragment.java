@@ -8,10 +8,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.zzj.open.base.router.RouterFragmentPath;
+import com.zzj.open.module_movie.activity.MovieSearchActivity;
 import com.zzj.open.module_movie.databinding.MovieFragmentVideoBinding;
 import com.zzj.open.module_movie.viewmodel.VideoViewModel;
 
@@ -45,12 +47,19 @@ public class VideoFragment extends BaseFragment<MovieFragmentVideoBinding,VideoV
     @Override
     public void initData() {
         super.initData();
-        fragmentList.add(MovieFragment.newInstance("电影片"));
-        fragmentList.add(MovieFragment.newInstance("连续剧"));
-        fragmentList.add(MovieFragment.newInstance("综艺片"));
+        fragmentList.add(MovieFragment.newInstance("电影片",""));
+        fragmentList.add(MovieFragment.newInstance("连续剧",""));
+        fragmentList.add(MovieFragment.newInstance("综艺片",""));
         adapter = new VideoFragmentAdapter(getChildFragmentManager());
         binding.viewPager.setAdapter(adapter);
         binding.tabLayout.setupWithViewPager(binding.viewPager);
+
+        binding.ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MovieSearchActivity.start(getActivity());
+            }
+        });
     }
 
 

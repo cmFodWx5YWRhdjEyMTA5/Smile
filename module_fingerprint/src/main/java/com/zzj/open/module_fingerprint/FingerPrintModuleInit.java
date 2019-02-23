@@ -1,6 +1,7 @@
 package com.zzj.open.module_fingerprint;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.zzj.open.base.base.IModuleInit;
 
@@ -12,6 +13,8 @@ import me.goldze.mvvmhabit.utils.KLog;
  */
 
 public class FingerPrintModuleInit implements IModuleInit {
+
+
     @Override
     public boolean onInitAhead(Application application) {
         KLog.e("指纹模块初始化 -- onInitAhead");

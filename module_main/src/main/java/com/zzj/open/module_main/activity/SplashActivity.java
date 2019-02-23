@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.xcy8.ads.view.BannerAdView;
 import com.xcy8.ads.view.FullScreenAdView;
 import com.xcy8.ads.view.skipview.OnFullScreenListener;
@@ -65,7 +66,6 @@ public class SplashActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_splash);
 
         fullScreenView = findViewById(R.id.full_screen_view);
-
         mAd1Bav = new BannerAdView(this);
         mAd1Bav.setFloat(false);
         mAd1Bav.loadAd("42709");

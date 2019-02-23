@@ -1,6 +1,7 @@
 package com.zzj.open.library_news;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.zzj.open.base.base.IModuleInit;
 
@@ -12,6 +13,8 @@ import me.goldze.mvvmhabit.utils.KLog;
  */
 
 public class NewsModuleInit implements IModuleInit {
+
+
     @Override
     public boolean onInitAhead(Application application) {
         KLog.e("新闻模块初始化 -- onInitAhead");

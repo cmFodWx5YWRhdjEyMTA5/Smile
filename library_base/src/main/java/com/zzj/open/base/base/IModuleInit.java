@@ -1,6 +1,7 @@
 package com.zzj.open.base.base;
 
 import android.app.Application;
+import android.content.Context;
 
 /**
  * Created by goldze on 2018/6/21 0021.

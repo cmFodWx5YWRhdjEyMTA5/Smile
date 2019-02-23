@@ -8,6 +8,7 @@ android {
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
+
     }
     sourceSets {
         main {
@@ -37,6 +38,7 @@ android {
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar','*.aar'])
+    api 'com.android.support:multidex:1.0.2'
     //公用的support相关库在base中依赖
     api rootProject.ext.support["design"]
     api rootProject.ext.support["appcompat-v7"]
@@ -62,5 +64,7 @@ dependencies {
     //adapter
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
     api 'net.qiujuer.genius:res:2.0.0'
+    //bugly
+    compile 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
 
 }

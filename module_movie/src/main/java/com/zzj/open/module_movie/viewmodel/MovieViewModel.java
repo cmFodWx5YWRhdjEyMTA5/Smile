@@ -112,4 +112,49 @@ public class MovieViewModel extends BaseViewModel {
         });
     }
 
+    public void search(String content){
+        RetrofitClient.getInstance().create(MovieApiService.class)
+                .searchMovie(content)
+                //请求与View周期同步
+                .compose(RxUtils.bindToLifecycle(getLifecycleProvider()))
+                //线程调度
+                .compose(RxUtils.schedulersTransformer())
+                // 网络错误的异常转换, 这里可以换成自己的ExceptionHandle
+                .compose(RxUtils.exceptionTransformer())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        showDialog("正在搜索...");
+                    }
+                }).subscribe(new Consumer<Result<List<MovieBean>>>() {
+            @Override
+            public void accept(Result<List<MovieBean>> movieBean) throws Exception {
+                dismissDialog();
+                uc.finishLoadmore.set(!uc.finishLoadmore.get());
+                if(movieBean.getCode() == 1){
+                    for (MovieBean dataBean : movieBean.getResult()) {
+
+                        MovieItemViewModel itemViewModel = new MovieItemViewModel(MovieViewModel.this, dataBean);
+                        //双向绑定动态添加Item
+                        observableList.add(itemViewModel);
+                    }
+                }
+
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                uc.finishLoadmore.set(!uc.finishLoadmore.get());
+                dismissDialog();
+                ToastUtils.showShort(throwable.getMessage());
+            }
+        }, new Action() {
+            @Override
+            public void run() throws Exception {
+                uc.finishLoadmore.set(!uc.finishLoadmore.get());
+                dismissDialog();
+
+            }
+        });
+    }
 }

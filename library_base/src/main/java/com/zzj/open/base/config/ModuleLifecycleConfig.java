@@ -1,6 +1,7 @@
 package com.zzj.open.base.config;
 
 import android.app.Application;
+import android.content.Context;
 
 
 import com.zzj.open.base.base.IModuleInit;

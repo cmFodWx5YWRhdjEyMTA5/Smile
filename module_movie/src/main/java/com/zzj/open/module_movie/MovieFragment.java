@@ -29,12 +29,15 @@ public class MovieFragment extends BaseFragment<MovieFragmentMovieBinding,MovieV
 
     private String type;
     private int page = 0;
-    public static MovieFragment newInstance(String type) {
+    //搜索内容
+    private String content;
+    public static MovieFragment newInstance(String type,String content) {
         
         Bundle args = new Bundle();
         
         MovieFragment fragment = new MovieFragment();
         args.putString("type",type);
+        args.putString("content",content);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,7 +57,14 @@ public class MovieFragment extends BaseFragment<MovieFragmentMovieBinding,MovieV
         super.initData();
         initListener();
         type = getArguments().getString("type");
-        viewModel.requestNetWork(type,page);
+        if(type.equals("搜索")){
+            content = getArguments().getString("content");
+            viewModel.search(content);
+        }else {
+            viewModel.requestNetWork(type,page);
+
+        }
+
     }
 
     private void initListener(){
