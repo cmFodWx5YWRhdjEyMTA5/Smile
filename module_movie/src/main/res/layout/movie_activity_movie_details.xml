@@ -13,45 +13,203 @@
         <import type="me.goldze.mvvmhabit.binding.viewadapter.recyclerview.LineManagers" />
         <import type="android.support.v7.widget.LinearLayoutManager" />
     </data>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/main_content"
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            app:titleTextColor="@color/white"
-            app:title="@{viewModel.movieBean.title}"
-            >
+            android:layout_height="match_parent">
 
-        </android.support.v7.widget.Toolbar>
-        <cn.jzvd.JzvdStd
-            android:id="@+id/videoplayer"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"/>
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
 
-        <com.xcy8.ads.view.FixedAdView
-            android:id="@+id/ad_1_fav"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/len_10"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="剧集："
-            android:layout_margin="10dp"
-            />
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            binding:adapter="@{viewModel.adapter}"
-            binding:itemBinding="@{viewModel.itemBinding}"
-            binding:items="@{viewModel.observableList}"
-            binding:layoutManager="@{LayoutManagers.linear(LinearLayoutManager.HORIZONTAL,Boolean.FALSE)}"
-            >
-        </android.support.v7.widget.RecyclerView>
-    </LinearLayout>
+
+                <ImageView android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="?attr/colorPrimary"
+                    android:scaleType="centerCrop"
+                    android:src="@{viewModel.drawableImg}"
+                    binding:url="@{viewModel.dataBean.img}"
+                    app:layout_scrollFlags="scroll|enterAlways"/>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/trans"
+                    app:titleTextColor="@color/white"
+                    app:title="@{viewModel.dataBean.title}"
+                    >
+
+                </android.support.v7.widget.Toolbar>
+
+            </android.support.design.widget.AppBarLayout>
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="120dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="@dimen/len_20"
+                        android:layout_marginTop="@dimen/len_20"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="导演："
+                            android:textColor="#363636"
+                            android:textSize="@dimen/len_16"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            binding:text="@{viewModel.dataBean.director}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/len_16"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="@dimen/len_20"
+                        android:layout_marginTop="@dimen/len_20"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="演员："
+                            android:textColor="#363636"
+                            android:textSize="@dimen/len_16"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            binding:text="@{viewModel.dataBean.actor}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/len_16"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="@dimen/len_20"
+                        android:layout_marginTop="@dimen/len_20"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="类型："
+                            android:textColor="#363636"
+                            android:textSize="@dimen/len_16"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            binding:text="@{viewModel.dataBean.movieType}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/len_16"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="@dimen/len_20"
+                        android:layout_marginTop="@dimen/len_20"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="地区："
+                            android:textColor="#363636"
+                            android:textSize="@dimen/len_16"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            binding:text="@{viewModel.dataBean.region}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/len_16"
+                            />
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/len_20"
+                        android:layout_marginTop="@dimen/len_20"
+                        android:textSize="@dimen/len_16"
+                        android:textColor="#363636"
+                        android:text="简介："
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        binding:text="@{viewModel.dataBean.movieDesc}"
+                        android:textSize="@dimen/len_14"
+                        android:textColor="@color/gray"
+                        android:layout_marginTop="@dimen/len_6"
+                        android:layout_marginLeft="@dimen/len_24"
+                        android:layout_marginRight="@dimen/len_24"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="播放地址一："
+                        android:layout_marginLeft="@dimen/len_20"
+                        android:textSize="@dimen/len_16"
+                        android:textColor="#363636"
+                        />
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        binding:adapter="@{viewModel.adapter}"
+                        binding:itemBinding="@{viewModel.itemBinding}"
+                        binding:items="@{viewModel.observableList}"
+                        binding:layoutManager="@{LayoutManagers.linear(LinearLayoutManager.HORIZONTAL,Boolean.FALSE)}"
+                        >
+                    </android.support.v7.widget.RecyclerView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="播放地址二："
+                        android:layout_marginLeft="@dimen/len_20"
+                        android:textSize="@dimen/len_16"
+                        android:textColor="#363636"
+                        />
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        binding:adapter="@{viewModel.adapter2}"
+                        binding:itemBinding="@{viewModel.itemBinding2}"
+                        binding:items="@{viewModel.playUrls2}"
+                        binding:layoutManager="@{LayoutManagers.linear(LinearLayoutManager.HORIZONTAL,Boolean.FALSE)}"
+                        >
+                    </android.support.v7.widget.RecyclerView>
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+
+
+
+        </android.support.design.widget.CoordinatorLayout>
+
+
+
+
 
 </layout>

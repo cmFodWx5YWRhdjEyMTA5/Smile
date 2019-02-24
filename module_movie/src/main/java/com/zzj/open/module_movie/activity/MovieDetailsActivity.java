@@ -15,6 +15,7 @@ import com.zzj.open.base.bean.CallBack;
 import com.zzj.open.module_movie.R;
 import com.zzj.open.module_movie.bean.MovieBean;
 import com.zzj.open.module_movie.bean.MovieDetailsBean;
+import com.zzj.open.module_movie.bean.MovieDetailsItemBean;
 import com.zzj.open.module_movie.databinding.MovieActivityMovieDetailsBinding;
 import com.zzj.open.module_movie.viewmodel.MovieDetailsViewModel;
 
@@ -42,12 +43,12 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
     // FixedAd
     private static final String BANNER_AD_ID = "42705";
     private static final String FIXED_AD_ID = "42707";
-    private MovieBean dataBean;
     private FixedAdView mAd1Fav;
     private BannerAdView mAd1Bav;
-    public static void start(Context context, MovieBean dataBean) {
+    private String movieId;
+    public static void start(Context context, String movieId) {
         Intent starter = new Intent(context, MovieDetailsActivity.class);
-        starter.putExtra("dataBean", dataBean);
+        starter.putExtra("movieId", movieId);
         starter.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(starter);
     }
@@ -65,36 +66,30 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
     @Override
     public void initData() {
         super.initData();
-        mAd1Fav = findViewById(R.id.ad_1_fav);
-        mAd1Fav.loadAd(FIXED_AD_ID);
 
         mAd1Bav = new BannerAdView(this);
         mAd1Bav.setFloat(false);
         mAd1Bav.loadAd(BANNER_AD_ID);
-
-        dataBean = (MovieBean) getIntent().getSerializableExtra("dataBean");
-        viewModel.setDataBean(dataBean);
+        movieId = getIntent().getStringExtra("movieId");
         String url = "";
 
-        viewModel.getMovieDetais(dataBean.getId(), new CallBack<MovieDetailsBean>() {
+        viewModel.getMovieDetais(movieId, new CallBack<MovieDetailsBean>() {
             @Override
             public void success(MovieDetailsBean result) {
-                String url ="";
-                String title = "";
-                if(result.getType().equals("电影片")){
-                   url = result.getPlayUrl();
-                    title = result.getTitle();
-                }else {
-                    if(result.getPlayUrls()!=null&&result.getPlayUrls().size()>0){
-                        String data= result.getPlayUrls().get(0).getPlayUrl();
-                        if(data.contains("$")){
-                            url =   data.split("\\$")[1];
-                            title = data.split("\\$")[0];
-                        }
-                    }
-                }
-                binding.videoplayer.setUp(url
-                        ,title, JzvdStd.SCREEN_WINDOW_NORMAL);
+//                String url ="";
+//                String title = "";
+//                if(result.getType().equals("电影片")){
+//                   url = result.getPlayUrl();
+//                    title = result.getTitle();
+//                }else {
+//                    if(result.getPlayUrls()!=null&&result.getPlayUrls().size()>0){
+//                        String data= result.getPlayUrls().get(0).getPlayUrl();
+//                        if(data.contains("$")){
+//                            url =   data.split("\\$")[1];
+//                            title = data.split("\\$")[0];
+//                        }
+//                    }
+//                }
             }
 
             @Override
@@ -102,45 +97,20 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
 
             }
         });
-        Glide.with(this).load(dataBean.getImg()).into(binding.videoplayer.thumbImageView);
+
 
         viewModel.playUrl.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
-                //直接全屏播放
-                JzvdStd.startFullscreen(MovieDetailsActivity.this, JzvdStd.class,viewModel.playUrl.get().getUrl(),viewModel.playUrl.get().getTitle());
 
+                MovieDetailsItemBean movieDetailsItemBean = viewModel.playUrl.get();
+
+                VideoPlayerActivity.start(MovieDetailsActivity.this,movieDetailsItemBean);
 
             }
         });
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //home back
-        JzvdStd.goOnPlayOnResume();
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //home back
-        JzvdStd.goOnPlayOnPause();
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (Jzvd.backPress()) {
-            return;
-        }
-        super.onBackPressed();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        JzvdStd.releaseAllVideos();
-    }
 }

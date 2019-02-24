@@ -13,7 +13,10 @@ import com.zzj.open.module_movie.R;
 import com.zzj.open.module_movie.databinding.MovieActivityMovieDetailsBinding;
 import com.zzj.open.module_movie.databinding.MovieActivityMovieSearchBinding;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import me.goldze.mvvmhabit.BR;
 import me.goldze.mvvmhabit.base.BaseActivity;
@@ -48,7 +51,14 @@ public class MovieSearchActivity extends BaseActivity<MovieActivityMovieSearchBi
     @Override
     public void initData() {
         super.initData();
-
+        lastSearches = new ArrayList<>();
+        Set<String> stringSet = SPUtils.getInstance().getStringSet("local_search");
+        if(stringSet!=null&&stringSet.size()>0){
+            for(String s : stringSet){
+                lastSearches.add(s);
+            }
+        }
+        binding.searchBar.setLastSuggestions(lastSearches);
         binding.searchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
             @Override
             public void onSearchStateChanged(boolean enabled) {
@@ -72,6 +82,13 @@ public class MovieSearchActivity extends BaseActivity<MovieActivityMovieSearchBi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        SPUtils.getInstance().put();
+        Set<String> strings = new HashSet<>();
+        if(binding.searchBar.getLastSuggestions().size()>0){
+            for(Object s : binding.searchBar.getLastSuggestions()){
+                strings.add((String) s);
+            }
+        }
+        //保存搜索记录
+        SPUtils.getInstance().put("local_search",strings);
     }
 }

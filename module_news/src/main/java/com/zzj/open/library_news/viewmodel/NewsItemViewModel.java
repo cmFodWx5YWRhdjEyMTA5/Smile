@@ -30,7 +30,7 @@ public class NewsItemViewModel extends ItemViewModel<NewsViewModel> {
         super(viewModel);
         this.dataBean = dataBean;
         //ImageView的占位图片，可以解决RecyclerView中图片错误问题
-        drawableImg = ContextCompat.getDrawable(viewModel.getApplication(), R.mipmap.ic_launcher);
+        drawableImg = ContextCompat.getDrawable(viewModel.getApplication(), R.mipmap.ic_loading);
     }
 
     //条目的点击事件

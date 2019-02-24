@@ -50,6 +50,7 @@ public class VideoFragment extends BaseFragment<MovieFragmentVideoBinding,VideoV
         fragmentList.add(MovieFragment.newInstance("电影片",""));
         fragmentList.add(MovieFragment.newInstance("连续剧",""));
         fragmentList.add(MovieFragment.newInstance("综艺片",""));
+        fragmentList.add(MovieFragment.newInstance("动漫片",""));
         adapter = new VideoFragmentAdapter(getChildFragmentManager());
         binding.viewPager.setAdapter(adapter);
         binding.tabLayout.setupWithViewPager(binding.viewPager);
@@ -65,7 +66,7 @@ public class VideoFragment extends BaseFragment<MovieFragmentVideoBinding,VideoV
 
     public class VideoFragmentAdapter extends FragmentPagerAdapter{
 
-        private  final String[] mTitles = {"电影", "电视剧", "综艺"};
+        private  final String[] mTitles = {"电影", "电视剧", "综艺","动漫"};
 
         public VideoFragmentAdapter(FragmentManager fm) {
             super(fm);

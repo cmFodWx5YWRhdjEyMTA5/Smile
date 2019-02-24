@@ -17,7 +17,7 @@ import me.goldze.mvvmhabit.utils.KLog;
  */
 
 public class BaseModuleInit implements IModuleInit {
-    public Application application;
+    public static Application application;
 
     private static BaseModuleInit instance;
 
@@ -55,7 +55,7 @@ public class BaseModuleInit implements IModuleInit {
     }
 
     private HttpProxyCacheServer newProxy() {
-        return new HttpProxyCacheServer(application);
+        return new HttpProxyCacheServer(application.getApplicationContext());
     }
 
     public static BaseModuleInit getInstance() {

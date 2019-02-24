@@ -22,7 +22,7 @@ public class MovieItemViewModel extends ItemViewModel<MovieViewModel> {
         super(viewModel);
         this.dataBean = dataBean;
         //ImageView的占位图片，可以解决RecyclerView中图片错误问题
-        drawableImg = ContextCompat.getDrawable(viewModel.getApplication(), R.mipmap.ic_launcher);
+        drawableImg = ContextCompat.getDrawable(viewModel.getApplication(), R.mipmap.ic_loading);
 
     }
 
@@ -32,7 +32,7 @@ public class MovieItemViewModel extends ItemViewModel<MovieViewModel> {
         public void call() {
 
 
-            MovieDetailsActivity.start(viewModel.getApplication(),dataBean);
+            MovieDetailsActivity.start(viewModel.getApplication(),dataBean.getId());
             //这里可以通过一个标识,做出判断，已达到跳入不能界面的逻辑
 //            if (entity.getId() == -1) {
 //                ToastUtils.showShort(entity.getName());

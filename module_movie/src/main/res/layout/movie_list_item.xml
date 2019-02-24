@@ -19,7 +19,7 @@
         <ImageView
             android:layout_width="90dp"
             android:layout_height="120dp"
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
             android:src="@{viewModel.drawableImg}"
             binding:url="@{viewModel.dataBean.img}"
             />

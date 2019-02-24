@@ -13,6 +13,15 @@ public class MovieDetailsItemBean implements Serializable {
 
     private String title;
     private String url;
+    private int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public String getTitle() {
         return title;

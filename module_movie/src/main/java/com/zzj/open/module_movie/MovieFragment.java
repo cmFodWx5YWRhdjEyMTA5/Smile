@@ -87,7 +87,6 @@ public class MovieFragment extends BaseFragment<MovieFragmentMovieBinding,MovieV
         viewModel.uc.finishLoadmore.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
-                LogUtils.e("6666666666"+propertyId+sender.toString());
                 binding.refreshLayout.finishRefresh();
                 binding.refreshLayout.finishLoadMore();
             }

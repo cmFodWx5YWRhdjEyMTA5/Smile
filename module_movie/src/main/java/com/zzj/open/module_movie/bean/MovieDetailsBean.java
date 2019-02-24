@@ -46,6 +46,7 @@ public class MovieDetailsBean implements Serializable {
     private String movieDesc;
     private String movieType;
     private List<PlayUrlsBean> playUrls;
+    private List<PlayUrlsBean> playUrls2;
 
     public String getId() {
         return id;
@@ -167,7 +168,15 @@ public class MovieDetailsBean implements Serializable {
         this.playUrls = playUrls;
     }
 
-    public static class PlayUrlsBean {
+    public List<PlayUrlsBean> getPlayUrls2() {
+        return playUrls2;
+    }
+
+    public void setPlayUrls2(List<PlayUrlsBean> playUrls2) {
+        this.playUrls2 = playUrls2;
+    }
+
+    public static class PlayUrlsBean implements Serializable{
         /**
          * id : b852e853-d788-47b1-9619-36c98a2896e1
          * playUrl : 第06集$http://iqiyi.qq-zuidazy.com/20181130/1915_2fe23316/index.m3u8
