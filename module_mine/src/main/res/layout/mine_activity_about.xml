@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <data>
+        <import type="me.goldze.mvvmhabit.base.BaseViewModel"/>
+        <variable
+            name="viewModel"
+            type="me.goldze.mvvmhabit.base.BaseViewModel"/>
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout android:id="@+id/main_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+
+            <ImageView android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="?attr/colorPrimary"
+                android:scaleType="centerCrop"
+                app:layout_scrollFlags="scroll|enterAlways"/>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/trans"
+                app:titleTextColor="@color/white"
+                app:title="蹦是味"
+                >
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/len_20"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            >
+
+        </WebView>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>
