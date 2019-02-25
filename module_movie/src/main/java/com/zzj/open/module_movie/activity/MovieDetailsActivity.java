@@ -9,6 +9,7 @@ import android.util.Patterns;
 import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.bumptech.glide.Glide;
+import com.tencent.smtt.sdk.TbsVideo;
 import com.xcy8.ads.view.BannerAdView;
 import com.xcy8.ads.view.FixedAdView;
 import com.zzj.open.base.bean.CallBack;
@@ -105,7 +106,13 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
 
                 MovieDetailsItemBean movieDetailsItemBean = viewModel.playUrl.get();
 
-                VideoPlayerActivity.start(MovieDetailsActivity.this,movieDetailsItemBean);
+                if(TbsVideo.canUseTbsPlayer(getApplicationContext())){
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("screenMode",103);
+//                    bundle.putInt("DefaultVideoScreen", 2);
+                    TbsVideo.openVideo(getApplicationContext(), movieDetailsItemBean.getUrl(),bundle);
+                }
+//                VideoPlayerActivity.start(MovieDetailsActivity.this,movieDetailsItemBean);
 
             }
         });

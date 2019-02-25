@@ -9,6 +9,8 @@
     </style>
     <!--StartActivity Style 冷启动效果-->
     <style name="AppTheme.Start">
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/layer_start_page_bg</item>
     </style>
 </resources>

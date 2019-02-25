@@ -3,7 +3,7 @@
     android:id="@+id/ll_ad"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/layer_start_page_bg"
     android:orientation="vertical">
 
     <com.xcy8.ads.view.FullScreenAdView
