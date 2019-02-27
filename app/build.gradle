@@ -45,7 +45,7 @@ android {
     }
     sourceSets {
         main {
-            jniLibs.srcDirs = ['libs']
+            jniLibs.srcDirs = ['libs','src/main/res', 'src/main/res-night']
             if (isBuildModule.toBoolean()) {
                 //独立运行
                 manifest.srcFile 'src/main/alone/AndroidManifest.xml'

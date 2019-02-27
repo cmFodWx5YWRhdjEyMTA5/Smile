@@ -64,7 +64,13 @@ dependencies {
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
 
     //bugly
-    compile 'com.tencent.bugly:crashreport:latest.release'
+    api 'com.tencent.bugly:crashreport:latest.release'
     //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
-    implementation files('libs/tbs_sdk_thirdapp_v4.3.0.1020_43633_sharewithdownload_withoutGame_obfs_20190111_105200.jar')
+    api files('libs/tbs_sdk_thirdapp_v4.3.0.1020_43633_sharewithdownload_withoutGame_obfs_20190111_105200.jar')
+
+    api 'skin.support:skin-support:3.1.1'                   // skin-support 基础控件支持
+    api 'skin.support:skin-support-design:3.1.1'            // skin-support-design material design 控件支持[可选]
+    api 'skin.support:skin-support-cardview:3.1.1'          // skin-support-cardview CardView 控件支持[可选]
+    api 'skin.support:skin-support-constraint-layout:3.1.1' // skin-support-constraint-layout ConstraintLayout 控件支持[可选]
+
 }

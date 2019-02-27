@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <!--<color name="colorAccent">#FF4081</color>-->
+    <color name="colorPrimary_night">#ff2e2e2e</color>
+    <color name="colorPrimaryDark_night">#aaa</color>
+    <color name="colorAccent_night">#dfffffff</color>
+    <color name="black_text_color_night">#ffffff</color>
+    <color name="white_text_color_night">#000000</color>
+    <color name="main_text_color_night">#e2e2e2</color>
+    <color name="sub_text_color_night">#999999</color>
+    <color name="textColor_night">#333333</color>
+    <color name="textColorVice_night">#6C6C6C</color>
+    <color name="textColorRed_night">#D51717</color>
+    <color name="textColorHint_night">#999999</color>
+    <color name="appColor_night">#FF2041</color>
+    <color name="appBackColor_night">#F4F3F3</color>
+    <color name="viewLineColor_night">#F0F0F0</color>
+
+</resources>

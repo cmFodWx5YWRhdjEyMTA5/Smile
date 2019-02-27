@@ -21,6 +21,7 @@ import cdc.sed.yff.nm.cm.ErrorCode;
 import cdc.sed.yff.nm.sp.SpotListener;
 import cdc.sed.yff.nm.sp.SpotManager;
 import me.goldze.mvvmhabit.base.BaseFragment;
+import skin.support.SkinCompatManager;
 
 /**
  * @author : zzj
@@ -53,6 +54,15 @@ public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewM
             }
         });
 
+        binding.llSwitchSkin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 后缀加载
+//                SkinCompatManager.getInstance().loadSkin("night", SkinCompatManager.SKIN_LOADER_STRATEGY_BUILD_IN);
+                // 恢复应用默认皮肤
+//                SkinCompatManager.getInstance().restoreDefaultTheme();
+            }
+        });
 
     }
 }

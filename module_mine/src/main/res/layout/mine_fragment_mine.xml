@@ -34,6 +34,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/app_name"
                     android:padding="5dp"
+                    android:textColor="@color/main_text_color"
+                    android:textSize="@dimen/len_16"
                     />
                 <View
                     android:layout_width="match_parent"
@@ -60,7 +62,7 @@
                     android:layout_weight="1"
                     android:text="浏览历史"
                     android:textSize="16dp"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/main_text_color"
                     android:layout_marginLeft="20dp"
                     />
 
@@ -83,7 +85,31 @@
                     android:layout_weight="1"
                     android:text="我的收藏"
                     android:textSize="16dp"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/main_text_color"
+                    android:layout_marginLeft="20dp"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_switch_skin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="20dp"
+                android:gravity="center_vertical"
+                >
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@mipmap/ic_launcher_round"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="更换皮肤"
+                    android:textSize="16dp"
+                    android:textColor="@color/main_text_color"
                     android:layout_marginLeft="20dp"
                     />
 
@@ -106,7 +132,7 @@
                     android:layout_weight="1"
                     android:text="反馈"
                     android:textSize="16dp"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/main_text_color"
                     android:layout_marginLeft="20dp"
                     />
 
