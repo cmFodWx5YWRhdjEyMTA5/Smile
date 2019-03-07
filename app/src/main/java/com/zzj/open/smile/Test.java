@@ -30,9 +30,53 @@ public class Test {
 
     public static void main(String[] args){
 
+        B b = new B();
+        b.setName("22222");
+        Adapter adapter = new Adapter(b);
+
+       System.out.print("5555555555555555"+ adapter.getName());
+    }
+
+    static class Adapter{
+        A a;
+        public Adapter(A member){
+            a = (A) member;
+        }
+        public String getName(){
+           return a.getName();
+        }
+    }
+
+    interface A {
+
+        String getName();
 
     }
 
+
+    static class B implements A{
+        String name;
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getName() {
+
+            return this.name;
+        }
+    }
+
+    class C implements A{
+
+        String name ;
+        @Override
+        public String getName() {
+            this.name = name;
+            return name;
+        }
+    }
 
     /**
      * 学习集合的stream()操作

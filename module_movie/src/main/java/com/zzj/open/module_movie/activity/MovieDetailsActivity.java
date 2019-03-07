@@ -138,12 +138,14 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
 
                 MovieDetailsItemBean movieDetailsItemBean = viewModel.playUrl.get();
 
-                if(TbsVideo.canUseTbsPlayer(getApplicationContext())){
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("screenMode",103);
-//                    bundle.putInt("DefaultVideoScreen", 2);
-                    TbsVideo.openVideo(getApplicationContext(), movieDetailsItemBean.getUrl(),bundle);
-                }
+//                if(TbsVideo.canUseTbsPlayer(getApplicationContext())){
+//                    Bundle bundle = new Bundle();
+//                    bundle.putInt("screenMode",103);
+////                    bundle.putInt("DefaultVideoScreen", 2);
+//                    TbsVideo.openVideo(getApplicationContext(), "http://bili.meijuzuida.com/share/8deb8d1dd92840f975b6931ab3a3c61e",bundle);
+//                }
+
+                FullScreenActivity.start(MovieDetailsActivity.this,movieDetailsItemBean.getUrl());
 //                VideoPlayerActivity.start(MovieDetailsActivity.this,movieDetailsItemBean);
 
             }

@@ -169,7 +169,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="播放地址一："
+                        android:text="播放地址："
                         android:layout_marginLeft="@dimen/len_20"
                         android:textSize="@dimen/len_16"
                         android:textColor="#363636"
@@ -189,6 +189,7 @@
                         android:text="播放地址二："
                         android:layout_marginLeft="@dimen/len_20"
                         android:textSize="@dimen/len_16"
+                        android:visibility="gone"
                         android:textColor="#363636"
                         />
                     <android.support.v7.widget.RecyclerView
