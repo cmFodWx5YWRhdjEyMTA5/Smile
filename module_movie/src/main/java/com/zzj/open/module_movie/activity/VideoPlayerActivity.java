@@ -11,16 +11,10 @@ import com.zzj.open.module_movie.R;
 import com.zzj.open.module_movie.bean.MovieDetailsBean;
 import com.zzj.open.module_movie.bean.MovieDetailsItemBean;
 import com.zzj.open.module_movie.databinding.MovieActivityVideoPlayerBinding;
-import com.zzj.open.module_movie.player.CustomMediaPlayerAssertFolder;
-import com.zzj.open.module_movie.player.JZExoPlayer;
-import com.zzj.open.module_movie.player.JZMediaIjkplayer;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 
-import cn.jzvd.JZDataSource;
-import cn.jzvd.Jzvd;
-import cn.jzvd.JzvdStd;
 import me.goldze.mvvmhabit.BR;
 import me.goldze.mvvmhabit.base.BaseActivity;
 import me.goldze.mvvmhabit.base.BaseViewModel;
@@ -70,38 +64,38 @@ public class VideoPlayerActivity extends BaseActivity<MovieActivityVideoPlayerBi
 //        JZDataSource jzDataSource = new JZDataSource(playUrlsBean.getUrl());
 //        jzDataSource.title = playUrlsBean.getTitle();
 //        jzDataSource.looping = true;
-        binding.videoplayer.setUp(playUrlsBean.getUrl(),playUrlsBean.getTitle(),Jzvd.SCREEN_WINDOW_NORMAL);
-        //        //直接全屏播放
-//        JzvdStd.startFullscreen(VideoPlayerActivity.this, JzvdStd.class,playUrlsBean.getUrl(),playUrlsBean.getTitle());
-
-        Jzvd.setMediaInterface(new JZMediaIjkplayer());  //  ijkMediaPlayer
+//        binding.videoplayer.setUp(playUrlsBean.getUrl(),playUrlsBean.getTitle(),Jzvd.SCREEN_WINDOW_NORMAL);
+//        //        //直接全屏播放
+////        JzvdStd.startFullscreen(VideoPlayerActivity.this, JzvdStd.class,playUrlsBean.getUrl(),playUrlsBean.getTitle());
+//
+//        Jzvd.setMediaInterface(new JZMediaIjkplayer());  //  ijkMediaPlayer
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         //home back
-        JzvdStd.goOnPlayOnResume();
+//        JzvdStd.goOnPlayOnResume();
     }
     @Override
     protected void onPause() {
         super.onPause();
         //home back
-        JzvdStd.goOnPlayOnPause();
+//        JzvdStd.goOnPlayOnPause();
 
     }
 
     @Override
     public void onBackPressed() {
-        if (Jzvd.backPress()) {
-            return;
-        }
+//        if (Jzvd.backPress()) {
+//            return;
+//        }
         super.onBackPressed();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        JzvdStd.releaseAllVideos();
+//        JzvdStd.releaseAllVideos();
     }
 }

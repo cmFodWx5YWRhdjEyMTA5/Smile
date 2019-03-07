@@ -8,9 +8,6 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.view.Surface;
 
-import cn.jzvd.JZMediaInterface;
-import cn.jzvd.JZMediaManager;
-import cn.jzvd.JzvdMgr;
 
 /**
  * @author : zzj
@@ -19,7 +16,7 @@ import cn.jzvd.JzvdMgr;
  * @desc :
  * @version: 1.0
  */
-public class CustomMediaPlayerAssertFolder extends JZMediaInterface implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnSeekCompleteListener, MediaPlayer.OnErrorListener, MediaPlayer.OnInfoListener, MediaPlayer.OnVideoSizeChangedListener  {
+/*public class CustomMediaPlayerAssertFolder extends JZMediaInterface implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnSeekCompleteListener, MediaPlayer.OnErrorListener, MediaPlayer.OnInfoListener, MediaPlayer.OnVideoSizeChangedListener  {
 
 
     public MediaPlayer mediaPlayer;
@@ -183,3 +180,4 @@ public class CustomMediaPlayerAssertFolder extends JZMediaInterface implements M
         });
     }
 }
+*/

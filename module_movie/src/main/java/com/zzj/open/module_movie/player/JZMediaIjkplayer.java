@@ -6,13 +6,6 @@ import android.view.Surface;
 
 import java.io.IOException;
 
-import cn.jzvd.JZMediaInterface;
-import cn.jzvd.JZMediaManager;
-import cn.jzvd.JzvdMgr;
-import tv.danmaku.ijk.media.player.IMediaPlayer;
-import tv.danmaku.ijk.media.player.IjkMediaPlayer;
-import tv.danmaku.ijk.media.player.IjkTimedText;
-
 /**
  * @author : zzj
  * @e-mail : zhangzhijun@pansoft.com
@@ -20,6 +13,7 @@ import tv.danmaku.ijk.media.player.IjkTimedText;
  * @desc :
  * @version: 1.0
  */
+/*
 public class JZMediaIjkplayer extends JZMediaInterface implements IMediaPlayer.OnPreparedListener, IMediaPlayer.OnVideoSizeChangedListener, IMediaPlayer.OnCompletionListener, IMediaPlayer.OnErrorListener, IMediaPlayer.OnInfoListener, IMediaPlayer.OnBufferingUpdateListener, IMediaPlayer.OnSeekCompleteListener, IMediaPlayer.OnTimedTextListener{
 
     IjkMediaPlayer ijkMediaPlayer;
@@ -186,3 +180,4 @@ public class JZMediaIjkplayer extends JZMediaInterface implements IMediaPlayer.O
     }
 
 }
+*/

@@ -1,10 +1,16 @@
 package com.zzj.open.module_movie.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.Observable;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.LogUtils;
@@ -28,8 +34,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.regex.Matcher;
 
-import cn.jzvd.Jzvd;
-import cn.jzvd.JzvdStd;
+import cn.waps.AppConnect;
+import cn.waps.AppListener;
 import me.goldze.mvvmhabit.BR;
 import me.goldze.mvvmhabit.base.BaseActivity;
 
@@ -67,10 +73,36 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
     @Override
     public void initData() {
         super.initData();
+        // 预加载自定义广告内容（仅在使用了自定义广告、抽屉广告或迷你广告的情况，才需要添加）
+        AppConnect.getInstance(this).initAdInfo();
+        AppConnect.getInstance(this).initPopAd(this);
+        //调用方式 2：显示揑屏广告时设置关闭揑屏广告癿监听接口 (选用)
+        AppConnect.getInstance(this).showPopAd(this, new AppListener(){
+            @Override
+            public void onPopClose() {super.onPopClose(); }
+        });
+// 设置互动广告无数据时的回调监听（该方法必须在showBannerAd之前调用）
+        AppConnect.getInstance(this).setBannerAdNoDataListener(new AppListener() {
 
-        mAd1Bav = new BannerAdView(this);
-        mAd1Bav.setFloat(false);
-        mAd1Bav.loadAd(BANNER_AD_ID);
+            @Override
+            public void onBannerNoData() {
+                Log.i("debug", "banner广告暂无可用数据");
+            }
+
+        });
+        // 互动广告调用方式
+        LinearLayout layout = (LinearLayout) this.findViewById(R.id.AdLinearLayout);
+        AppConnect.getInstance(this).showBannerAd(this, layout);
+
+        // 迷你广告调用方式
+        // AppConnect.getInstance(this).setAdBackColor(Color.argb(50, 120, 240,
+        // 120));//设置迷你广告背景颜色
+        // AppConnect.getInstance(this).setAdForeColor(Color.YELLOW);//设置迷你广告文字颜色
+        LinearLayout miniLayout = (LinearLayout) findViewById(R.id.miniAdLinearLayout);
+        AppConnect.getInstance(this).showMiniAd(this, miniLayout, 10);// 10秒刷新一次
+//        mAd1Bav = new BannerAdView(this);
+//        mAd1Bav.setFloat(false);
+//        mAd1Bav.loadAd(BANNER_AD_ID);
         movieId = getIntent().getStringExtra("movieId");
         String url = "";
 
