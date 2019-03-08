@@ -6,13 +6,13 @@
 
     
 
-    <com.zzj.open.module_movie.utils.X5WebView
+    <com.zzj.open.base.utils.X5WebView
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:id="@+id/web_filechooser">
         
         
-    </com.zzj.open.module_movie.utils.X5WebView>
+    </com.zzj.open.base.utils.X5WebView>
 
     <net.qiujuer.genius.ui.widget.Loading
         android:layout_height="@dimen/len_36"

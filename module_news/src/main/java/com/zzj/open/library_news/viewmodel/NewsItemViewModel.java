@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 
 import com.zzj.open.library_news.R;
 import com.zzj.open.library_news.bean.NewsBean;
+import com.zzj.open.library_news.bean.NewsListItemBean;
 
 import me.goldze.mvvmhabit.base.ItemViewModel;
 import me.goldze.mvvmhabit.binding.command.BindingAction;
@@ -23,10 +24,10 @@ import me.goldze.mvvmhabit.utils.ToastUtils;
  */
 public class NewsItemViewModel extends ItemViewModel<NewsViewModel> {
 
-    public NewsBean.ResultBean.DataBean dataBean;
+    public NewsListItemBean dataBean;
 
     public Drawable drawableImg;
-    public NewsItemViewModel(@NonNull NewsViewModel viewModel, NewsBean.ResultBean.DataBean dataBean) {
+    public NewsItemViewModel(@NonNull NewsViewModel viewModel,NewsListItemBean dataBean) {
         super(viewModel);
         this.dataBean = dataBean;
         //ImageView的占位图片，可以解决RecyclerView中图片错误问题
@@ -46,6 +47,8 @@ public class NewsItemViewModel extends ItemViewModel<NewsViewModel> {
 //                mBundle.putParcelable("entity", entity);
 //                viewModel.startContainerActivity(DetailFragment.class.getCanonicalName(), mBundle);
 //            }
+
+            viewModel.itemBean.set(dataBean);
 
         }
     });

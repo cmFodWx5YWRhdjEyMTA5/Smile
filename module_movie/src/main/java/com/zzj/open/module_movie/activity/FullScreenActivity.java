@@ -5,18 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.view.View;
 import android.webkit.JavascriptInterface;
-import android.widget.Toast;
 
-import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.zzj.open.module_movie.R;
-import com.zzj.open.module_movie.utils.WebViewJavaScriptFunction;
-import com.zzj.open.module_movie.utils.X5WebView;
+import com.zzj.open.base.utils.WebViewJavaScriptFunction;
+import com.zzj.open.base.utils.X5WebView;
 
 import net.qiujuer.genius.ui.widget.Loading;
 

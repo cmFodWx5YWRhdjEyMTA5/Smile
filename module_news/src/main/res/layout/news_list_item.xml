@@ -22,7 +22,7 @@
             android:layout_height="70dp"
             android:scaleType="centerInside"
             android:src="@{viewModel.drawableImg}"
-            binding:url="@{viewModel.dataBean.thumbnail_pic_s}" />
+            binding:url="@{viewModel.dataBean.img}" />
 
         <TextView
             android:id="@+id/tv_title"

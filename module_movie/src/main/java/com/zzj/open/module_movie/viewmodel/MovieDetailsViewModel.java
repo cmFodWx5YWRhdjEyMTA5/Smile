@@ -111,7 +111,7 @@ public class MovieDetailsViewModel extends BaseViewModel {
     private void disposePlayUrl(){
         List<MovieDetailsBean.PlayUrlsBean> playUrlsBeans = dataBean.get().getPlayUrls();
         List<MovieDetailsBean.PlayUrlsBean> playUrlsBeans2 = dataBean.get().getPlayUrls2();
-        if(dataBean.get().getType().equals("连续剧")||dataBean.get().getType().equals("综艺片")){
+        if(dataBean.get().getType().equals("连续剧")||dataBean.get().getType().equals("综艺片")||dataBean.get().getType().equals("动漫片")){
 
             if(playUrlsBeans!=null&&playUrlsBeans.size()>0){
                 Collections.sort(playUrlsBeans, new Comparator<MovieDetailsBean.PlayUrlsBean>() {

@@ -45,7 +45,6 @@ import cdc.sed.yff.nm.sp.SplashViewSettings;
 import cdc.sed.yff.nm.sp.SpotListener;
 import cdc.sed.yff.nm.sp.SpotManager;
 import cdc.sed.yff.nm.sp.SpotRequestListener;
-import cn.waps.AppConnect;
 import me.goldze.mvvmhabit.http.interceptor.logging.Logger;
 
 
@@ -66,16 +65,6 @@ public class SplashActivity extends AppCompatActivity  {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        AppConnect.getInstance("c718c0593afe01b96f87b35cb63bc7cd","default",this);
-
-        LinearLayout adlayout = new LinearLayout(this);
-        adlayout.setGravity(Gravity.CENTER_HORIZONTAL);
-        RelativeLayout.LayoutParams layoutParams = new
-                RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        AppConnect.getInstance(this).showBannerAd(this, adlayout);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);//设置顶端或低端
-        this.addContentView(adlayout, layoutParams);
 //        fullScreenView = findViewById(R.id.full_screen_view);
 //        mAd1Bav = new BannerAdView(this);
 //        mAd1Bav.setFloat(false);
@@ -94,7 +83,7 @@ public class SplashActivity extends AppCompatActivity  {
                 .subscribe(granted -> {
                     if (granted) {
 
-                        inMain();
+//                        inMain();
 //                        fullScreenView.setFullScreenListener(new OnFullScreenListener() {
 //                            @Override
 //                            public void onSkip() {
@@ -104,8 +93,8 @@ public class SplashActivity extends AppCompatActivity  {
 //                            }
 //                        });
 //                        fullScreenView.loadAd("42579");
-//                        preloadAd();
-//                        setupSplashAd(); // 如果需要首次展示开屏，请注释掉本句代码
+                        preloadAd();
+                        setupSplashAd(); // 如果需要首次展示开屏，请注释掉本句代码
 //                        // All requested permissions are granted
                     } else {
                         // At least one permission is denied

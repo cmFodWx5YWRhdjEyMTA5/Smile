@@ -4,14 +4,19 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.zzj.open.base.bean.Result;
 import com.zzj.open.library_news.BR;
 import com.zzj.open.library_news.R;
 import com.zzj.open.library_news.bean.NewsBean;
+import com.zzj.open.library_news.bean.NewsListItemBean;
 import com.zzj.open.library_news.network.NewsService;
 import com.zzj.open.base.http.RetrofitClient;
+
+import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
@@ -33,6 +38,8 @@ import me.tatarka.bindingcollectionadapter2.ItemBinding;
  */
 public class NewsViewModel extends BaseViewModel {
 
+
+    public ObservableField<NewsListItemBean> itemBean = new ObservableField<>();
     /**
      * 封装一个界面发生改变的观察者
      */
@@ -64,7 +71,7 @@ public class NewsViewModel extends BaseViewModel {
         @Override
         public void call() {
             ToastUtils.showShort("下拉刷新");
-            requestNetWork();
+            requestNetWork("shandong",0);
         }
 
 
@@ -79,10 +86,10 @@ public class NewsViewModel extends BaseViewModel {
     });
 
 
-    public void requestNetWork() {
+    public void requestNetWork(String type,int page) {
 
         RetrofitClient.getInstance().create(NewsService.class)
-                .getNewsData()
+                .getNewsList(type,page)
                 //请求与View周期同步
                 .compose(RxUtils.bindToLifecycle(getLifecycleProvider()))
                 //线程调度
@@ -94,10 +101,10 @@ public class NewsViewModel extends BaseViewModel {
                     public void accept(Disposable disposable) throws Exception {
                         showDialog("正在请求...");
                     }
-                }).subscribe(new Consumer<NewsBean>() {
+                }).subscribe(new Consumer<Result<List<NewsListItemBean>>>() {
             @Override
-            public void accept(NewsBean o) throws Exception {
-                for (NewsBean.ResultBean.DataBean dataBean : o.getResult().getData()) {
+            public void accept(Result<List<NewsListItemBean>> o) throws Exception {
+                for (NewsListItemBean dataBean : o.getResult()) {
                     NewsItemViewModel itemViewModel = new NewsItemViewModel(NewsViewModel.this, dataBean);
                     //双向绑定动态添加Item
                     observableList.add(itemViewModel);

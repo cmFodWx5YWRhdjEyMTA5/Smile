@@ -14,7 +14,7 @@
         binding:onClickCommand="@{viewModel.itemClick}"
         android:textColor="@color/white"
         android:padding="10dp"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:background="@drawable/movie_bg_details_seriec_list_iten_tv"
         >
     </TextView>

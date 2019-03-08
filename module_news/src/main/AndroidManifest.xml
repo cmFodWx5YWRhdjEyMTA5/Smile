@@ -1,2 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.zzj.open.library_news" />
+    package="com.zzj.open.library_news" >
+    <application>
+        <activity android:name=".activity.NewsDetailsActivity"
+            android:screenOrientation="portrait"
+            >
+
+        </activity>
+    </application>
+</manifest>

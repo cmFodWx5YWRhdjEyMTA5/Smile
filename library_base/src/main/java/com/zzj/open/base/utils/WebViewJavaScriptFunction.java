@@ -1,4 +1,4 @@
-package com.zzj.open.module_movie.utils;
+package com.zzj.open.base.utils;
 
 public interface WebViewJavaScriptFunction {
 

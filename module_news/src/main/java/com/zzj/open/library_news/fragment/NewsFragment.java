@@ -1,5 +1,6 @@
 package com.zzj.open.library_news.fragment;
 
+import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.library_news.BR;
 import com.zzj.open.library_news.R;
+import com.zzj.open.library_news.activity.NewsDetailsActivity;
 import com.zzj.open.library_news.databinding.NewsFragmentNewsBinding;
 import com.zzj.open.library_news.viewmodel.NewsViewModel;
 
@@ -42,7 +44,17 @@ public class NewsFragment extends BaseFragment<NewsFragmentNewsBinding,NewsViewM
     @Override
     public void initData() {
         super.initData();
-        viewModel.requestNetWork();
+        viewModel.requestNetWork("shandong",0);
+
+
+
+
+        viewModel.itemBean.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                NewsDetailsActivity.start(getActivity(),viewModel.itemBean.get().getUrl());
+            }
+        });
 
         //	设置插屏图片类型，默认竖图
         //		//	横图
