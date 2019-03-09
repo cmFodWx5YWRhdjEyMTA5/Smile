@@ -1,5 +1,6 @@
 package com.zzj.open.module_mine;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -15,12 +16,14 @@ import com.xcy8.ads.view.IconAd;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.module_mine.BR;
 import com.zzj.open.module_mine.databinding.MineFragmentMineBinding;
+import com.zzj.open.module_mine.fragment.MineFeedbackFragment;
 import com.zzj.open.module_mine.viewmodel.MineViewModel;
 
 import cdc.sed.yff.nm.cm.ErrorCode;
 import cdc.sed.yff.nm.sp.SpotListener;
 import cdc.sed.yff.nm.sp.SpotManager;
 import me.goldze.mvvmhabit.base.BaseFragment;
+import me.goldze.mvvmhabit.base.ContainerActivity;
 import skin.support.SkinCompatManager;
 
 /**
@@ -64,5 +67,14 @@ public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewM
             }
         });
 
+        //反馈
+        binding.llFeedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ContainerActivity.class);
+                intent.putExtra("fragment", MineFeedbackFragment.class.getCanonicalName());
+                startActivity(intent);
+            }
+        });
     }
 }

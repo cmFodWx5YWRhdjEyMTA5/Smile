@@ -3,7 +3,9 @@ package com.zzj.open.library_news.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
+import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.library_news.R;
 import com.zzj.open.library_news.databinding.NewsActivityDetailsNewsBinding;
 
@@ -40,6 +42,7 @@ public class NewsDetailsActivity extends BaseActivity<NewsActivityDetailsNewsBin
     @Override
     public void initData() {
         super.initData();
+        new ToolbarHelper(this, (Toolbar) binding.toolbar,"详情");
         url = getIntent().getStringExtra("url");
         binding.webView.loadUrl(url);
     }

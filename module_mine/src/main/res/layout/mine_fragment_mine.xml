@@ -54,7 +54,7 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@mipmap/ic_launcher_round"
+                    android:src="@mipmap/ic_browse_history"
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -77,13 +77,13 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@mipmap/ic_launcher_round"
+                    android:src="@mipmap/ic_switch_line"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="我的收藏"
+                    android:text="更改线路"
                     android:textSize="16dp"
                     android:textColor="@color/main_text_color"
                     android:layout_marginLeft="20dp"
@@ -97,6 +97,7 @@
                 android:orientation="horizontal"
                 android:layout_margin="20dp"
                 android:gravity="center_vertical"
+                android:visibility="gone"
                 >
                 <ImageView
                     android:layout_width="30dp"
@@ -115,6 +116,7 @@
 
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/ll_feedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -124,13 +126,37 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@mipmap/ic_launcher_round"
+                    android:src="@mipmap/ic_feedback"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="反馈"
+                    android:textSize="16dp"
+                    android:textColor="@color/main_text_color"
+                    android:layout_marginLeft="20dp"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="20dp"
+                android:gravity="center_vertical"
+                >
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_mine_update"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="检查更新"
                     android:textSize="16dp"
                     android:textColor="@color/main_text_color"
                     android:layout_marginLeft="20dp"
@@ -148,7 +174,7 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@mipmap/ic_launcher_round"
+                    android:src="@mipmap/ic_about"
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -156,7 +182,7 @@
                     android:layout_weight="1"
                     android:text="关于App"
                     android:textSize="16dp"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/main_text_color"
                     android:layout_marginLeft="20dp"
                     />
 

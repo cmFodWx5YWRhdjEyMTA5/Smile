@@ -3,6 +3,7 @@ package com.zzj.open.library_news.fragment;
 import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.RelativeLayout;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
 import com.zzj.open.base.router.RouterFragmentPath;
+import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.library_news.BR;
 import com.zzj.open.library_news.R;
 import com.zzj.open.library_news.activity.NewsDetailsActivity;
@@ -44,6 +46,8 @@ public class NewsFragment extends BaseFragment<NewsFragmentNewsBinding,NewsViewM
     @Override
     public void initData() {
         super.initData();
+        ToolbarHelper toolbarHelper =new ToolbarHelper(getActivity(), (Toolbar) binding.toolbar,"最新资讯");
+        toolbarHelper.isShowNavigationIcon(false);
         viewModel.requestNetWork("shandong",0);
 
 

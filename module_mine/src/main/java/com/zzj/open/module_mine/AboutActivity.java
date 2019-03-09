@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.zzj.open.base.http.RetrofitClient;
+import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_mine.databinding.MineActivityAboutBinding;
 
 import me.goldze.mvvmhabit.base.BaseActivity;
@@ -37,6 +38,7 @@ public class AboutActivity extends BaseActivity<MineActivityAboutBinding,BaseVie
     @Override
     public void initData() {
         super.initData();
+        new ToolbarHelper(this,binding.toolbar,true);
         binding.webView.loadUrl(RetrofitClient.web_baseUrl+"about.html");
     }
 }

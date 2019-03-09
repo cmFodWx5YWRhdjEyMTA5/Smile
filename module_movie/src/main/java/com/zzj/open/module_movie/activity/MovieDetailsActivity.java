@@ -19,6 +19,7 @@ import com.tencent.smtt.sdk.TbsVideo;
 import com.xcy8.ads.view.BannerAdView;
 import com.xcy8.ads.view.FixedAdView;
 import com.zzj.open.base.bean.CallBack;
+import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_movie.R;
 import com.zzj.open.module_movie.bean.MovieBean;
 import com.zzj.open.module_movie.bean.MovieDetailsBean;
@@ -70,7 +71,7 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
     @Override
     public void initData() {
         super.initData();
-
+        new ToolbarHelper(this,binding.toolbar,true);
         mAd1Bav = new BannerAdView(this);
         mAd1Bav.setFloat(false);
         mAd1Bav.loadAd(BANNER_AD_ID);
