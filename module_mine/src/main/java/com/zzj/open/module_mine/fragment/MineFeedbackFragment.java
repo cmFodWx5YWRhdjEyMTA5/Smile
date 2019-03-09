@@ -17,7 +17,7 @@ import me.goldze.mvvmhabit.base.BaseViewModel;
  * @author : zzj
  * @e-mail : zhangzhijun@pansoft.com
  * @date : 2019/3/9 15:45
- * @desc :
+ * @desc :反馈建议页面
  * @version: 1.0
  */
 public class MineFeedbackFragment extends BaseFragment<MineFragmentFeedbackBinding,BaseViewModel>{
