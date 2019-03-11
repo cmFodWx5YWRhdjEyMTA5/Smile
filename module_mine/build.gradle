@@ -1,6 +1,11 @@
 apply from: "../module.build.gradle"
 
 android {
+
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
     defaultConfig {
         if(isBuildModule.toBoolean()){
             applicationId "com.zzj.open.module_mine"

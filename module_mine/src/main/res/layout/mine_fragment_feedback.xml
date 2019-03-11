@@ -24,6 +24,7 @@
             android:layout_margin="@dimen/len_20"
             />
         <EditText
+            android:id="@+id/et_content"
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:background="@color/grey_300"
@@ -36,6 +37,7 @@
             android:textSize="15dp"
             />
         <EditText
+            android:id="@+id/et_contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/grey_300"
@@ -50,6 +52,7 @@
             />
 
         <net.qiujuer.genius.ui.widget.Button
+            android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="提交"
