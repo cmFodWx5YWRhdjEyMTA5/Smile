@@ -66,24 +66,6 @@ public class NewsViewModel extends BaseViewModel {
 
     //给RecyclerView添加Adpter，请使用自定义的Adapter继承BindingRecyclerViewAdapter，重写onBindBinding方法
     public final BindingRecyclerViewAdapter<NewsItemViewModel> adapter = new BindingRecyclerViewAdapter<>();
-    //下拉刷新
-    public BindingCommand onRefreshCommand = new BindingCommand(new BindingAction() {
-        @Override
-        public void call() {
-            ToastUtils.showShort("下拉刷新");
-            requestNetWork("shandong",0);
-        }
-
-
-    });
-    //上拉加载
-    public BindingCommand onLoadMoreCommand = new BindingCommand(new BindingAction() {
-        @Override
-        public void call() {
-            ToastUtils.showShort("上拉加载");
-
-        }
-    });
 
 
     public void requestNetWork(String type,int page) {
@@ -99,12 +81,13 @@ public class NewsViewModel extends BaseViewModel {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
-                        showDialog("正在请求...");
+
                     }
                 }).subscribe(new Consumer<Result<List<NewsListItemBean>>>() {
             @Override
             public void accept(Result<List<NewsListItemBean>> o) throws Exception {
                 for (NewsListItemBean dataBean : o.getResult()) {
+                    uc.finishLoadmore.set(!uc.finishLoadmore.get());
                     NewsItemViewModel itemViewModel = new NewsItemViewModel(NewsViewModel.this, dataBean);
                     //双向绑定动态添加Item
                     observableList.add(itemViewModel);
@@ -114,6 +97,7 @@ public class NewsViewModel extends BaseViewModel {
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
+                uc.finishLoadmore.set(!uc.finishLoadmore.get());
                 dismissDialog();
                 ToastUtils.showShort(throwable.getMessage());
             }

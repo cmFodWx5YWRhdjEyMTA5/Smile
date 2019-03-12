@@ -2,6 +2,7 @@ package com.zzj.open.library_news.fragment;
 
 import android.databinding.Observable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.library_news.BR;
@@ -34,6 +37,8 @@ import me.goldze.mvvmhabit.base.BaseViewModel;
  */
 @Route(path = RouterFragmentPath.News.NEWS_HOME)
 public class NewsFragment extends BaseFragment<NewsFragmentNewsBinding,NewsViewModel> {
+    private int page = 0;
+    private String type = "shandong";
     @Override
     public int initContentView(LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
         return R.layout.news_fragment_news;
@@ -48,10 +53,33 @@ public class NewsFragment extends BaseFragment<NewsFragmentNewsBinding,NewsViewM
         super.initData();
         ToolbarHelper toolbarHelper =new ToolbarHelper(getActivity(), (Toolbar) binding.toolbar,"最新资讯");
         toolbarHelper.isShowNavigationIcon(false);
-        viewModel.requestNetWork("shandong",0);
+        showDialog("正在请求...");
+        viewModel.requestNetWork(type,page);
 
 
+        binding.refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page ++;
+                viewModel.requestNetWork(type,page);
+            }
 
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+
+                page = 0;
+                viewModel.requestNetWork(type,page);
+            }
+        });
+
+
+        viewModel.uc.finishLoadmore.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                binding.refreshLayout.finishLoadMore();
+                binding.refreshLayout.finishRefresh();
+            }
+        });
 
         viewModel.itemBean.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override

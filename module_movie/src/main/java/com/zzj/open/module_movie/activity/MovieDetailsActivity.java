@@ -114,9 +114,11 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
 //                    Bundle bundle = new Bundle();
 //                    bundle.putInt("screenMode",103);
 ////                    bundle.putInt("DefaultVideoScreen", 2);
-//                    TbsVideo.openVideo(getApplicationContext(), "http://bili.meijuzuida.com/share/8deb8d1dd92840f975b6931ab3a3c61e",bundle);
+//                    TbsVideo.openVideo(getApplicationContext(), "https://baidu.com-l-baidu.com/20190301/12571_f91b07f1/index.m3u8",bundle);
 //                }
 
+                //https://boba.52kuyun.com/20190305/21189_973c9f6d/index.m3u8
+                //第04集$https://bobo.kukucdn.com/share/6194a1ee187acd6606989f03769e8f7f
                 FullScreenActivity.start(MovieDetailsActivity.this,movieDetailsItemBean.getUrl());
 //                VideoPlayerActivity.start(MovieDetailsActivity.this,movieDetailsItemBean);
 
