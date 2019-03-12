@@ -1,2 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.zzj.open.base" />
+    package="com.zzj.open.base" >
+
+    <application>
+        <activity android:name=".base.BaseWebActivity"
+            android:hardwareAccelerated="true"
+            android:configChanges="orientation|screenSize"
+            >
+
+        </activity>
+    </application>
+</manifest>

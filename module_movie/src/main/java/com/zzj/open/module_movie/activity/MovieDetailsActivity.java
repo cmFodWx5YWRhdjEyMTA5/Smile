@@ -1,39 +1,18 @@
 package com.zzj.open.module_movie.activity;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.Observable;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Patterns;
-import android.view.Gravity;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import com.blankj.utilcode.util.EncodeUtils;
-import com.blankj.utilcode.util.LogUtils;
-import com.bumptech.glide.Glide;
-import com.tencent.smtt.sdk.TbsVideo;
 import com.xcy8.ads.view.BannerAdView;
-import com.xcy8.ads.view.FixedAdView;
 import com.zzj.open.base.bean.CallBack;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_movie.R;
-import com.zzj.open.module_movie.bean.MovieBean;
 import com.zzj.open.module_movie.bean.MovieDetailsBean;
 import com.zzj.open.module_movie.bean.MovieDetailsItemBean;
 import com.zzj.open.module_movie.databinding.MovieActivityMovieDetailsBinding;
 import com.zzj.open.module_movie.viewmodel.MovieDetailsViewModel;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.regex.Matcher;
 
 import me.goldze.mvvmhabit.BR;
 import me.goldze.mvvmhabit.base.BaseActivity;
@@ -120,6 +99,8 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
                 //https://boba.52kuyun.com/20190305/21189_973c9f6d/index.m3u8
                 //第04集$https://bobo.kukucdn.com/share/6194a1ee187acd6606989f03769e8f7f
                 FullScreenActivity.start(MovieDetailsActivity.this,movieDetailsItemBean.getUrl());
+
+//                BaseWebActivity.start(MovieDetailsActivity.this,movieDetailsItemBean.getUrl());
 //                VideoPlayerActivity.start(MovieDetailsActivity.this,movieDetailsItemBean);
 
             }
