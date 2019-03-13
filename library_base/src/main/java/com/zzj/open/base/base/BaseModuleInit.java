@@ -67,7 +67,6 @@ public class BaseModuleInit implements IModuleInit {
 
     @Override
     public boolean onInitLow(Application application) {
-        this.application = application;
         KLog.e("基础层初始化 -- onInitLow");
         SkinCompatManager.withoutActivity(application)                         // 基础控件换肤初始化
                 .addInflater(new SkinMaterialViewInflater())            // material design 控件换肤初始化[可选]
