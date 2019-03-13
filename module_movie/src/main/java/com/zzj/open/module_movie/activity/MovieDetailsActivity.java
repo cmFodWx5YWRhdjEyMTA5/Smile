@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.Observable;
 import android.os.Bundle;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.xcy8.ads.view.BannerAdView;
 import com.zzj.open.base.bean.CallBack;
 import com.zzj.open.base.utils.ToolbarHelper;
@@ -98,7 +99,12 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
 
                 //https://boba.52kuyun.com/20190305/21189_973c9f6d/index.m3u8
                 //第04集$https://bobo.kukucdn.com/share/6194a1ee187acd6606989f03769e8f7f
-                FullScreenActivity.start(MovieDetailsActivity.this,movieDetailsItemBean.getUrl());
+                if(SPUtils.getInstance().getString("currentLine").equals("1")){
+                    FullScreenActivity.start(MovieDetailsActivity.this,movieDetailsItemBean.getUrl());
+                }else if(SPUtils.getInstance().getString("currentLine").equals("2")){
+                    VideoPlayerActivity.start(MovieDetailsActivity.this,movieDetailsItemBean);
+                }
+
 
 //                BaseWebActivity.start(MovieDetailsActivity.this,movieDetailsItemBean.getUrl());
 //                VideoPlayerActivity.start(MovieDetailsActivity.this,movieDetailsItemBean);

@@ -94,7 +94,12 @@ public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewM
 
     private void showSingleChoiceDialog() {
         final String[] items = new String[]{"线路一", "线路二"};
-        final int checkedIndex = 1;
+        int checkedIndex = 0;
+        if(SPUtils.getInstance().getString("currentLine").equals("1")){
+             checkedIndex = 0;
+        }else if(SPUtils.getInstance().getString("currentLine").equals("2")){
+             checkedIndex = 1;
+        }
         new QMUIDialog.CheckableDialogBuilder(getActivity())
                 .setCheckedIndex(checkedIndex)
                 .addItems(items, new DialogInterface.OnClickListener() {
@@ -106,7 +111,7 @@ public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewM
                         try {
                             String className = "com.zzj.open.module_main.activity.MainActivity";
                             ReflectUtils reflectUtils = ReflectUtils.reflect(className);
-                            reflectUtils.method("start", this);
+                            reflectUtils.method("start", getActivity());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

@@ -41,8 +41,8 @@ public interface MovieApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("video/videoList")
-    Observable<Result<List<MovieBean>>> getNesMovieList(@Field("type") String type, @Field("page")int page,@Field("limit")int limit);
+    @POST("video/videoListLine")
+    Observable<Result<List<MovieBean>>> getNesMovieList(@Field("currentLine")String currentLine,@Field("type") String type, @Field("page")int page,@Field("limit")int limit);
     /**
      * 获取电影解码后的url
      * "outputstring"
@@ -56,8 +56,8 @@ public interface MovieApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("video/videoDetails")
-    Observable<Result<MovieDetailsBean>> getMovieDetails(@Field("movieId") String movieId);
+    @POST("video/videoDetailsLine")
+    Observable<Result<MovieDetailsBean>> getMovieDetails(@Field("currentLine")String currentLine,@Field("movieId") String movieId);
     /**
      * 搜索电影
      * @param content  搜索的内容

@@ -7,13 +7,13 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.zzj.open.base.bean.CallBack;
 import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.http.RetrofitClient;
 import com.zzj.open.module_movie.BR;
 import com.zzj.open.module_movie.R;
 import com.zzj.open.module_movie.api.MovieApiService;
-import com.zzj.open.module_movie.bean.MovieBean;
 import com.zzj.open.module_movie.bean.MovieDetailsBean;
 import com.zzj.open.module_movie.bean.MovieDetailsItemBean;
 
@@ -66,7 +66,7 @@ public class MovieDetailsViewModel extends BaseViewModel {
 
     public void getMovieDetais(String movieId, final CallBack<MovieDetailsBean> callBack){
         RetrofitClient.getInstance().create(MovieApiService.class)
-                .getMovieDetails(movieId)
+                .getMovieDetails(SPUtils.getInstance().getString("currentLine"),movieId)
                 //请求与View周期同步
                 .compose(RxUtils.bindToLifecycle(getLifecycleProvider()))
                 //线程调度

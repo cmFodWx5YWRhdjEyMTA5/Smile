@@ -1,15 +1,13 @@
 package com.zzj.open.base.base;
 
 import android.app.Application;
-import android.content.Context;
 import android.support.multidex.MultiDex;
-import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
+import com.danikula.videocache.HttpProxyCacheServer;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.smtt.sdk.QbSdk;
-import com.tencent.smtt.sdk.TbsListener;
 import com.zzj.open.base.BuildConfig;
 
 import me.goldze.mvvmhabit.utils.KLog;
@@ -24,7 +22,7 @@ import skin.support.design.app.SkinMaterialViewInflater;
  */
 
 public class BaseModuleInit implements IModuleInit {
-    public  Application application;
+    public static   Application application;
 
     private static BaseModuleInit instance;
 
@@ -32,8 +30,8 @@ public class BaseModuleInit implements IModuleInit {
 
     @Override
     public boolean onInitAhead(Application application) {
-        this.application = application;
         MultiDex.install(application);
+        this.application = application;
         //开启打印日志
         KLog.init(true);
         //初始化阿里路由框架
@@ -69,6 +67,7 @@ public class BaseModuleInit implements IModuleInit {
 
     @Override
     public boolean onInitLow(Application application) {
+        this.application = application;
         KLog.e("基础层初始化 -- onInitLow");
         SkinCompatManager.withoutActivity(application)                         // 基础控件换肤初始化
                 .addInflater(new SkinMaterialViewInflater())            // material design 控件换肤初始化[可选]
@@ -80,16 +79,16 @@ public class BaseModuleInit implements IModuleInit {
         return false;
     }
 
-//    private HttpProxyCacheServer proxy;
-//
-//    public static HttpProxyCacheServer getProxy() {
-//        BaseModuleInit app = getInstance();
-//        return app.proxy == null ? (app.proxy = app.newProxy()) : app.proxy;
-//    }
-//
-//    private HttpProxyCacheServer newProxy() {
-//        return new HttpProxyCacheServer(application.getApplicationContext());
-//    }
+    private HttpProxyCacheServer proxy;
+
+    public static HttpProxyCacheServer getProxy() {
+        BaseModuleInit app = getInstance();
+        return app.proxy == null ? (app.proxy = app.newProxy()) : app.proxy;
+    }
+
+    private HttpProxyCacheServer newProxy() {
+        return new HttpProxyCacheServer(application);
+    }
 
     public static BaseModuleInit getInstance() {
         if(instance == null){
