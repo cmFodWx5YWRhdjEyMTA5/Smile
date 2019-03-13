@@ -1,5 +1,7 @@
 package com.zzj.open.module_main.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
@@ -43,6 +45,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
 
     private int hidePosition = 0;
 
+    public static void start(Context context) {
+        Intent starter = new Intent(context, MainActivity.class);
+        starter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(starter);
+    }
     @Override
     public void initData() {
         super.initData();

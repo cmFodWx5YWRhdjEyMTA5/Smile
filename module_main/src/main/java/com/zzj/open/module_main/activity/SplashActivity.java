@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -65,6 +66,10 @@ public class SplashActivity extends AppCompatActivity  {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        //设置线路
+        if(SPUtils.getInstance().getString("currentLine","").equals("")){
+            SPUtils.getInstance().put("currentLine","1");
+        }
 //        fullScreenView = findViewById(R.id.full_screen_view);
 //        mAd1Bav = new BannerAdView(this);
 //        mAd1Bav.setFloat(false);

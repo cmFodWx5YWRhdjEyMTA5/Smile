@@ -57,9 +57,9 @@ dependencies {
     //轮播图
     api 'cn.bingoogolapple:bga-banner:2.2.5@aar'
     //视频播放器
-    //    api 'cn.jzvd:jiaozivideoplayer:6.4.1'
+        api 'cn.jzvd:jiaozivideoplayer:6.4.1'
     //缓存
-    //    api 'com.danikula:videocache:2.7.0'
+        api 'com.danikula:videocache:2.7.0'
     //adapter
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
     //bugly
@@ -76,4 +76,6 @@ dependencies {
     // skin-support-constraint-layout ConstraintLayout 控件支持[可选]
 //    api (name: 'lib_tcsuperplayer', ext: 'aar')
     api 'com.just.agentweb:agentweb:4.0.2' // (必选)
+
+    api 'com.qmuiteam:qmui:1.2.0'
 }

@@ -13,7 +13,10 @@
     <uses-permission android:name="andriod.permission.ACCESS_FINE_LOCATION"/>
     <application>
         <!--在自己组件中注册Activity-->
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            >
 
         </activity>
     </application>

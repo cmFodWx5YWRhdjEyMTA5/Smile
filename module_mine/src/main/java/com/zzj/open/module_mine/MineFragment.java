@@ -1,5 +1,6 @@
 package com.zzj.open.module_mine;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,9 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ReflectUtils;
+import com.blankj.utilcode.util.SPUtils;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.xcy8.ads.listener.OnPermissionListener;
 import com.xcy8.ads.view.BannerAdView;
 import com.xcy8.ads.view.IconAd;
@@ -35,7 +40,7 @@ import skin.support.SkinCompatManager;
  */
 @Route(path = RouterFragmentPath.Mine.MINE_HOME)
 public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewModel> {
-
+    private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     @Override
     public int initContentView(LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
         return R.layout.mine_fragment_mine;
@@ -76,5 +81,37 @@ public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewM
                 startActivity(intent);
             }
         });
+
+        //更改线路
+        binding.llUpdateLine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSingleChoiceDialog();
+            }
+        });
+    }
+
+
+    private void showSingleChoiceDialog() {
+        final String[] items = new String[]{"线路一", "线路二"};
+        final int checkedIndex = 1;
+        new QMUIDialog.CheckableDialogBuilder(getActivity())
+                .setCheckedIndex(checkedIndex)
+                .addItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(getActivity(), "你选择了 " + items[which], Toast.LENGTH_SHORT).show();
+                        SPUtils.getInstance().put("currentLine",""+(which+1));
+                        dialog.dismiss();
+                        try {
+                            String className = "com.zzj.open.module_main.activity.MainActivity";
+                            ReflectUtils reflectUtils = ReflectUtils.reflect(className);
+                            reflectUtils.method("start", this);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .create(mCurrentDialogStyle).show();
     }
 }
