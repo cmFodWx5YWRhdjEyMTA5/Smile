@@ -5,8 +5,13 @@ import android.text.TextUtils;
 
 
 import com.zzj.open.base.BuildConfig;
+import com.zzj.open.base.http.upload.FileUploadObserver;
+import com.zzj.open.base.http.upload.MultipartBuilder;
+import com.zzj.open.base.http.upload.UploadFileApi;
+import com.zzj.open.base.http.upload.UploadFileRequestBody;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +30,7 @@ import me.goldze.mvvmhabit.utils.Utils;
 import okhttp3.Cache;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import okhttp3.internal.platform.Platform;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -143,5 +149,44 @@ public class RetrofitClient {
                 .subscribe(subscriber);
 
         return null;
+    }
+
+    /**
+     * 单上传文件的封装.
+     *
+     * @param url 完整的接口地址
+     * @param file 需要上传的文件
+     * @param fileUploadObserver 上传回调
+     */
+    public void upLoadFile(String url, File file,
+                           FileUploadObserver<ResponseBody> fileUploadObserver) {
+
+        UploadFileRequestBody uploadFileRequestBody =
+                new UploadFileRequestBody(file, fileUploadObserver);
+
+        create(UploadFileApi.class)
+                .uploadFile(url, MultipartBuilder.fileToMultipartBody(file,
+                        uploadFileRequestBody))
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(fileUploadObserver);
+
+    }
+
+    /**
+     * 多文件上传.
+     *
+     * @param url 上传接口地址
+     * @param files 文件列表
+     * @param fileUploadObserver 文件上传回调
+     */
+    public void upLoadFiles(String url, List<File> files,
+                            FileUploadObserver<ResponseBody> fileUploadObserver) {
+
+        create(UploadFileApi.class)
+                .uploadFile(url, MultipartBuilder.filesToMultipartBody(files,
+                        fileUploadObserver))
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(fileUploadObserver);
+
     }
 }
