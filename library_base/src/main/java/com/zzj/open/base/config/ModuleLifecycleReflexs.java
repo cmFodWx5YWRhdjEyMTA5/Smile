@@ -29,7 +29,11 @@ public class ModuleLifecycleReflexs {
      * 我的模块
      */
     private static final String MineInit = "com.zzj.open.module_mine.MineModuleInit";
+    /**
+     * 我的模块
+     */
+    private static final String WelfareInit = "com.zzj.module_welfare.WelfareModuleInit";
 
 
-    public static String[] initModuleNames = {BaseInit, MainInit,NewsInit,MovieInit,MineInit};
+    public static String[] initModuleNames = {BaseInit, MainInit,NewsInit,MovieInit,WelfareInit,MineInit};
 }

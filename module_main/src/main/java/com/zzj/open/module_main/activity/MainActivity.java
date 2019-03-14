@@ -53,13 +53,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
     @Override
     public void initData() {
         super.initData();
-        keystore();
+//        keystore();
         getFragments();
         binding.tabBottom.setMode(BottomNavigationBar.MODE_FIXED);
         binding.tabBottom.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
         binding.tabBottom.setBarBackgroundColor(R.color.white);
         binding.tabBottom.addItem(new BottomNavigationItem(R.mipmap.ic_movie, "影视").setActiveColorResource(R.color.colorPrimary))
                 .addItem(new BottomNavigationItem(R.mipmap.ic_news, "资讯").setActiveColorResource(R.color.colorPrimary))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_news, "福利").setActiveColorResource(R.color.amber_800))
                 .addItem(new BottomNavigationItem(R.mipmap.ic_mine, "我的").setActiveColorResource(R.color.colorPrimary))
                 .setFirstSelectedPosition(0)
                 .initialise(); //所有的设置需在调用该方法前完成
@@ -86,6 +87,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
     private List<Fragment> getFragments() {
         items.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Movie.MOVIE_HOME).navigation());
         items.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.News.NEWS_HOME).navigation());
+        items.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Welfare.WELFARE_HOME).navigation());
 
         items.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_HOME).navigation());
 

@@ -32,12 +32,20 @@ public class RouterFragmentPath {
         public static final String MOVIE_HOME = MOVIE + "/Movie";
     }
     /**
-     * 影视组件
+     * 我的组件
      */
     public static class Mine {
         private static final String MINE = "/mine";
         /*首页*/
         public static final String MINE_HOME = MINE + "/Mine";
+    }
+    /**
+     * 福利组件
+     */
+    public static class Welfare {
+        private static final String WELFARE = "/welfare";
+        /*首页*/
+        public static final String WELFARE_HOME = WELFARE + "/Welfare";
     }
 
     /**

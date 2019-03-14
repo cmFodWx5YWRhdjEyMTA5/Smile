@@ -93,6 +93,8 @@ dependencies {
         implementation project(':module_movie')
         //我的
         implementation project(':module_mine')
+        //福利
+        implementation project(':module_welfare')
     }
 
 
