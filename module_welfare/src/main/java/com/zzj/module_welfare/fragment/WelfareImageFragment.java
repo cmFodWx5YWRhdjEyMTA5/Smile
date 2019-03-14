@@ -4,6 +4,8 @@ import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -49,7 +51,22 @@ public class WelfareImageFragment extends BaseFragment<WelfareFragmentImagesBind
     @Override
     public void initData() {
         super.initData();
+//设置layoutManager
+        final StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        //解决item跳动
+        manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        binding.recycler.setLayoutManager(manager);
+
+        binding.recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                manager.invalidateSpanAssignments();
+            }
+        });
+
         viewModel.requestNetWork(page);
+
 
         binding.refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override

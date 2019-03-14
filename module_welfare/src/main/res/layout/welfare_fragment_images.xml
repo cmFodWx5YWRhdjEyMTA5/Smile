@@ -24,12 +24,12 @@
 
             </com.scwang.smartrefresh.layout.header.ClassicsHeader>
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 binding:adapter="@{viewModel.adapter}"
                 binding:itemBinding="@{viewModel.itemBinding}"
                 binding:items="@{viewModel.observableList}"
-                binding:layoutManager="@{LayoutManagers.staggeredGrid(3,LinearLayoutManager.VERTICAL)}"
                 >
 
             </android.support.v7.widget.RecyclerView>

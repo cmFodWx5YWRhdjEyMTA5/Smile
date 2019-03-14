@@ -7,11 +7,17 @@
             type="com.zzj.module_welfare.vm.WelfareImageItemViewModel"/>
     </data>
 
-    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="1dp"
-        binding:url="@{viewModel.resultsBean.url}"
-        >
-    </ImageView>
+  <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_height="wrap_content"
+      android:layout_width="match_parent">
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="1dp"
+          android:scaleType="fitCenter"
+          android:src="@{viewModel.drawableImg}"
+          binding:url="@{viewModel.resultsBean.url}"
+          >
+      </ImageView>
+  </FrameLayout>
 </layout>
