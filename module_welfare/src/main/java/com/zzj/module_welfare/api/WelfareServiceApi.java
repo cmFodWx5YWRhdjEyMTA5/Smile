@@ -16,7 +16,7 @@ import retrofit2.http.Path;
  */
 public interface WelfareServiceApi {
 
-    @GET("http://gank.io/api/data/福利/10/{page}")
+    @GET("http://gank.io/api/data/福利/20/{page}")
     Observable<GanKImageBean> getWelfareImageList(@Path("page") int page);
 
 }

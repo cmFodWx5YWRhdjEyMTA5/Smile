@@ -2,10 +2,10 @@
 
 <layout>
     <data>
-        <import type="com.zzj.module_welfare.vm.ViewPagerViewModel"/>
+        <import type="me.goldze.mvvmhabit.base.BaseViewModel"/>
         <variable
             name="viewModel"
-            type="com.zzj.module_welfare.vm.ViewPagerViewModel"/>
+            type="me.goldze.mvvmhabit.base.BaseViewModel"/>
     </data>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:binding="http://schemas.android.com/apk/res-auto"
@@ -31,11 +31,6 @@
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            binding:adapter="@{viewModel.adapter}"
-            binding:itemBinding="@{viewModel.itemBinding}"
-            binding:items="@{viewModel.items}"
-            binding:onPageSelectedCommand="@{viewModel.onPageSelectedCommand}"
-            binding:pageTitles="@{viewModel.pageTitles}" />
+            android:layout_weight="1" />
     </LinearLayout>
 </layout>
