@@ -81,4 +81,7 @@ dependencies {
     api 'com.just.agentweb:agentweb:4.0.2' // (必选)
 
     api 'com.qmuiteam:qmui:1.2.0'
+
+
+//    api "androidx.appcompat:appcompat:1.0.0"
 }

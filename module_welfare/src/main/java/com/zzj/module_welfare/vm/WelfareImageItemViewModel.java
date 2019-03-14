@@ -8,6 +8,8 @@ import com.zzj.module_welfare.R;
 import com.zzj.module_welfare.bean.GanKImageBean;
 
 import me.goldze.mvvmhabit.base.ItemViewModel;
+import me.goldze.mvvmhabit.binding.command.BindingAction;
+import me.goldze.mvvmhabit.binding.command.BindingCommand;
 
 /**
  * @author : zzj
@@ -26,4 +28,23 @@ public class WelfareImageItemViewModel extends ItemViewModel<WelfareImageViewMod
         //ImageView的占位图片，可以解决RecyclerView中图片错误问题
         drawableImg = ContextCompat.getDrawable(viewModel.getApplication(), R.mipmap.ic_loading);
     }
+
+    //条目的点击事件
+    public BindingCommand itemClick = new BindingCommand(new BindingAction() {
+        @Override
+        public void call() {
+            viewModel.itemBean.set(resultsBean);
+
+        }
+    });
+    //条目的长按事件
+    public BindingCommand itemLongClick = new BindingCommand(new BindingAction() {
+        @Override
+        public void call() {
+            //以前是使用Messenger发送事件，在NetWorkViewModel中完成删除逻辑
+//            Messenger.getDefault().send(NetWorkItemViewModel.this, NetWorkViewModel.TOKEN_NETWORKVIEWMODEL_DELTE_ITEM);
+            //现在ItemViewModel中存在ViewModel引用，可以直接拿到LiveData去做删除
+//            viewModel.deleteItemLiveData.setValue(NetWorkItemViewModel.this);
+        }
+    });
 }

@@ -3,14 +3,13 @@ package com.zzj.module_welfare.vm;
 import android.app.Application;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
-import com.blankj.utilcode.util.SPUtils;
 import com.zzj.module_welfare.BR;
 import com.zzj.module_welfare.R;
 import com.zzj.module_welfare.api.WelfareServiceApi;
 import com.zzj.module_welfare.bean.GanKImageBean;
-import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.http.RetrofitClient;
 
 import io.reactivex.disposables.Disposable;
@@ -31,6 +30,7 @@ import me.tatarka.bindingcollectionadapter2.ItemBinding;
  */
 public class WelfareImageViewModel extends BaseViewModel {
 
+    public ObservableField<GanKImageBean.ResultsBean> itemBean = new ObservableField<>();
     /**
      * 封装一个界面发生改变的观察者
      */

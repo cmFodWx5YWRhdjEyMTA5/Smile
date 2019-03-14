@@ -24,6 +24,8 @@ android {
             // 设置支持的SO库架构
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
         }
+
+
     }
     signingConfigs {
         release {
@@ -75,6 +77,8 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
+
+
 }
 
 dependencies {

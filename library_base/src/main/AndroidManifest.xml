@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.zzj.open.base" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.zzj.open.base">
 
-    <application>
+    <application >
         <activity android:name=".base.BaseWebActivity"
             android:hardwareAccelerated="true"
             android:configChanges="orientation|screenSize"
