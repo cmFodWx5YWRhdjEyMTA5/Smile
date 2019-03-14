@@ -1,9 +1,11 @@
 package com.zzj.module_welfare.api;
 
+import com.zzj.module_welfare.bean.GanKImageBean;
 import com.zzj.open.base.bean.Result;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 /**
  * @author : zzj
@@ -14,6 +16,7 @@ import retrofit2.http.GET;
  */
 public interface WelfareServiceApi {
 
-    @GET("http://gank.io/api/data/福利/10/1")
-    Observable<Result> getWelfareImageList();
+    @GET("http://gank.io/api/data/福利/10/{page}")
+    Observable<GanKImageBean> getWelfareImageList(@Path("page") int page);
+
 }
