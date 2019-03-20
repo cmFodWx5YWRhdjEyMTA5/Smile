@@ -59,6 +59,9 @@ public class EncryptInterceptor extends BaseInterceptor {
 //        request = encrypt(request);//模拟的加密方法
         Response response = chain.proceed(request);
         long t2 = System.nanoTime();
+        if(url.contains("http://gank.io/api")){
+            return response;
+        }
         response = decrypt(response);
         return response;
     }
