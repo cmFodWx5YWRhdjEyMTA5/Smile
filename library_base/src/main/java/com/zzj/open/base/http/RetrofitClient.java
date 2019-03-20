@@ -47,8 +47,8 @@ public class RetrofitClient {
     private static final int CACHE_TIMEOUT = 10 * 1024 * 1024;
 //    public static String BASE_URL = "http://192.168.0.108:8080/api/";
     //服务端根路径
-//    public static String baseUrl = "http://192.168.0.109:8080/api/";
-    public static String baseUrl = "http://47.75.50.156:8080/bengshiwei/api/";
+    public static String baseUrl = "http://211.87.227.119:8080/api/";
+//    public static String baseUrl = "http://47.75.50.156:8080/bengshiwei/api/";
     public static String web_baseUrl = "http://47.75.50.156:8080/bengshiwei-html/";
 
     private static Context mContext = Utils.getContext();
@@ -92,7 +92,7 @@ public class RetrofitClient {
         okHttpClient = new OkHttpClient.Builder()
                 .cookieJar(new CookieJarImpl(new PersistentCookieStore(mContext)))
 //                .cache(cache)
-                .addInterceptor(new BaseInterceptor(headers))
+                .addInterceptor(new EncryptInterceptor(headers))
                 .addInterceptor(new CacheInterceptor(mContext))
                 .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
                 .addInterceptor(new LoggingInterceptor

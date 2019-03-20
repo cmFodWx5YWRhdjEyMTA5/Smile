@@ -82,7 +82,10 @@ dependencies {
     api 'com.bm.photoview:library:1.4.1'
 
     api 'com.qmuiteam:qmui:1.2.0'
-
+    //工具类  加解密
+    api 'cn.hutool:hutool-all:4.5.1'
+//    <!--国密依赖包-->
+    api 'org.bouncycastle:bcpkix-jdk15on:1.57'
 
 //    api "androidx.appcompat:appcompat:1.0.0"
 }
