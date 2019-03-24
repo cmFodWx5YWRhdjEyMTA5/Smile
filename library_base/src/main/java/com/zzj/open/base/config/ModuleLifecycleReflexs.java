@@ -33,7 +33,11 @@ public class ModuleLifecycleReflexs {
      * 我的模块
      */
     private static final String WelfareInit = "com.zzj.module_welfare.WelfareModuleInit";
+    /**
+     * 聊天的模块
+     */
+    private static final String ChatInit = "com.zzj.open.module_chat.ChatModuleInit";
 
 
-    public static String[] initModuleNames = {BaseInit, MainInit,NewsInit,MovieInit,WelfareInit,MineInit};
+    public static String[] initModuleNames = {BaseInit, MainInit,NewsInit,MovieInit,WelfareInit,MineInit,ChatInit};
 }

@@ -1,11 +1,13 @@
 package com.zzj.open.base.utils;
 
-import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.zzj.open.base.R;
+
+import me.goldze.mvvmhabit.base.BaseActivity;
 
 /**
  * @author : zzj
@@ -15,17 +17,17 @@ import com.zzj.open.base.R;
  * @version: 1.0
  */
 public class ToolbarHelper {
-    private Activity activity;
+    private BaseActivity activity;
     private Toolbar toolbar;
     private String title;
 
     public ToolbarHelper(Context context,Toolbar toolbar,boolean isShow){
-        activity = (Activity) context;
+        activity = (BaseActivity) context;
         this.toolbar = toolbar;
         isShowNavigationIcon(isShow);
     }
     public ToolbarHelper(Context context,Toolbar toolbar,String title){
-        activity = (Activity) context;
+        activity = (BaseActivity) context;
         this.toolbar = toolbar;
         this.title = title;
         initToolbar();
@@ -47,7 +49,12 @@ public class ToolbarHelper {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.finish();
+                if (activity.getSupportFragmentManager().getBackStackEntryCount() > 1) {
+                    activity.pop();
+                } else {
+                    ActivityCompat.finishAfterTransition(activity);
+                }
+
             }
         });
     }

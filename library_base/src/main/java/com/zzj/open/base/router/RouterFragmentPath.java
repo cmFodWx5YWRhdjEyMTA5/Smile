@@ -30,6 +30,15 @@ public class RouterFragmentPath {
         private static final String MOVIE = "/movie";
         /*首页*/
         public static final String MOVIE_HOME = MOVIE + "/Movie";
+
+    }
+    /**
+     * 聊天组件
+     */
+    public static class Chat {
+        private static final String CHAT = "/chat";
+        /*首页*/
+        public static final String CHAT_HOME = CHAT + "/Chat";
     }
     /**
      * 我的组件
