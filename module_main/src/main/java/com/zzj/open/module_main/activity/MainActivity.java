@@ -3,33 +3,33 @@ package com.zzj.open.module_main.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Base64;
-import android.view.View;
+import android.util.Log;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
-import com.ashokvarma.bottomnavigation.BottomNavigationBar;
-import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.blankj.utilcode.util.FragmentUtils;
+import com.dhh.rxlifecycle2.RxLifecycle;
+import com.dhh.websocket.Config;
+import com.dhh.websocket.RxWebSocket;
+import com.dhh.websocket.WebSocketInfo;
+import com.dhh.websocket.WebSocketSubscriber;
+import com.zzj.open.base.http.HttpsUtils;
 import com.zzj.open.base.router.RouterActivityPath;
-import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.module_main.BR;
 import com.zzj.open.module_main.R;
-import com.zzj.open.module_main.adapter.ViewPagerAdapter;
 import com.zzj.open.module_main.databinding.ActivityMainBinding;
-import com.zzj.open.module_main.view.BottomItem;
-import com.zzj.open.module_main.view.BottomTabLayout;
+import com.zzj.open.module_main.fragment.MainFragment;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 import me.goldze.mvvmhabit.base.BaseActivity;
 import me.goldze.mvvmhabit.base.BaseViewModel;
+import okhttp3.OkHttpClient;
+import okhttp3.WebSocket;
+import okio.ByteString;
 
 /**
  * @author : zzj
@@ -41,9 +41,7 @@ import me.goldze.mvvmhabit.base.BaseViewModel;
 @Route(path = RouterActivityPath.Main.PAGER_MAIN)
 public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewModel> {
 
-    List<Fragment> items = new ArrayList<>();
-
-    private int hidePosition = 0;
+    String url = "ws://192.168.0.108:8088/ws";
 
     public static void start(Context context) {
         Intent starter = new Intent(context, MainActivity.class);
@@ -53,55 +51,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
     @Override
     public void initData() {
         super.initData();
+        RxLifecycle.injectRxLifecycle(this);
+        initWebSocket();
 //        keystore();
-        getFragments();
-        binding.tabBottom.setMode(BottomNavigationBar.MODE_FIXED);
-        binding.tabBottom.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
-        binding.tabBottom.setBarBackgroundColor(R.color.white);
-        binding.tabBottom.addItem(new BottomNavigationItem(R.mipmap.ic_movie, "影视").setActiveColorResource(R.color.colorPrimary))
-                .addItem(new BottomNavigationItem(R.mipmap.ic_news, "资讯").setActiveColorResource(R.color.colorPrimary))
-                .addItem(new BottomNavigationItem(R.mipmap.ic_news, "福利").setActiveColorResource(R.color.amber_800))
-                .addItem(new BottomNavigationItem(R.mipmap.ic_mine, "我的").setActiveColorResource(R.color.colorPrimary))
-                .setFirstSelectedPosition(0)
-                .initialise(); //所有的设置需在调用该方法前完成
-        binding.tabBottom.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(int position) {
-                FragmentUtils.showHide(items.get(position), items.get(hidePosition));
-                hidePosition = position;
-            }
-
-            @Override
-            public void onTabUnselected(int position) {
-
-            }
-
-            @Override
-            public void onTabReselected(int position) {
-
-            }
-        });
-        FragmentUtils.add(getSupportFragmentManager(), items, R.id.fl_container, 0);
+        loadRootFragment(R.id.fl_container,new MainFragment());
     }
 
-    private List<Fragment> getFragments() {
-        items.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Movie.MOVIE_HOME).navigation());
-        items.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.News.NEWS_HOME).navigation());
-        items.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Welfare.WELFARE_HOME).navigation());
 
-        items.add((Fragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_HOME).navigation());
-
-        return items;
-    }
-
-    private List<BottomItem> getBottomItem() {
-        List<BottomItem> items = new ArrayList<>();
-        items.add(new BottomItem("新闻", R.mipmap.ic_launcher));
-        items.add(new BottomItem("影视", R.mipmap.ic_launcher));
-        items.add(new BottomItem("我的", R.mipmap.ic_launcher));
-
-        return items;
-    }
 
     @Override
     public int initContentView(Bundle bundle) {
@@ -113,6 +69,57 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
         return BR.mainViewModel;
     }
 
+    private void initWebSocket(){
+        //init config
+        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory();
+        Config config = new Config.Builder()
+                .setShowLog(true)           //show  log
+                .setClient(new OkHttpClient())   //if you want to set your okhttpClient
+                .setShowLog(true, "your logTag")
+                .setReconnectInterval(2, TimeUnit.SECONDS)  //set reconnect interval
+                .setSSLSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager) // wss support
+                .build();
+        RxWebSocket.setConfig(config);
+
+
+        RxWebSocket.get(url)
+                //RxLifecycle : https://github.com/dhhAndroid/RxLifecycle
+                .compose(RxLifecycle.with(this).<WebSocketInfo>bindOnDestroy())
+                .subscribe(new WebSocketSubscriber() {
+                    @Override
+                    protected void onOpen(@android.support.annotation.NonNull WebSocket webSocket) {
+                        Log.d("MainActivity", " on WebSocket open");
+                        RxWebSocket.send(url,"hello word");
+                    }
+
+                    @Override
+                    protected void onMessage(@android.support.annotation.NonNull String text) {
+                        Log.d("MainActivity", text);
+//                        textview.setText(Html.fromHtml(text));
+                    }
+
+                    @Override
+                    protected void onMessage(@android.support.annotation.NonNull ByteString byteString) {
+                        Log.d("MainActivity", byteString.toString());
+                    }
+
+                    @Override
+                    protected void onReconnect() {
+                        Log.d("MainActivity", "onReconnect");
+                    }
+
+                    @Override
+                    protected void onClose() {
+                        Log.d("MainActivity", "onClose");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                });
+
+    }
     /**
      * keyStore加密解密
      */

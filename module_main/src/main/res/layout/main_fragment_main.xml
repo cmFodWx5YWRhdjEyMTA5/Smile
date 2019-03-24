@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="me.goldze.mvvmhabit.base.BaseViewModel"/>
+        <variable
+            name="videModel"
+            type="me.goldze.mvvmhabit.base.BaseViewModel"/>
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/fl_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            >
+
+        </FrameLayout>
+
+        <com.ashokvarma.bottomnavigation.BottomNavigationBar
+            android:id="@+id/tab_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            >
+        </com.ashokvarma.bottomnavigation.BottomNavigationBar>
+    </FrameLayout>
+</layout>
