@@ -4,12 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.xcy8.ads.view.BannerAdView;
 import com.zzj.open.base.base.BaseModuleInit;
 import com.zzj.open.module_movie.R;
 import com.zzj.open.module_movie.bean.MovieDetailsItemBean;
 import com.zzj.open.module_movie.databinding.MovieActivityVideoPlayerBinding;
-import com.zzj.open.module_movie.player.JZMediaIjkplayer;
+import com.zzj.open.base.player.JZMediaIjkplayer;
 
 import java.util.LinkedHashMap;
 
@@ -28,13 +27,13 @@ import me.goldze.mvvmhabit.base.BaseViewModel;
  * @version: 1.0
  */
 public class VideoPlayerActivity extends BaseActivity<MovieActivityVideoPlayerBinding,BaseViewModel> {
-    private static final String BANNER_AD_ID = "42705";
-    private BannerAdView mAd1Bav;
+
     private MovieDetailsItemBean playUrlsBean;
 
     public static void start(Context context, MovieDetailsItemBean playUrlsBean) {
         Intent starter = new Intent(context, VideoPlayerActivity.class);
         starter.putExtra("playUrl", playUrlsBean);
+        starter.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(starter);
     }
     @Override
@@ -50,9 +49,7 @@ public class VideoPlayerActivity extends BaseActivity<MovieActivityVideoPlayerBi
     @Override
     public void initData() {
         super.initData();
-        mAd1Bav = new BannerAdView(this);
-        mAd1Bav.setFloat(false);
-        mAd1Bav.loadAd(BANNER_AD_ID);
+
         playUrlsBean = (MovieDetailsItemBean) getIntent().getSerializableExtra("playUrl");
 
 //        LinkedHashMap map = new LinkedHashMap();
@@ -70,11 +67,11 @@ public class VideoPlayerActivity extends BaseActivity<MovieActivityVideoPlayerBi
         LinkedHashMap map = new LinkedHashMap();
 
         //边播放变缓存
-        String proxyUrl = BaseModuleInit.getProxy().getProxyUrl(playUrlsBean.getUrl());
+        String proxyUrl = BaseModuleInit.getProxy().getProxyUrl("http://videocdn2.quweikm.com:8091/20181213/201812130047/index.m3u8");
 
         map.put("高清", proxyUrl);
 
-        JZDataSource jzDataSource = new JZDataSource(playUrlsBean.getUrl());
+        JZDataSource jzDataSource = new JZDataSource(map);
         jzDataSource.title = playUrlsBean.getTitle();
         jzDataSource.looping = true;
         jzDataSource.headerMap.put("key", "value");//header
@@ -100,11 +97,11 @@ public class VideoPlayerActivity extends BaseActivity<MovieActivityVideoPlayerBi
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressedSupport() {
         if (Jzvd.backPress()) {
             return;
         }
-        super.onBackPressed();
+        super.onBackPressedSupport();
     }
 
     @Override

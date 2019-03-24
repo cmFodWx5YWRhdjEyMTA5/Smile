@@ -1,1 +1,3 @@
-include ':app', ':library_base', ':library_res', ':module_main', ':module_news', ':module_fingerprint', ':module_movie', ':module_mine', ':module_welfare'
+include ':app', ':library_base', ':library_res', ':module_main', ':module_news'
+include ':module_fingerprint', ':module_movie', ':module_mine', ':module_welfare', ':module_chat'
+include(':mvvmhabit')

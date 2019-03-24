@@ -99,6 +99,8 @@ dependencies {
         implementation project(':module_mine')
         //福利
         implementation project(':module_welfare')
+        //聊天
+        implementation project(':module_chat')
     }
 
 

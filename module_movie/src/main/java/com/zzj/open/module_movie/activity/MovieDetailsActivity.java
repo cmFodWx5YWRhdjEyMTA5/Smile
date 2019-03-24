@@ -6,7 +6,6 @@ import android.databinding.Observable;
 import android.os.Bundle;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.xcy8.ads.view.BannerAdView;
 import com.zzj.open.base.bean.CallBack;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_movie.R;
@@ -26,10 +25,7 @@ import me.goldze.mvvmhabit.base.BaseActivity;
  * @version: 1.0
  */
 public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetailsBinding, MovieDetailsViewModel> {
-    // FixedAd
-    private static final String BANNER_AD_ID = "42705";
-    private static final String FIXED_AD_ID = "42707";
-    private BannerAdView mAd1Bav;
+
     private String movieId;
     public static void start(Context context, String movieId) {
         Intent starter = new Intent(context, MovieDetailsActivity.class);
@@ -52,9 +48,7 @@ public class MovieDetailsActivity extends BaseActivity<MovieActivityMovieDetails
     public void initData() {
         super.initData();
         new ToolbarHelper(this,binding.toolbar,true);
-        mAd1Bav = new BannerAdView(this);
-        mAd1Bav.setFloat(false);
-        mAd1Bav.loadAd(BANNER_AD_ID);
+
         movieId = getIntent().getStringExtra("movieId");
         String url = "";
 

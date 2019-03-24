@@ -44,6 +44,7 @@ public class MineFeedbackFragment extends BaseFragment<MineFragmentFeedbackBindi
     @Override
     public void initData() {
         super.initData();
+        setSwipeBackEnable(true);
         new ToolbarHelper(getActivity(), (Toolbar) binding.toolbar,"反馈建议");
 
         binding.btnSubmit.setOnClickListener(v->{
@@ -84,4 +85,6 @@ public class MineFeedbackFragment extends BaseFragment<MineFragmentFeedbackBindi
         });
 
     }
+
+
 }

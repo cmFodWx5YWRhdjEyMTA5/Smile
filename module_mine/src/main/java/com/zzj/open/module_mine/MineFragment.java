@@ -1,35 +1,25 @@
 package com.zzj.open.module_mine;
 
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ReflectUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.xcy8.ads.listener.OnPermissionListener;
-import com.xcy8.ads.view.BannerAdView;
-import com.xcy8.ads.view.IconAd;
+import com.zzj.open.base.bean.UpdateVersion;
 import com.zzj.open.base.router.RouterFragmentPath;
-import com.zzj.open.module_mine.BR;
+import com.zzj.open.base.utils.UpdateVersionUtils;
 import com.zzj.open.module_mine.databinding.MineFragmentMineBinding;
 import com.zzj.open.module_mine.fragment.MineFeedbackFragment;
 import com.zzj.open.module_mine.viewmodel.MineViewModel;
 
-import cdc.sed.yff.nm.cm.ErrorCode;
-import cdc.sed.yff.nm.sp.SpotListener;
-import cdc.sed.yff.nm.sp.SpotManager;
 import me.goldze.mvvmhabit.base.BaseFragment;
-import me.goldze.mvvmhabit.base.ContainerActivity;
-import skin.support.SkinCompatManager;
 
 /**
  * @author : zzj
@@ -54,7 +44,7 @@ public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewM
     @Override
     public void initData() {
         super.initData();
-
+        setSwipeBackEnable(false);
         binding.llAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,9 +66,10 @@ public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewM
         binding.llFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ContainerActivity.class);
-                intent.putExtra("fragment", MineFeedbackFragment.class.getCanonicalName());
-                startActivity(intent);
+                _mActivity.start(new MineFeedbackFragment());
+//                Intent intent = new Intent(getActivity(), ContainerActivity.class);
+//                intent.putExtra("fragment", MineFeedbackFragment.class.getCanonicalName());
+//                startActivity(intent);
             }
         });
 
@@ -89,6 +80,22 @@ public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewM
                 showSingleChoiceDialog();
             }
         });
+
+        //版本更新
+        binding.llUpdate.setOnClickListener(view -> {
+//            viewModel.updateVersion();
+        });
+
+        //版本升级弹窗
+        viewModel.updateVersionObservableField.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                UpdateVersion updateVersion = viewModel.updateVersionObservableField.get();
+
+                UpdateVersionUtils.checkVersion(getActivity(),updateVersion);
+            }
+        });
+
     }
 
 

@@ -11,12 +11,14 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/library_base" />
             <option value="$PROJECT_DIR$/library_res" />
+            <option value="$PROJECT_DIR$/module_chat" />
             <option value="$PROJECT_DIR$/module_fingerprint" />
             <option value="$PROJECT_DIR$/module_main" />
             <option value="$PROJECT_DIR$/module_mine" />
             <option value="$PROJECT_DIR$/module_movie" />
             <option value="$PROJECT_DIR$/module_news" />
             <option value="$PROJECT_DIR$/module_welfare" />
+            <option value="$PROJECT_DIR$/mvvmhabit" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

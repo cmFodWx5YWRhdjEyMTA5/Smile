@@ -10,14 +10,15 @@ import android.webkit.JavascriptInterface;
 
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
-import com.zzj.open.module_movie.R;
 import com.zzj.open.base.utils.WebViewJavaScriptFunction;
 import com.zzj.open.base.utils.X5WebView;
+import com.zzj.open.module_movie.R;
 
 import net.qiujuer.genius.ui.widget.Loading;
 
 
 public class FullScreenActivity extends Activity {
+
 
 	/**
 	 * 用于演示X5webview实现视频的全屏播放功能 其中注意 X5的默认全屏方式 与 android 系统的全屏方式
@@ -30,6 +31,7 @@ public class FullScreenActivity extends Activity {
 	public static void start(Context context,String url) {
 	    Intent starter = new Intent(context, FullScreenActivity.class);
 	    starter.putExtra("url",url);
+		starter.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 	    context.startActivity(starter);
 	}
 	@Override

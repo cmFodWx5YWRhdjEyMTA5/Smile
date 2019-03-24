@@ -26,7 +26,6 @@ import cdc.sed.yff.nm.cm.ErrorCode;
 import cdc.sed.yff.nm.sp.SpotListener;
 import cdc.sed.yff.nm.sp.SpotManager;
 import me.goldze.mvvmhabit.base.BaseFragment;
-import me.goldze.mvvmhabit.base.BaseViewModel;
 
 /**
  * @author : zzj
@@ -51,6 +50,7 @@ public class NewsFragment extends BaseFragment<NewsFragmentNewsBinding,NewsViewM
     @Override
     public void initData() {
         super.initData();
+        setSwipeBackEnable(false);
         ToolbarHelper toolbarHelper =new ToolbarHelper(getActivity(), (Toolbar) binding.toolbar,"最新资讯");
         toolbarHelper.isShowNavigationIcon(false);
         showDialog("正在请求...");

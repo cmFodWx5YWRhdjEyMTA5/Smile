@@ -7,11 +7,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
-import com.blankj.utilcode.util.LogUtils;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.module_movie.databinding.MovieFragmentMovieBinding;
 import com.zzj.open.module_movie.viewmodel.MovieViewModel;
 
@@ -55,6 +52,7 @@ public class MovieFragment extends BaseFragment<MovieFragmentMovieBinding,MovieV
     @Override
     public void initData() {
         super.initData();
+        setSwipeBackEnable(false);
         initListener();
         type = getArguments().getString("type");
         if(type.equals("搜索")){
