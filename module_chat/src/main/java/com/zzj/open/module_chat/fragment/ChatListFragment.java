@@ -2,11 +2,13 @@ package com.zzj.open.module_chat.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.zzj.open.base.router.RouterFragmentPath;
+import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_chat.R;
 import com.zzj.open.module_chat.databinding.ChatFragmentChatlistBinding;
 import com.zzj.open.module_chat.vm.ChatListViewModel;
@@ -39,8 +41,11 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
     @Override
     public void initData() {
         super.initData();
-
+        setSwipeBackEnable(false);
+        ToolbarHelper toolbarHelper =new ToolbarHelper(getActivity(), (Toolbar) binding.toolbar,"消息");
+        toolbarHelper.isShowNavigationIcon(false);
         //用WebSocket的引用直接发
+        viewModel.initData();
 
     }
 }

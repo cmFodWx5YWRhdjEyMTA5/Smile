@@ -34,6 +34,10 @@ android {
             dir 'libs'
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -42,6 +46,7 @@ dependencies {
     //公用的support相关库在base中依赖
     api rootProject.ext.support["design"]
     api rootProject.ext.support["appcompat-v7"]
+    api rootProject.ext.support["constraint-layout"]
     //公用资源在base中依赖
     api project(':library_res')
     //核心基础库(由于这是例子, 所以这里采用远程依赖的方式, 可根据实际情况自行换成源码依赖，源码地址：https://github.com/goldze/MVVMHabit)
