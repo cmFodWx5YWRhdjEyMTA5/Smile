@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 
 import com.zzj.module_welfare.BR;
 import com.zzj.module_welfare.R;
+import com.zzj.module_welfare.adapter.WelfareImageAdapter;
 import com.zzj.module_welfare.api.WelfareServiceApi;
 import com.zzj.module_welfare.bean.GanKImageBean;
 import com.zzj.open.base.http.RetrofitClient;
@@ -18,7 +19,6 @@ import io.reactivex.functions.Consumer;
 import me.goldze.mvvmhabit.base.BaseViewModel;
 import me.goldze.mvvmhabit.utils.RxUtils;
 import me.goldze.mvvmhabit.utils.ToastUtils;
-import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter;
 import me.tatarka.bindingcollectionadapter2.ItemBinding;
 
 /**
@@ -54,7 +54,7 @@ public class WelfareImageViewModel extends BaseViewModel {
     public ItemBinding<WelfareImageItemViewModel> itemBinding = ItemBinding.of(BR.viewModel, R.layout.welfare_item_images);
 
     //给RecyclerView添加Adpter，请使用自定义的Adapter继承BindingRecyclerViewAdapter，重写onBindBinding方法
-    public final BindingRecyclerViewAdapter<WelfareImageItemViewModel> adapter = new BindingRecyclerViewAdapter<>();
+    public final WelfareImageAdapter adapter = new WelfareImageAdapter();
 
 
 
@@ -105,5 +105,11 @@ public class WelfareImageViewModel extends BaseViewModel {
 
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        itemBean = null;
     }
 }

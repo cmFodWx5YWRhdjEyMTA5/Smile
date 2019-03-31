@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.bm.library.Info;
-import com.bm.library.PhotoView;
 import com.bumptech.glide.Glide;
-import com.xcy8.ads.view.BannerAdView;
 import com.zzj.module_welfare.R;
 import com.zzj.module_welfare.databinding.WelfareActivityImagedetailsBinding;
 
@@ -24,11 +21,12 @@ import me.goldze.mvvmhabit.base.BaseViewModel;
  */
 public class WelfareImageDetailsActivity extends BaseActivity<WelfareActivityImagedetailsBinding, BaseViewModel> {
     private String url;
-    private BannerAdView mAd1Bav;
+
 
     public static void start(Context context, String url) {
         Intent starter = new Intent(context, WelfareImageDetailsActivity.class);
         starter.putExtra("url", url);
+        starter.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(starter);
     }
 
@@ -45,9 +43,7 @@ public class WelfareImageDetailsActivity extends BaseActivity<WelfareActivityIma
     @Override
     public void initData() {
         super.initData();
-        mAd1Bav = new BannerAdView(this);
-        mAd1Bav.setFloat(false);
-        mAd1Bav.loadAd("42709");
+
         url = getIntent().getStringExtra("url");
         Glide.with(this).load(url).into(binding.photoView);
         // 启用图片缩放功能

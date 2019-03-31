@@ -1,5 +1,6 @@
 package com.zzj.open.module_chat.fragment;
 
+import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -47,5 +48,13 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
         //用WebSocket的引用直接发
         viewModel.initData();
 
+        viewModel.aBoolean.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                _mActivity.start(new ChatFragment());
+            }
+        });
     }
+
+
 }

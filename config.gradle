@@ -64,7 +64,9 @@ ext {
             "arouter-compiler"                     : "com.alibaba:arouter-compiler:1.2.2",
             "SmartRefreshLayout"                   : "com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-20",
     ]
-
+    libraries = [
+            "emoticonkeyboard": project(':module_chatlibrary')
+    ]
 
 }
 

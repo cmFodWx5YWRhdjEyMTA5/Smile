@@ -13,7 +13,6 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zzj.module_welfare.BR;
 import com.zzj.module_welfare.R;
-import com.zzj.module_welfare.activity.WelfareImageDetailsActivity;
 import com.zzj.module_welfare.databinding.WelfareFragmentImagesBinding;
 import com.zzj.module_welfare.vm.WelfareImageViewModel;
 
@@ -92,7 +91,7 @@ public class WelfareImageFragment extends BaseFragment<WelfareFragmentImagesBind
         viewModel.itemBean.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
-                WelfareImageDetailsActivity.start(getActivity(),viewModel.itemBean.get().getUrl());
+
             }
         });
     }

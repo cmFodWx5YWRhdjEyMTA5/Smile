@@ -20,6 +20,8 @@ import me.tatarka.bindingcollectionadapter2.ItemBinding;
  * @version: 1.0
  */
 public class ChatListViewModel extends BaseViewModel {
+
+    public ObservableBoolean aBoolean = new ObservableBoolean(false);
     /**
      * 封装一个界面发生改变的观察者
      */

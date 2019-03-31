@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <data>
+        <import type="me.goldze.mvvmhabit.base.BaseViewModel"/>
+        <variable
+            name="viewModel"
+            type="me.goldze.mvvmhabit.base.BaseViewModel"/>
+    </data>
+    <com.zzj.open.module_chat.view.QqEmoticonsKeyBoard  xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/kb_layout"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@color/colorPrimary"
+                >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    >
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/toolbar_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="name"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        />
+                </LinearLayout>
+            </android.support.v7.widget.Toolbar>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                >
+
+            </android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                >
+                <EditText
+                    android:id="@+id/et_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_et_input_content"
+                    android:layout_margin="10dp"
+                    />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:id="@+id/btn_send"
+                        android:layout_width="60dp"
+                        android:layout_height="30dp"
+                        android:background="@color/colorPrimary"
+                        android:layout_marginRight="5dp"
+                        android:text="发送"
+                        android:textColor="@color/white"
+                        android:visibility="gone"
+                        />
+                    <ImageView
+                        android:id="@+id/iv_chat_add"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@mipmap/ic_chat_add"
+                        android:layout_margin="10dp"
+                        />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </com.zzj.open.module_chat.view.QqEmoticonsKeyBoard >
+</layout>

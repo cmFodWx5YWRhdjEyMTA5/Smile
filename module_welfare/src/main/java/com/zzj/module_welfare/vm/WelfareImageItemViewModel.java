@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
 import com.zzj.module_welfare.R;
+import com.zzj.module_welfare.activity.WelfareImageDetailsActivity;
 import com.zzj.module_welfare.bean.GanKImageBean;
 
 import me.goldze.mvvmhabit.base.ItemViewModel;
@@ -33,7 +34,8 @@ public class WelfareImageItemViewModel extends ItemViewModel<WelfareImageViewMod
     public BindingCommand itemClick = new BindingCommand(new BindingAction() {
         @Override
         public void call() {
-            viewModel.itemBean.set(resultsBean);
+//            viewModel.itemBean.set(resultsBean);
+            WelfareImageDetailsActivity.start(viewModel.getApplication(),resultsBean.getUrl());
 
         }
     });

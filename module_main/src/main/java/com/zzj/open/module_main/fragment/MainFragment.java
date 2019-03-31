@@ -45,6 +45,7 @@ public class MainFragment extends BaseFragment<MainFragmentMainBinding,BaseViewM
     @Override
     public void initData() {
         super.initData();
+        setSwipeBackEnable(false);
         getFragments();
         binding.tabBottom.setMode(BottomNavigationBar.MODE_FIXED);
         binding.tabBottom.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
