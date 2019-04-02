@@ -11,10 +11,7 @@ import com.tencent.smtt.sdk.QbSdk;
 import com.zzj.open.base.BuildConfig;
 
 import me.goldze.mvvmhabit.utils.KLog;
-import skin.support.SkinCompatManager;
-import skin.support.app.SkinCardViewInflater;
-import skin.support.constraint.app.SkinConstraintViewInflater;
-import skin.support.design.app.SkinMaterialViewInflater;
+
 
 /**
  * Created by goldze on 2018/6/21 0021.
@@ -68,13 +65,13 @@ public class BaseModuleInit implements IModuleInit {
     @Override
     public boolean onInitLow(Application application) {
         KLog.e("基础层初始化 -- onInitLow");
-        SkinCompatManager.withoutActivity(application)                         // 基础控件换肤初始化
-                .addInflater(new SkinMaterialViewInflater())            // material design 控件换肤初始化[可选]
-                .addInflater(new SkinConstraintViewInflater())          // ConstraintLayout 控件换肤初始化[可选]
-                .addInflater(new SkinCardViewInflater())                // CardView v7 控件换肤初始化[可选]
-                .setSkinStatusBarColorEnable(false)                     // 关闭状态栏换肤，默认打开[可选]
-                .setSkinWindowBackgroundEnable(false)                   // 关闭windowBackground换肤，默认打开[可选]
-                .loadSkin();
+//        SkinCompatManager.withoutActivity(application)                         // 基础控件换肤初始化
+//                .addInflater(new SkinMaterialViewInflater())            // material design 控件换肤初始化[可选]
+//                .addInflater(new SkinConstraintViewInflater())          // ConstraintLayout 控件换肤初始化[可选]
+//                .addInflater(new SkinCardViewInflater())                // CardView v7 控件换肤初始化[可选]
+//                .setSkinStatusBarColorEnable(false)                     // 关闭状态栏换肤，默认打开[可选]
+//                .setSkinWindowBackgroundEnable(false)                   // 关闭windowBackground换肤，默认打开[可选]
+//                .loadSkin();
         return false;
     }
 

@@ -41,7 +41,7 @@ import okio.ByteString;
 @Route(path = RouterActivityPath.Main.PAGER_MAIN)
 public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewModel> {
 
-    String url = "ws://192.168.0.108:8088/ws";
+    String url = "ws://192.168.2.131:8088/ws";
 
     public static void start(Context context) {
         Intent starter = new Intent(context, MainActivity.class);

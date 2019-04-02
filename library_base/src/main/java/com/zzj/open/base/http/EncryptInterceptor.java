@@ -62,7 +62,7 @@ public class EncryptInterceptor extends BaseInterceptor {
         if(url.contains("http://gank.io/api")){
             return response;
         }
-        response = decrypt(response);
+//        response = decrypt(response);
         return response;
     }
 

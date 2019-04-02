@@ -16,6 +16,7 @@ import com.zzj.open.base.bean.UpdateVersion;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.UpdateVersionUtils;
 import com.zzj.open.module_mine.databinding.MineFragmentMineBinding;
+import com.zzj.open.module_mine.fragment.LoginFragment;
 import com.zzj.open.module_mine.fragment.MineFeedbackFragment;
 import com.zzj.open.module_mine.viewmodel.MineViewModel;
 
@@ -45,6 +46,16 @@ public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewM
     public void initData() {
         super.initData();
         setSwipeBackEnable(false);
+
+        if(!SPUtils.getInstance().getString("userName","").equals("")){
+            binding.tvUsername.setText(SPUtils.getInstance().getString("userName",""));
+        }
+        binding.ivHeader.setOnClickListener(v -> {
+            if(SPUtils.getInstance().getString("userName","").equals("")){
+                _mActivity.start(new LoginFragment());
+            }
+        });
+
         binding.llAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
