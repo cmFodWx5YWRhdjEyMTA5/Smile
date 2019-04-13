@@ -100,4 +100,6 @@ dependencies {
 //    api 'org.bouncycastle:bcpkix-jdk15on:1.57'
 
 //    api "androidx.appcompat:appcompat:1.0.0"
+
+    api 'com.github.mancj:MaterialSearchBar:0.8.2'
 }

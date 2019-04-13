@@ -30,7 +30,7 @@ dependencies {
     //单组件依赖的第三方库，这里不能用implementation，否则宿主项目会因为databinding运行时不能找到第三方类报编译错误
     //搜索框
     implementation 'com.carson_ho:SearchLayout:1.0.1'
-    implementation 'com.github.mancj:MaterialSearchBar:0.8.2'
+
 
 //    implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.4'
 //    implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.4'

@@ -41,6 +41,7 @@ public class ToolbarHelper {
     }
 
     public void isShowNavigationIcon(boolean isShow){
+        activity.setSupportActionBar(toolbar);
         if(isShow){
             toolbar.setNavigationIcon(R.drawable.ic_back_white);
         }else {

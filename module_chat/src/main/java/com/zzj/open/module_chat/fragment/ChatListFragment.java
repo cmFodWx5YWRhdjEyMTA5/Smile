@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.ViewGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -45,6 +47,7 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
         setSwipeBackEnable(false);
         ToolbarHelper toolbarHelper =new ToolbarHelper(getActivity(), (Toolbar) binding.toolbar,"消息");
         toolbarHelper.isShowNavigationIcon(false);
+        setHasOptionsMenu(true);
         //用WebSocket的引用直接发
         viewModel.initData();
 
@@ -57,4 +60,11 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
     }
 
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+//        ((Toolbar)binding.toolbar).inflateMenu(R.menu.chat_menu);
+        inflater.inflate(R.menu.chat_menu,menu);
+
+    }
 }

@@ -39,6 +39,8 @@ public class RouterFragmentPath {
         private static final String CHAT = "/chat";
         /*首页*/
         public static final String CHAT_HOME = CHAT + "/Chat";
+        //联系人
+        public static final String CHAT_CONTACT = CHAT + "/Contact";
     }
     /**
      * 我的组件

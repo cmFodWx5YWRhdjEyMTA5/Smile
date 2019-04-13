@@ -51,8 +51,9 @@ public class MainFragment extends BaseFragment<MainFragmentMainBinding,BaseViewM
         binding.tabBottom.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
         binding.tabBottom.setBarBackgroundColor(R.color.white);
         binding.tabBottom.addItem(new BottomNavigationItem(R.mipmap.ic_movie, "首页").setActiveColorResource(R.color.colorPrimary))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_news, "联系人").setActiveColorResource(R.color.colorPrimary))
                 .addItem(new BottomNavigationItem(R.mipmap.ic_movie, "影视").setActiveColorResource(R.color.colorPrimary))
-                .addItem(new BottomNavigationItem(R.mipmap.ic_news, "资讯").setActiveColorResource(R.color.colorPrimary))
+//                .addItem(new BottomNavigationItem(R.mipmap.ic_news, "资讯").setActiveColorResource(R.color.colorPrimary))
 //                .addItem(new BottomNavigationItem(R.mipmap.ic_news, "福利").setActiveColorResource(R.color.amber_800))
                 .addItem(new BottomNavigationItem(R.mipmap.ic_mine, "我的").setActiveColorResource(R.color.colorPrimary))
                 .setFirstSelectedPosition(0)
@@ -80,8 +81,9 @@ public class MainFragment extends BaseFragment<MainFragmentMainBinding,BaseViewM
 //        BaseFragment firstFragment = findFragment((BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Movie.MOVIE_HOME).navigation());
 //        if (firstFragment == null) {
         mFragments[FIRST] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Chat.CHAT_HOME).navigation();
-        mFragments[SECOND] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Movie.MOVIE_HOME).navigation();
-        mFragments[THIRD] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.News.NEWS_HOME).navigation();
+        mFragments[SECOND] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Chat.CHAT_CONTACT).navigation();
+        mFragments[THIRD] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Movie.MOVIE_HOME).navigation();
+//        mFragments[THIRD] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.News.NEWS_HOME).navigation();
         mFragments[FOUTR] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_HOME).navigation();
 
         loadMultipleRootFragment(R.id.fl_container, FIRST,
