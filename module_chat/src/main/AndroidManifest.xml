@@ -1,2 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.zzj.open.module_chat" />
+    package="com.zzj.open.module_chat">
+
+    <application>
+       <service android:name=".service.ChatMessageService">
+
+       </service>
+    </application>
+</manifest>

@@ -47,13 +47,13 @@ public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewM
         super.initData();
         setSwipeBackEnable(false);
 
-        if(!SPUtils.getInstance().getString("userName","").equals("")){
-            binding.tvUsername.setText(SPUtils.getInstance().getString("userName",""));
+        if(!SPUtils.getInstance().getString("username","").equals("")){
+            binding.tvUsername.setText(SPUtils.getInstance().getString("username",""));
         }
         binding.ivHeader.setOnClickListener(v -> {
-            if(SPUtils.getInstance().getString("userName","").equals("")){
+//            if(SPUtils.getInstance().getString("userName","").equals("")){
                 _mActivity.start(new LoginFragment());
-            }
+//            }
         });
 
         binding.llAbout.setOnClickListener(new View.OnClickListener() {

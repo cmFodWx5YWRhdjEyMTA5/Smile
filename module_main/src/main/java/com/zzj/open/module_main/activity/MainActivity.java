@@ -51,8 +51,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
     @Override
     public void initData() {
         super.initData();
-        RxLifecycle.injectRxLifecycle(this);
-        initWebSocket();
+
 //        keystore();
         loadRootFragment(R.id.fl_container,new MainFragment());
     }
@@ -69,57 +68,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
         return BR.mainViewModel;
     }
 
-    private void initWebSocket(){
-        //init config
-        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory();
-        Config config = new Config.Builder()
-                .setShowLog(true)           //show  log
-                .setClient(new OkHttpClient())   //if you want to set your okhttpClient
-                .setShowLog(true, "your logTag")
-                .setReconnectInterval(2, TimeUnit.SECONDS)  //set reconnect interval
-                .setSSLSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager) // wss support
-                .build();
-        RxWebSocket.setConfig(config);
-
-
-        RxWebSocket.get(url)
-                //RxLifecycle : https://github.com/dhhAndroid/RxLifecycle
-                .compose(RxLifecycle.with(this).<WebSocketInfo>bindOnDestroy())
-                .subscribe(new WebSocketSubscriber() {
-                    @Override
-                    protected void onOpen(@android.support.annotation.NonNull WebSocket webSocket) {
-                        Log.d("MainActivity", " on WebSocket open");
-                        RxWebSocket.send(url,"hello word");
-                    }
-
-                    @Override
-                    protected void onMessage(@android.support.annotation.NonNull String text) {
-                        Log.d("MainActivity", text);
-//                        textview.setText(Html.fromHtml(text));
-                    }
-
-                    @Override
-                    protected void onMessage(@android.support.annotation.NonNull ByteString byteString) {
-                        Log.d("MainActivity", byteString.toString());
-                    }
-
-                    @Override
-                    protected void onReconnect() {
-                        Log.d("MainActivity", "onReconnect");
-                    }
-
-                    @Override
-                    protected void onClose() {
-                        Log.d("MainActivity", "onClose");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                    }
-                });
-
-    }
     /**
      * keyStore加密解密
      */

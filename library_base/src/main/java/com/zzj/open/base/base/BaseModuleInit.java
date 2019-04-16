@@ -24,7 +24,6 @@ public class BaseModuleInit implements IModuleInit {
     private static BaseModuleInit instance;
 
 
-
     @Override
     public boolean onInitAhead(Application application) {
         MultiDex.install(application);

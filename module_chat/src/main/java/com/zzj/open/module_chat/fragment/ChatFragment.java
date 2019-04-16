@@ -3,18 +3,33 @@ package com.zzj.open.module_chat.fragment;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.JsonUtils;
+import com.blankj.utilcode.util.SPUtils;
+import com.dhh.websocket.RxWebSocket;
 import com.sj.emoji.EmojiBean;
+import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_chat.BR;
+import com.zzj.open.module_chat.ChatModuleInit;
 import com.zzj.open.module_chat.R;
+import com.zzj.open.module_chat.adapter.ChatMessageAdapter;
+import com.zzj.open.module_chat.bean.ChatMessageModel;
+import com.zzj.open.module_chat.bean.DataContent;
 import com.zzj.open.module_chat.bean.ImageInfo;
+import com.zzj.open.module_chat.bean.User;
 import com.zzj.open.module_chat.databinding.ChatFragmentChatdetailsBinding;
+import com.zzj.open.module_chat.db.ChatMessageModelDao;
+import com.zzj.open.module_chat.service.ChatMessageService;
 import com.zzj.open.module_chat.utils.Cons;
 import com.zzj.open.module_chat.utils.Factory;
 import com.zzj.open.module_chat.utils.PicturesCompressor;
@@ -24,6 +39,15 @@ import com.zzj.open.module_chat.utils.StreamUtil;
 import com.zzj.open.module_chat.view.ImageRecyclerView;
 import com.zzj.open.module_chat.view.QqEmoticonsKeyBoard;
 import com.zzj.open.module_chat.view.SimpleQqGridView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+import org.greenrobot.greendao.query.QueryBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import me.goldze.mvvmhabit.base.BaseFragment;
 import me.goldze.mvvmhabit.base.BaseViewModel;
@@ -45,6 +69,22 @@ public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,Ba
 
     private ImageRecyclerView imageRecyclerView;
 
+    private String chatUserId;
+    private String chatUsername;
+    private String chatFaceImage;
+    private ChatMessageAdapter messageAdapter;
+    private List<ChatMessageModel> chatMessageModels = new ArrayList<>();
+    public static ChatFragment newInstance(String chatUserId,String chatUsername,String chatFaceImage) {
+
+        Bundle args = new Bundle();
+        args.putString("chatUserId",chatUserId);
+        args.putString("chatUsername",chatUsername);
+        args.putString("chatFaceImage",chatFaceImage);
+        ChatFragment fragment = new ChatFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return R.layout.chat_fragment_chatdetails;
@@ -58,8 +98,100 @@ public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,Ba
     @Override
     public void initData() {
         super.initData();
+        EventBus.getDefault().register(this);
+        chatUserId = getArguments().getString("chatUserId");
+        chatUsername = getArguments().getString("chatUsername");
+        chatFaceImage = getArguments().getString("chatFaceImage");
+        new ToolbarHelper(_mActivity,binding.toolbar,"");
+
+        binding.toolbarTitle.setText(chatUsername);
+        //查询聊天记录
+        QueryBuilder<ChatMessageModel> builder = ChatModuleInit.getDaoSession().getChatMessageModelDao().queryBuilder();
+        builder.whereOr(ChatMessageModelDao.Properties.SenderId.eq(chatUserId)
+                , ChatMessageModelDao.Properties.ReceiverId.eq(chatUserId));
+        chatMessageModels.addAll(builder.build().list());
+
+
         initEmoticonsKeyBoardBar();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(_mActivity);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
+        //解决输入法弹出后recyclerView不能自动滚动的问题
+        linearLayoutManager.setStackFromEnd(true);
+        User user = new User();
+        user.setFaceImage(chatFaceImage);
+        user.setId(chatUserId);
+        user.setUsername(chatUsername);
+        messageAdapter = new ChatMessageAdapter(chatMessageModels,user);
+        binding.recyclerView.setAdapter(messageAdapter);
+        initListener();
+
+
+        binding.recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
     }
+
+    protected void initListener() {
+
+        /**
+         * 发送按钮事件
+         */
+        binding.kbLayout.getBtnSend().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String msg =  binding.kbLayout.getEtChat().getText().toString();
+
+                onSendTextMsg(msg);
+            }
+        });
+        /**
+         * 对输入内容的监听
+         */
+        binding.etContent.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //监听是否输入内容
+                if(charSequence!=null&&charSequence.toString().trim().length()>0){
+
+                    binding.ivChatAdd.setVisibility(View.GONE);
+                }else {
+
+                    binding.ivChatAdd.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+        binding.recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        break;
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        binding.kbLayout.reset();
+                        break;
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+    }
+
 
     private void initEmoticonsKeyBoardBar() {
 
@@ -85,7 +217,6 @@ public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,Ba
                     @Override
                     public void run() {
                         try {
-
                             // 压缩工具类
                             if (PicturesCompressor.compressImage(_mActivity,imagePath, tempFile,
                                     Cons.MAX_UPLOAD_IMAGE_LENGTH)) {
@@ -173,5 +304,54 @@ public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,Ba
     public void onPause() {
         super.onPause();
         binding.kbLayout.reset();
+    }
+
+
+    /**
+     * 发送文本消息
+     * @param message
+     */
+    private void onSendTextMsg(String message){
+        if(message.equalsIgnoreCase("")){
+            return;
+        }
+        ChatMessageModel chatMessageModel = new ChatMessageModel();
+        chatMessageModel.setMsg(message);
+        chatMessageModel.setType(ChatMessageModel.CHAT_MSG_TYPE_TEXT);
+        chatMessageModel.setReceiverId(chatUserId);
+        chatMessageModel.setSenderId(SPUtils.getInstance().getString(Cons.SaveKey.USER_ID));
+        //发送文本消息
+        messageAdapter.addData(chatMessageModel);
+        DataContent content = new DataContent();
+        content.setChatMsg(chatMessageModel);
+        content.setAction(2);
+        content.setExtand("");
+        RxWebSocket.send(ChatMessageService.url,GsonUtils.toJson(content));
+        ChatModuleInit.getDaoSession().getChatMessageModelDao().insert(chatMessageModel);
+        binding.recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
+    }
+
+    /**
+     * 发送图片消息
+     * @param message
+     */
+    private void onSendImgMsg(String message){
+        if(message.equalsIgnoreCase("")){
+            return;
+        }
+        ChatMessageModel chatMessageModel = new ChatMessageModel();
+        chatMessageModel.setMsg(message);
+        chatMessageModel.setType(ChatMessageModel.CHAT_MSG_TYPE_PIC);
+        chatMessageModel.setReceiverId(chatUserId);
+        chatMessageModel.setSenderId(SPUtils.getInstance().getString(Cons.SaveKey.USER_ID));
+        //发送图片消息
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void receiverMessage(DataContent dataContent){
+        if(dataContent.getAction() == 2){
+            messageAdapter.addData(dataContent.getChatMsg());
+            binding.recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
+        }
     }
 }

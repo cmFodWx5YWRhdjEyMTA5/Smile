@@ -19,6 +19,8 @@ import android.view.animation.Animation;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -81,6 +83,9 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     public void onDestroy() {
         mDelegate.onDestroy();
         super.onDestroy();
+        if(EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override

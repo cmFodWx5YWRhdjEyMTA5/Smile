@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/len_6"
+    android:paddingTop="@dimen/len_6">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+                <!--<com.sunfusheng.GlideImageView-->
+                    <!--android:id="@+id/image31"-->
+                    <!--android:layout_width="240dp"-->
+                    <!--android:layout_height="135dp"-->
+                   <!--/>-->
+
+                <!--<com.sunfusheng.progress.CircleProgressView-->
+                    <!--android:id="@+id/progressView1"-->
+                    <!--android:layout_width="50dp"-->
+                    <!--android:layout_height="50dp"-->
+                    <!--android:layout_centerInParent="true"-->
+                    <!--android:progress="0"-->
+                    <!--android:visibility="gone"-->
+                    <!--app:cpv_innerPadding="2dp"-->
+                    <!--app:cpv_outerColor="@color/translucent_white_90"-->
+                    <!--app:cpv_outerSize="1dp"-->
+                    <!--app:cpv_progressNormalColor="@color/trans"-->
+                    <!--app:cpv_progressReachColor="@color/translucent_white_90"-->
+                    <!--app:cpv_progressStyle="FillInnerArc"/>-->
+        </RelativeLayout>
+        <ImageView
+            android:id="@+id/pv_chat_header"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="right"
+            android:src="@mipmap/ic_launcher_round"
+            />
+
+
+</FrameLayout>

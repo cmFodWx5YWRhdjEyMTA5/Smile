@@ -26,7 +26,7 @@ public interface Cons {
     class SaveKey{
         public static final String PHONE = "phone";
         public static final String USERNAME = "username";
-        public static final String USER_ID = "userid";
+        public static final String USER_ID = "userId";
         public static final String PASSWORD = "password";
         public static final String USER_ADDRESS = "address";
         public static final String USER_HEADER_PIC = "headerpic";

@@ -46,7 +46,7 @@ public class ChatSearchFriendFragment extends BaseFragment<ChatFragmentSearchfri
 
             @Override
             public void onSearchConfirmed(CharSequence text) {
-                viewModel.searchFriend((String) text);
+                viewModel.searchFriend(text.toString());
             }
 
             @Override
@@ -59,6 +59,7 @@ public class ChatSearchFriendFragment extends BaseFragment<ChatFragmentSearchfri
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
 //                _mActivity.start();
+                _mActivity.start(ChatUserInfoFragment.newInstance(viewModel.userObservableField.get().getId()));
             }
         });
     }

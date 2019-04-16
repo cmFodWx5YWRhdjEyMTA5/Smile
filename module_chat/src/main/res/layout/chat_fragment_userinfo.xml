@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:binding="http://schemas.android.com/tools">
     <data>
-        <import type="me.goldze.mvvmhabit.base.BaseViewModel"/>
+        <import type="com.zzj.open.module_chat.vm.ChatUserInfoViewModel"/>
         <variable
             name="viewModel"
-            type="me.goldze.mvvmhabit.base.BaseViewModel"/>
+            type="com.zzj.open.module_chat.vm.ChatUserInfoViewModel"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -20,7 +21,8 @@
                 android:id="@+id/iv_header"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@mipmap/ic_launcher_round"
+                android:src="@{viewModel.drawableImg}"
+                binding:url="@{viewModel.user.faceImage}"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_margin="@dimen/len_20"
@@ -29,7 +31,7 @@
             android:id="@+id/tv_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="zzj"
+            android:text="@{viewModel.user.username}"
             android:textSize="18dp"
             android:textColor="@color/main_text_color"
             app:layout_constraintLeft_toRightOf="@+id/iv_header"
@@ -40,7 +42,7 @@
             android:id="@+id/tv_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="昵称：zzj"
+            android:text="@{viewModel.user.nickname}"
             android:textSize="14dp"
             android:textColor="@color/sub_text_color"
             app:layout_constraintLeft_toRightOf="@+id/iv_header"
@@ -54,6 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/main_text_color"
+            binding:onClickCommand="@{viewModel.addLinkClick}"
             android:text="添加到通讯录"
             android:textSize="18dp"
             android:padding="@dimen/len_10"

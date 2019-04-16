@@ -1,5 +1,5 @@
 apply from: "../module.build.gradle"
-
+apply plugin: 'org.greenrobot.greendao'
 android {
 
 
@@ -19,6 +19,12 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+
+    greendao {
+        schemaVersion 1
+        targetGenDir 'src/main/java'
+        daoPackage 'com.zzj.open.module_chat.db'
+    }
 }
 
 dependencies {
@@ -31,4 +37,6 @@ dependencies {
     implementation project(':reclib-testemoticons')
     implementation project(':reclib-qq')
     implementation 'com.github.w446108264:AndroidEmoji:1.3-withsource'
+
+    implementation 'org.greenrobot:greendao:3.2.0'
 }

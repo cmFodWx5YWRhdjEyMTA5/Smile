@@ -1,5 +1,6 @@
 package com.zzj.open.module_chat.fragment;
 
+import android.content.Intent;
 import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -14,6 +16,7 @@ import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_chat.R;
 import com.zzj.open.module_chat.databinding.ChatFragmentChatlistBinding;
+import com.zzj.open.module_chat.service.ChatMessageService;
 import com.zzj.open.module_chat.vm.ChatListViewModel;
 
 import me.goldze.mvvmhabit.base.BaseFragment;
@@ -44,6 +47,7 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
     @Override
     public void initData() {
         super.initData();
+        _mActivity.startService(new Intent(_mActivity,ChatMessageService.class));
         setSwipeBackEnable(false);
         ToolbarHelper toolbarHelper =new ToolbarHelper(getActivity(), (Toolbar) binding.toolbar,"消息");
         toolbarHelper.isShowNavigationIcon(false);
@@ -65,6 +69,15 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
         super.onCreateOptionsMenu(menu, inflater);
 //        ((Toolbar)binding.toolbar).inflateMenu(R.menu.chat_menu);
         inflater.inflate(R.menu.chat_menu,menu);
-
+        ((Toolbar)binding.toolbar).setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if(menuItem.getItemId() == R.id.menu_contact){
+                    _mActivity.start(new ChatSearchFriendFragment());
+                }
+                return false;
+            }
+        });
     }
+
 }
