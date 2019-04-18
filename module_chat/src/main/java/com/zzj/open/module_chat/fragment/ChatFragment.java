@@ -46,7 +46,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import me.goldze.mvvmhabit.base.BaseFragment;
@@ -74,6 +76,7 @@ public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,Ba
     private String chatFaceImage;
     private ChatMessageAdapter messageAdapter;
     private List<ChatMessageModel> chatMessageModels = new ArrayList<>();
+    private Map<String,ChatMessageModel> chatMessageModelMap = new HashMap<>();
     public static ChatFragment newInstance(String chatUserId,String chatUsername,String chatFaceImage) {
 
         Bundle args = new Bundle();
@@ -320,14 +323,17 @@ public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,Ba
         chatMessageModel.setType(ChatMessageModel.CHAT_MSG_TYPE_TEXT);
         chatMessageModel.setReceiverId(chatUserId);
         chatMessageModel.setSenderId(SPUtils.getInstance().getString(Cons.SaveKey.USER_ID));
+        chatMessageModel.setRead(true);
+        chatMessageModel.setSend(false);
         //发送文本消息
-        messageAdapter.addData(chatMessageModel);
         DataContent content = new DataContent();
         content.setChatMsg(chatMessageModel);
         content.setAction(2);
         content.setExtand("");
-        RxWebSocket.send(ChatMessageService.url,GsonUtils.toJson(content));
+        chatMessageModelMap.put(chatMessageModel.getMsgId(),chatMessageModel);
+        messageAdapter.addData(chatMessageModel);
         ChatModuleInit.getDaoSession().getChatMessageModelDao().insert(chatMessageModel);
+        RxWebSocket.send(ChatMessageService.url,GsonUtils.toJson(content));
         binding.recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
     }
 
@@ -349,9 +355,16 @@ public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,Ba
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void receiverMessage(DataContent dataContent){
+        //接收到聊天消息
         if(dataContent.getAction() == 2){
             messageAdapter.addData(dataContent.getChatMsg());
             binding.recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
+            //聊天消息发送成功
+        }else if(dataContent.getAction() == 6){
+            String msgId = dataContent.getExtand();
+            ChatMessageModel chatMessageModel = chatMessageModelMap.get(msgId);
+            chatMessageModel.setSend(true);
+            messageAdapter.notifyDataSetChanged();
         }
     }
 }

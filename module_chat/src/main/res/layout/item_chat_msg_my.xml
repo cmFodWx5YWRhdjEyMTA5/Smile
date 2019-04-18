@@ -1,32 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="right"
-    android:padding="8dp"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
-        android:id="@+id/tv_chat_msg"
+        android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginRight="5dp"
-        android:text="15611gjhgjhgj"
-        android:layout_gravity="center_vertical"
-        android:gravity = "center"
-        android:background="@drawable/chatto_bg_focused"
-        android:paddingLeft="5dp"
-        android:paddingRight="15dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:textSize="16sp"
-        android:textColor="@color/white"
+        android:textSize="@dimen/len_12"
+        android:text="10:00"
+        android:textColor="@color/sub_text_color"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         />
+
+    <RelativeLayout
+        android:id="@+id/fl_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_time"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/pv_chat_header"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="@dimen/len_20"
+        android:layout_marginBottom="@dimen/len_20"
+        >
+        <com.qmuiteam.qmui.widget.QMUILoadingView
+            android:id="@+id/loading"
+            android:layout_width="@dimen/len_2"
+            android:layout_height="@dimen/len_2"
+            android:color="@color/grey_300"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tv_chat_msg"
+            android:layout_marginRight="@dimen/len_2"
+            />
+        <TextView
+            android:id="@+id/tv_chat_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:background="@drawable/chat_to_bg_normal"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:gravity = "center"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            />
+    </RelativeLayout>
     <ImageView
         android:id="@+id/pv_chat_header"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@mipmap/ic_launcher_round"
+        android:src="@mipmap/default_head"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_time"
+        android:layout_marginRight="@dimen/len_10"
+        android:layout_marginTop="@dimen/len_20"
+
         />
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

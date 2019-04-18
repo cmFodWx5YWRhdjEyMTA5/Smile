@@ -44,20 +44,49 @@ public class ChatMessageModel implements MultiItemEntity {
     @Expose
     private String msg;//消息
 
+    private String time; //时间
 
+    /**
+     * 是否发送成功
+     */
+    private boolean isSend;
+    /**
+     * 是否读取
+     */
+    private boolean isRead;
 
     public ChatMessageModel() {
 
     }
 
-    @Generated(hash = 1605742337)
-    public ChatMessageModel(String msgId, String senderId, String receiverId, int type, int itemType, String msg) {
+    public boolean isSend() {
+        return isSend;
+    }
+
+    public void setSend(boolean send) {
+        isSend = send;
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
+    }
+
+    @Generated(hash = 1900934760)
+    public ChatMessageModel(String msgId, String senderId, String receiverId, int type, int itemType, String msg,
+            String time, boolean isSend, boolean isRead) {
         this.msgId = msgId;
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.type = type;
         this.itemType = itemType;
         this.msg = msg;
+        this.time = time;
+        this.isSend = isSend;
+        this.isRead = isRead;
     }
 
     public String getMsgId() {
@@ -101,6 +130,14 @@ public class ChatMessageModel implements MultiItemEntity {
         this.type = type;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     @Override
     public int getItemType() {
         if (senderId.equals(SPUtils.getInstance().getString(Cons.SaveKey.USER_ID)) && type == CHAT_MSG_TYPE_TEXT) {
@@ -121,6 +158,22 @@ public class ChatMessageModel implements MultiItemEntity {
 
     public void setItemType(int itemType) {
         this.itemType = itemType;
+    }
+
+    public boolean getIsSend() {
+        return this.isSend;
+    }
+
+    public void setIsSend(boolean isSend) {
+        this.isSend = isSend;
+    }
+
+    public boolean getIsRead() {
+        return this.isRead;
+    }
+
+    public void setIsRead(boolean isRead) {
+        this.isRead = isRead;
     }
 
 }

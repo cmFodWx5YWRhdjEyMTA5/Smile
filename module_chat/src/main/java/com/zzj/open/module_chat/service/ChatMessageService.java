@@ -17,6 +17,7 @@ import com.zzj.open.base.http.HttpsUtils;
 import com.zzj.open.module_chat.ChatModuleInit;
 import com.zzj.open.module_chat.bean.ChatMessageModel;
 import com.zzj.open.module_chat.bean.DataContent;
+import com.zzj.open.module_chat.db.ChatMessageModelDao;
 import com.zzj.open.module_chat.utils.Cons;
 
 import org.greenrobot.eventbus.EventBus;
@@ -83,7 +84,14 @@ public class ChatMessageService extends Service {
                        if(dataContent.getAction() == 2){
                            ChatModuleInit.getDaoSession().getChatMessageModelDao().insert(dataContent.getChatMsg());
                            EventBus.getDefault().post(dataContent);
+                       }else if(dataContent.getAction() == 6){
+                           String msgId = dataContent.getExtand();
+                           ChatMessageModel chatMessageModel = ChatModuleInit.getDaoSession().getChatMessageModelDao().queryBuilder().where(ChatMessageModelDao.Properties.MsgId.eq(msgId)).unique();
+                           chatMessageModel.setSend(true);
+                           ChatModuleInit.getDaoSession().getChatMessageModelDao().update(chatMessageModel);
+                           EventBus.getDefault().post(dataContent);
                        }
+
                     }
 
                     @Override

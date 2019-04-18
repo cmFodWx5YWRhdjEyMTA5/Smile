@@ -60,7 +60,13 @@ public class ChatMessageAdapter extends BaseMultiItemQuickAdapter<ChatMessageMod
             case ChatMessageModel.CHAT_MSG_TYPE_RIGHT_TEXT:
             case ChatMessageModel.CHAT_MSG_TYPE_LEFT_TEXT:
 //                helper.setText(R.id.tv_chat_msg,item.getContent());
-
+                //设置发送状态
+                if(item.isSend()){
+                    helper.setGone(R.id.loading,false);
+                }else {
+                    helper.setGone(R.id.loading,true);
+                }
+                helper.setText(R.id.tv_time,item.getTime());
                 QqUtils.spannableEmoticonFilter((TextView) helper.getView(R.id.tv_chat_msg), item.getMsg());
                 return;
             case ChatMessageModel.CHAT_MSG_TYPE_LEFT_PIC:
