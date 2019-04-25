@@ -105,6 +105,8 @@ dependencies {
 //    api "androidx.appcompat:appcompat:1.0.0"
 
     api 'com.github.mancj:MaterialSearchBar:0.8.2'
-
+//    角标
+    api 'cn.bingoogolapple:bga-badgeview-api:1.1.8'
+    annotationProcessor "cn.bingoogolapple:bga-badgeview-compiler:1.1.8"
 
 }

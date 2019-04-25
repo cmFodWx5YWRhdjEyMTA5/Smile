@@ -18,11 +18,11 @@ import com.zzj.open.base.http.RetrofitClient;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_chat.BR;
+import com.zzj.open.module_chat.ChatModuleInit;
 import com.zzj.open.module_chat.R;
 import com.zzj.open.module_chat.adapter.ChatContactAdapter;
 import com.zzj.open.module_chat.api.ApiService;
-import com.zzj.open.module_chat.bean.MyFriendBean;
-import com.zzj.open.module_chat.bean.User;
+import com.zzj.open.module_chat.bean.MyFriendModel;
 import com.zzj.open.module_chat.databinding.ChatFragmentContactBinding;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class ChatContactFragment extends BaseFragment<ChatFragmentContactBinding
 
 
     private ChatContactAdapter chatContactAdapter;
-    private List<MyFriendBean> users = new ArrayList<>();
+    private List<MyFriendModel> users = new ArrayList<>();
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class ChatContactFragment extends BaseFragment<ChatFragmentContactBinding
         chatContactAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                MyFriendBean myFriendBean = users.get(position);
+                MyFriendModel myFriendBean = users.get(position);
                 _mActivity.start(ChatFragment.newInstance(myFriendBean.getFriendUserId(),myFriendBean.getFriendUsername(),myFriendBean.getFriendFaceImage()));
             }
         });
@@ -96,10 +96,15 @@ public class ChatContactFragment extends BaseFragment<ChatFragmentContactBinding
                 .doOnSubscribe(disposable -> {
                     showDialog("请稍等…");
                 })
-                .subscribe(new Consumer<Result<List<MyFriendBean>>>() {
+                .subscribe(new Consumer<Result<List<MyFriendModel>>>() {
                     @Override
-                    public void accept(Result<List<MyFriendBean>> result) throws Exception {
+                    public void accept(Result<List<MyFriendModel>> result) throws Exception {
                         if(result.getCode() == SPKeyGlobal.REQUEST_SUCCESS){
+                          try {
+                              ChatModuleInit.getDaoSession().getMyFriendModelDao().insertOrReplaceInTx(result.getResult());
+                          }catch (Exception e){
+                              e.printStackTrace();
+                          }
                             users.addAll(result.getResult());
                             chatContactAdapter.notifyDataSetChanged();
                         }

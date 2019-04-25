@@ -1,12 +1,17 @@
 package com.zzj.open.module_chat.bean;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+
 import java.io.Serializable;
+import org.greenrobot.greendao.annotation.Generated;
 
 /**
  * Created by zzj on 2018/2/7.
  */
 
-public class User implements Serializable{
+
+public class User {
 
 
     /**
@@ -47,6 +52,8 @@ public class User implements Serializable{
     private String money;
     //积分
     private String integral;
+
+
 
     public String getNickname() {
         return nickname;
@@ -96,7 +103,7 @@ public class User implements Serializable{
         isFollow = follow;
     }
 
-    public Object getPhone() {
+    public String getPhone() {
         return phone;
     }
 
@@ -185,5 +192,13 @@ public class User implements Serializable{
 
     public void setIntegral(String integral) {
         this.integral = integral;
+    }
+
+    public boolean getIsFollow() {
+        return this.isFollow;
+    }
+
+    public void setIsFollow(boolean isFollow) {
+        this.isFollow = isFollow;
     }
 }

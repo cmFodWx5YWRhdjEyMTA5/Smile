@@ -8,8 +8,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zzj.open.module_chat.R;
-import com.zzj.open.module_chat.bean.MyFriendBean;
-import com.zzj.open.module_chat.bean.User;
+import com.zzj.open.module_chat.bean.MyFriendModel;
 
 import java.util.List;
 
@@ -20,14 +19,14 @@ import java.util.List;
  * @desc :  联系人列表
  * @version: 1.0
  */
-public class ChatContactAdapter extends BaseQuickAdapter<MyFriendBean,BaseViewHolder> {
+public class ChatContactAdapter extends BaseQuickAdapter<MyFriendModel,BaseViewHolder> {
 
-    public ChatContactAdapter(int layoutResId, @Nullable List<MyFriendBean> data) {
+    public ChatContactAdapter(int layoutResId, @Nullable List<MyFriendModel> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, MyFriendBean item) {
+    protected void convert(BaseViewHolder helper, MyFriendModel item) {
         Glide.with(mContext).load(item.getFriendFaceImage()).apply(new RequestOptions().placeholder(R.mipmap.ic_launcher_round)).into((ImageView) helper.getView(R.id.iv_header));
         helper.setText(R.id.tv_username,item.getFriendUsername());
     }

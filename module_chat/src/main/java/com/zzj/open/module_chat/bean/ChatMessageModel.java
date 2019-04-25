@@ -54,6 +54,10 @@ public class ChatMessageModel implements MultiItemEntity {
      * 是否读取
      */
     private boolean isRead;
+    /**
+     * 发送失败
+     */
+    private boolean sendFails;
 
     public ChatMessageModel() {
 
@@ -75,9 +79,9 @@ public class ChatMessageModel implements MultiItemEntity {
         isRead = read;
     }
 
-    @Generated(hash = 1900934760)
+    @Generated(hash = 1913566775)
     public ChatMessageModel(String msgId, String senderId, String receiverId, int type, int itemType, String msg,
-            String time, boolean isSend, boolean isRead) {
+            String time, boolean isSend, boolean isRead, boolean sendFails) {
         this.msgId = msgId;
         this.senderId = senderId;
         this.receiverId = receiverId;
@@ -87,6 +91,15 @@ public class ChatMessageModel implements MultiItemEntity {
         this.time = time;
         this.isSend = isSend;
         this.isRead = isRead;
+        this.sendFails = sendFails;
+    }
+
+    public boolean isSendFails() {
+        return sendFails;
+    }
+
+    public void setSendFails(boolean sendFails) {
+        this.sendFails = sendFails;
     }
 
     public String getMsgId() {
@@ -174,6 +187,10 @@ public class ChatMessageModel implements MultiItemEntity {
 
     public void setIsRead(boolean isRead) {
         this.isRead = isRead;
+    }
+
+    public boolean getSendFails() {
+        return this.sendFails;
     }
 
 }

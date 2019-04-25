@@ -1,8 +1,10 @@
 package com.zzj.open.module_chat.api;
 
 import com.zzj.open.base.bean.Result;
+import com.zzj.open.module_chat.bean.ChatMessageModel;
+import com.zzj.open.module_chat.bean.ChatMsg;
 import com.zzj.open.module_chat.bean.FriendRequestBean;
-import com.zzj.open.module_chat.bean.MyFriendBean;
+import com.zzj.open.module_chat.bean.MyFriendModel;
 import com.zzj.open.module_chat.bean.User;
 
 import java.util.List;
@@ -64,8 +66,8 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("u/operFriendRequest")
-    Observable<Result<List<MyFriendBean>>> operFriendRequest(@Field("acceptUserId") String acceptUserId, @Field("sendUserId")String sendUserId,
-                                                             @Field("operType")int operType);
+    Observable<Result<List<MyFriendModel>>> operFriendRequest(@Field("acceptUserId") String acceptUserId, @Field("sendUserId")String sendUserId,
+                                                              @Field("operType")int operType);
     /**
      * 我的好友列表
      * @param userId 我的用户id
@@ -73,5 +75,13 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("u/myFriends")
-    Observable<Result<List<MyFriendBean>>> myFriends(@Field("userId") String userId);
+    Observable<Result<List<MyFriendModel>>> myFriends(@Field("userId") String userId);
+    /**
+     * 获取未签收的消息列表
+     * @param acceptUserId 我的用户id
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("u/getUnReadMsgList")
+    Observable<Result<List<ChatMsg>>> getUnReadMsgList(@Field("acceptUserId") String acceptUserId);
 }

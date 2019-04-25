@@ -8,7 +8,7 @@ import com.zzj.open.base.global.SPKeyGlobal;
 import com.zzj.open.base.http.RetrofitClient;
 import com.zzj.open.module_chat.api.ApiService;
 import com.zzj.open.module_chat.bean.FriendRequestBean;
-import com.zzj.open.module_chat.bean.MyFriendBean;
+import com.zzj.open.module_chat.bean.MyFriendModel;
 
 import java.util.List;
 
@@ -70,9 +70,9 @@ public class ChatNewFriendItemViewModel extends ItemViewModel<ChatNewFriendViewM
                 .doOnSubscribe(disposable -> {
                     viewModel.showDialog("正在操作…");
                 })
-                .subscribe(new Consumer<Result<List<MyFriendBean>>>() {
+                .subscribe(new Consumer<Result<List<MyFriendModel>>>() {
                     @Override
-                    public void accept(Result<List<MyFriendBean>> result) throws Exception {
+                    public void accept(Result<List<MyFriendModel>> result) throws Exception {
                         if(result.getCode() == SPKeyGlobal.REQUEST_SUCCESS){
                             viewModel.queryFriendRequests(SPUtils.getInstance().getString("userId"));
                         }else {

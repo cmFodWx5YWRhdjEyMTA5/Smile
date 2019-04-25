@@ -33,6 +33,7 @@ public class ChatMessageModelDao extends AbstractDao<ChatMessageModel, String> {
         public final static Property Time = new Property(6, String.class, "time", false, "TIME");
         public final static Property IsSend = new Property(7, boolean.class, "isSend", false, "IS_SEND");
         public final static Property IsRead = new Property(8, boolean.class, "isRead", false, "IS_READ");
+        public final static Property SendFails = new Property(9, boolean.class, "sendFails", false, "SEND_FAILS");
     }
 
 
@@ -56,7 +57,8 @@ public class ChatMessageModelDao extends AbstractDao<ChatMessageModel, String> {
                 "\"MSG\" TEXT," + // 5: msg
                 "\"TIME\" TEXT," + // 6: time
                 "\"IS_SEND\" INTEGER NOT NULL ," + // 7: isSend
-                "\"IS_READ\" INTEGER NOT NULL );"); // 8: isRead
+                "\"IS_READ\" INTEGER NOT NULL ," + // 8: isRead
+                "\"SEND_FAILS\" INTEGER NOT NULL );"); // 9: sendFails
     }
 
     /** Drops the underlying database table. */
@@ -97,6 +99,7 @@ public class ChatMessageModelDao extends AbstractDao<ChatMessageModel, String> {
         }
         stmt.bindLong(8, entity.getIsSend() ? 1L: 0L);
         stmt.bindLong(9, entity.getIsRead() ? 1L: 0L);
+        stmt.bindLong(10, entity.getSendFails() ? 1L: 0L);
     }
 
     @Override
@@ -131,6 +134,7 @@ public class ChatMessageModelDao extends AbstractDao<ChatMessageModel, String> {
         }
         stmt.bindLong(8, entity.getIsSend() ? 1L: 0L);
         stmt.bindLong(9, entity.getIsRead() ? 1L: 0L);
+        stmt.bindLong(10, entity.getSendFails() ? 1L: 0L);
     }
 
     @Override
@@ -149,7 +153,8 @@ public class ChatMessageModelDao extends AbstractDao<ChatMessageModel, String> {
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // msg
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // time
             cursor.getShort(offset + 7) != 0, // isSend
-            cursor.getShort(offset + 8) != 0 // isRead
+            cursor.getShort(offset + 8) != 0, // isRead
+            cursor.getShort(offset + 9) != 0 // sendFails
         );
         return entity;
     }
@@ -165,6 +170,7 @@ public class ChatMessageModelDao extends AbstractDao<ChatMessageModel, String> {
         entity.setTime(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setIsSend(cursor.getShort(offset + 7) != 0);
         entity.setIsRead(cursor.getShort(offset + 8) != 0);
+        entity.setSendFails(cursor.getShort(offset + 9) != 0);
      }
     
     @Override

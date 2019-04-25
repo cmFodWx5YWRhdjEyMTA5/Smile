@@ -35,7 +35,7 @@
             android:color="@color/grey_300"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/tv_chat_msg"
-            android:layout_marginRight="@dimen/len_2"
+            android:layout_marginRight="@dimen/len_4"
             />
         <TextView
             android:id="@+id/tv_chat_msg"

@@ -4,23 +4,38 @@ import android.content.Intent;
 import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.SPUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.dhh.websocket.RxWebSocket;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_chat.R;
+import com.zzj.open.module_chat.adapter.ChatListAdapter;
+import com.zzj.open.module_chat.bean.ChatListModel;
+import com.zzj.open.module_chat.bean.ChatMessageModel;
+import com.zzj.open.module_chat.bean.DataContent;
 import com.zzj.open.module_chat.databinding.ChatFragmentChatlistBinding;
 import com.zzj.open.module_chat.service.ChatMessageService;
 import com.zzj.open.module_chat.vm.ChatListViewModel;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import me.goldze.mvvmhabit.base.BaseFragment;
 import me.tatarka.bindingcollectionadapter2.BR;
+import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * @author : zzj
@@ -33,7 +48,8 @@ import me.tatarka.bindingcollectionadapter2.BR;
 public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,ChatListViewModel> {
 
 
-//    String url = "ws://121.40.165.18:8800";
+    private ChatListAdapter chatListAdapter;
+
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return R.layout.chat_fragment_chatlist;
@@ -47,22 +63,46 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
     @Override
     public void initData() {
         super.initData();
+        EventBus.getDefault().register(this);
         _mActivity.startService(new Intent(_mActivity,ChatMessageService.class));
         setSwipeBackEnable(false);
         ToolbarHelper toolbarHelper =new ToolbarHelper(getActivity(), (Toolbar) binding.toolbar,"消息");
         toolbarHelper.isShowNavigationIcon(false);
         setHasOptionsMenu(true);
-        //用WebSocket的引用直接发
-        viewModel.initData();
 
-        viewModel.aBoolean.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
+        chatListAdapter = new ChatListAdapter(R.layout.chat_chatlist_item,viewModel.chatListModels);
+        binding.recyclerView.setAdapter(chatListAdapter);
+        viewModel.getUnReadMsgList();
+        viewModel.initData();
+        chatListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onPropertyChanged(Observable sender, int propertyId) {
-                _mActivity.start(new ChatFragment());
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ChatListModel chatListModel = viewModel.chatListModels.get(position);
+                _mActivity.start(ChatFragment.newInstance(chatListModel.getChatUserId(),chatListModel.getChatUserName(),chatListModel.getChatFaceImage()));
             }
         });
+        viewModel.isUpdateList.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                chatListAdapter.notifyDataSetChanged();
+            }
+        });
+
     }
 
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        viewModel.initData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -79,5 +119,14 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
             }
         });
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void receiverMessage(DataContent dataContent) {
 
+        //接收到聊天消息
+        viewModel.initData();
+        if(dataContent.getAction() == 1){
+            SPUtils.getInstance().put("websocket",1);
+            viewModel.getUnReadMsgList();
+        }
+    }
 }

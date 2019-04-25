@@ -1,6 +1,9 @@
 package com.zzj.open.module_chat.vm;
 
 import android.support.annotation.NonNull;
+import android.view.View;
+
+import com.zzj.open.module_chat.bean.ChatListModel;
 
 import me.goldze.mvvmhabit.base.ItemViewModel;
 import me.goldze.mvvmhabit.binding.command.BindingAction;
@@ -9,23 +12,22 @@ import me.goldze.mvvmhabit.binding.command.BindingCommand;
 /**
  * @author : zzj
  * @e-mail : zhangzhijun@pansoft.com
- * @date : 2019/3/30 18:52
  * @desc :
  * @version: 1.0
  */
 public class ChatListItemViewModel extends ItemViewModel<ChatListViewModel> {
+    public ChatListModel chatListModel;
 
-    public ChatListItemViewModel(@NonNull ChatListViewModel viewModel) {
+    public ChatListItemViewModel(@NonNull ChatListViewModel viewModel,ChatListModel chatListModel) {
         super(viewModel);
-
+        this.chatListModel = chatListModel;
     }
 
     //条目的点击事件
     public BindingCommand itemClick = new BindingCommand(new BindingAction() {
         @Override
         public void call() {
-            //这里可以通过一个标识,做出判断，已达到跳入不能界面的逻辑
-            viewModel.aBoolean.set(!viewModel.aBoolean.get());
+
 
         }
     });

@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:binding="http://schemas.android.com/apk/res-auto">
+<layout >
     <data>
         <import type="com.zzj.open.module_chat.vm.ChatListViewModel"/>
         
         <variable
             name="viewModel"
             type="com.zzj.open.module_chat.vm.ChatListViewModel"/>
-
-        <import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
-
-        <import type="me.goldze.mvvmhabit.binding.viewadapter.recyclerview.LineManagers" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -38,12 +34,9 @@
                 >
 
                 <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    binding:adapter="@{viewModel.adapter}"
-                    binding:itemBinding="@{viewModel.itemBinding}"
-                    binding:items="@{viewModel.observableList}"
-                    binding:layoutManager="@{LayoutManagers.linear()}"
                     >
 
                 </android.support.v7.widget.RecyclerView>

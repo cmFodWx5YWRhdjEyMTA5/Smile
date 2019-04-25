@@ -1,6 +1,10 @@
 package com.zzj.open.module_chat.bean;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+
 import java.io.Serializable;
+import org.greenrobot.greendao.annotation.Generated;
 
 /**
  * @author : zzj
@@ -8,12 +12,27 @@ import java.io.Serializable;
  * @desc : 好友bean
  * @version: 1.0
  */
-public class MyFriendBean implements Serializable {
+@Entity
+public class MyFriendModel {
 
+    @Id
     private String friendUserId;
     private String friendUsername;
     private String friendFaceImage;
     private String friendNickname;
+
+    @Generated(hash = 400312017)
+    public MyFriendModel(String friendUserId, String friendUsername,
+            String friendFaceImage, String friendNickname) {
+        this.friendUserId = friendUserId;
+        this.friendUsername = friendUsername;
+        this.friendFaceImage = friendFaceImage;
+        this.friendNickname = friendNickname;
+    }
+
+    @Generated(hash = 1164430959)
+    public MyFriendModel() {
+    }
 
     public String getFriendUserId() {
         return friendUserId;
