@@ -134,7 +134,7 @@ public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,Ba
 
         initEmoticonsKeyBoardBar();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(_mActivity);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
+        binding.recyclerView.setLayoutManager(linearLayoutManager);
         //解决输入法弹出后recyclerView不能自动滚动的问题
         linearLayoutManager.setStackFromEnd(true);
         User user = new User();

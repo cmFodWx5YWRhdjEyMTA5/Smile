@@ -66,6 +66,11 @@ public class ChatMessageAdapter extends BaseMultiItemQuickAdapter<ChatMessageMod
                 }else {
                     helper.setGone(R.id.loading,true);
                 }
+                if(item.getSendFails() == true){
+                    helper.setGone(R.id.iv_send_fail,true);
+                }else {
+                    helper.setGone(R.id.iv_send_fail,false);
+                }
                 helper.setText(R.id.tv_time,item.getTime());
                 QqUtils.spannableEmoticonFilter((TextView) helper.getView(R.id.tv_chat_msg), item.getMsg());
                 return;
