@@ -109,4 +109,7 @@ dependencies {
     api 'cn.bingoogolapple:bga-badgeview-api:1.1.8'
     annotationProcessor "cn.bingoogolapple:bga-badgeview-compiler:1.1.8"
 
+    //气泡努布局
+    api 'com.github.lguipeng:BubbleView:1.0.1'
+
 }

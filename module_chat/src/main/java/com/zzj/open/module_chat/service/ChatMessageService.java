@@ -44,8 +44,8 @@ import okio.ByteString;
  */
 public class ChatMessageService extends Service {
 
-//    public static final String url = "ws://192.168.2.131:8088/ws";
-    public static final String url = "ws://192.168.2.129:8088/ws";
+    public static final String url = "ws://192.168.0.110:8088/ws";
+//    public static final String url = "ws://192.168.2.129:8088/ws";
 
 
     @Override

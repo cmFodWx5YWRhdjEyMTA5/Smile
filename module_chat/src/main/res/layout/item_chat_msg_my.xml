@@ -53,19 +53,21 @@
                 android:layout_gravity="right|center_vertical"
                 />
         </FrameLayout>
-        <TextView
+        <com.github.library.bubbleview.BubbleTextView
             android:id="@+id/tv_chat_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:text="1"
-            android:background="@drawable/chat_to_bg_normal"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:gravity = "center"
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            />
+            android:text="Hello "
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:textColor="@android:color/white"
+            android:maxWidth="240dp"
+            app:arrowWidth="8dp"
+            app:angle="8dp"
+            app:arrowHeight="10dp"
+            app:arrowPosition="14dp"
+            app:arrowLocation="right"
+            app:bubbleColor="#7EC0EE"/>
     </LinearLayout>
     <ImageView
         android:id="@+id/pv_chat_header"
