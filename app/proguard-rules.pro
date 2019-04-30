@@ -288,3 +288,7 @@
 -keep public class cn.waps.** {*;}
 -keep public interface cn.waps.** {*;}
 -dontwarn cn.waps.**
+
+#####################
+-dontwarn com.squareup.picasso.**
+-dontwarn com.bumptech.glide.**

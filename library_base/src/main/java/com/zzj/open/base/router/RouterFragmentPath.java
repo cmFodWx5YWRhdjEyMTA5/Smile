@@ -49,6 +49,8 @@ public class RouterFragmentPath {
         private static final String MINE = "/mine";
         /*首页*/
         public static final String MINE_HOME = MINE + "/Mine";
+        //登录
+        public static final String MINE_LOGIN = MINE + "/Login";
     }
     /**
      * 福利组件

@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.zzj.open.base.http.HttpUrl;
 import com.zzj.open.module_chat.R;
 import com.zzj.open.module_chat.bean.ChatMessageModel;
 import com.zzj.open.module_chat.bean.User;
@@ -45,14 +46,14 @@ public class ChatMessageAdapter extends BaseMultiItemQuickAdapter<ChatMessageMod
     protected void convert(BaseViewHolder helper, ChatMessageModel item) {
 
         if(item.getSenderId().equalsIgnoreCase(SPUtils.getInstance().getString(Cons.SaveKey.USER_ID))){
-            Glide.with(mContext).load(SPUtils.getInstance().getString(Cons.SaveKey.USER_HEADER_PIC)).apply(new RequestOptions().placeholder(R.mipmap.ic_launcher_round))
+            Glide.with(mContext).load(HttpUrl.IMAGE_URL+SPUtils.getInstance().getString(Cons.SaveKey.USER_HEADER_PIC)).apply(new RequestOptions().placeholder(R.mipmap.ic_launcher_round))
                    .into((ImageView) helper.getView(R.id.pv_chat_header));
 
 //            GlideUtils.loadImage(mContext,SPUtils.getInstance().getString(Cons.SaveKey.USER_HEADER_PIC),(ImageView) helper.getView(R.id.pv_chat_header));
         }else {
 //            Glide.with(mContext).load(toUser.getPortrait())
 //                    .fitCenter().placeholder(R.mipmap.header).into((ImageView) helper.getView(R.id.pv_chat_header));
-            Glide.with(mContext).load(toUser.getFaceImage()).apply(new RequestOptions().placeholder(R.mipmap.ic_launcher_round))
+            Glide.with(mContext).load(HttpUrl.IMAGE_URL+toUser.getFaceImage()).apply(new RequestOptions().placeholder(R.mipmap.ic_launcher_round))
                     .into((ImageView) helper.getView(R.id.pv_chat_header));
 //            GlideUtils.loadImage(mContext,toUser.getFaceImage(),(ImageView) helper.getView(R.id.pv_chat_header));
         }

@@ -6,11 +6,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.ReflectUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.http.RetrofitClient;
+import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_mine.BR;
 import com.zzj.open.module_mine.R;
@@ -32,6 +34,7 @@ import me.goldze.mvvmhabit.utils.RxUtils;
  * @desc :登录界面
  * @version: 1.0
  */
+@Route(path = RouterFragmentPath.Mine.MINE_LOGIN)
 public class LoginFragment extends BaseFragment<MineFragmentLoginBinding,BaseViewModel> {
     @Override
     public int initContentView(LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {

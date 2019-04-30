@@ -5,10 +5,15 @@ import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.bean.UpdateVersion;
+import com.zzj.open.base.global.SPKeyGlobal;
 import com.zzj.open.base.http.RetrofitClient;
 import com.zzj.open.base.http.ServiceApi;
+import com.zzj.open.module_mine.api.MineServiceApi;
+import com.zzj.open.module_mine.bean.UsersBo;
+import com.zzj.open.module_mine.bean.UsersVO;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
@@ -27,6 +32,7 @@ import me.goldze.mvvmhabit.utils.ToastUtils;
 public class MineViewModel extends BaseViewModel {
 
     public ObservableField<UpdateVersion> updateVersionObservableField = new ObservableField<>();
+    public ObservableField<UsersVO> userInfo = new ObservableField<>();
 
     public MineViewModel(@NonNull Application application) {
         super(application);
@@ -71,5 +77,43 @@ public class MineViewModel extends BaseViewModel {
                 dismissDialog();
             }
         });
+    }
+
+    /**
+     * 上传头像到服务器
+     * @param imageBase64
+     */
+    public void uploadFaceImage(String imageBase64) {
+        UsersBo usersBo = new UsersBo();
+        usersBo.setUserId(SPUtils.getInstance().getString("userId",""));
+        usersBo.setFaceData(imageBase64);
+        RetrofitClient.getInstance().create(MineServiceApi.class)
+                .uploadFace(usersBo)
+                .compose(RxUtils.bindToLifecycle(getLifecycleProvider()))
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .doOnSubscribe(disposable -> {
+                    showDialog("请稍等…");
+                })
+                .subscribe(new Consumer<Result<UsersVO>>() {
+                    @Override
+                    public void accept(Result<UsersVO> result) throws Exception {
+                        if(result.getCode() == SPKeyGlobal.REQUEST_SUCCESS){
+                           ToastUtils.showShort("更换成功");
+                            userInfo.set(result.getResult());
+                           SPUtils.getInstance().put("headerpic",result.getResult().getFaceImage());
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        ToastUtils.showShort(throwable.getMessage());
+                    }
+                }, new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        dismissDialog();
+                    }
+                });
     }
 }

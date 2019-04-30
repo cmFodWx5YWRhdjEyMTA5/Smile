@@ -7,6 +7,8 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.SPUtils;
 import com.dhh.rxlifecycle2.RxLifecycle;
 import com.dhh.websocket.Config;
 import com.dhh.websocket.RxWebSocket;
@@ -14,6 +16,7 @@ import com.dhh.websocket.WebSocketInfo;
 import com.dhh.websocket.WebSocketSubscriber;
 import com.zzj.open.base.http.HttpsUtils;
 import com.zzj.open.base.router.RouterActivityPath;
+import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.module_main.BR;
 import com.zzj.open.module_main.R;
 import com.zzj.open.module_main.databinding.ActivityMainBinding;
@@ -26,6 +29,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 import me.goldze.mvvmhabit.base.BaseActivity;
+import me.goldze.mvvmhabit.base.BaseFragment;
 import me.goldze.mvvmhabit.base.BaseViewModel;
 import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
@@ -53,7 +57,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
         super.initData();
 
 //        keystore();
-        loadRootFragment(R.id.fl_container,new MainFragment());
+        if(!SPUtils.getInstance().getString("userId","").equals("")){
+            loadRootFragment(R.id.fl_container,new MainFragment());
+        }else {
+            BaseFragment fragment = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_LOGIN).navigation();
+            loadRootFragment(R.id.fl_container,fragment);
+        }
+
     }
 
 

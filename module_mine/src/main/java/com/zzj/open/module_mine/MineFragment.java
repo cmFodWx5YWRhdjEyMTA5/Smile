@@ -1,9 +1,13 @@
 package com.zzj.open.module_mine;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.databinding.Observable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +15,26 @@ import android.view.ViewGroup;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.ReflectUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
+import com.zhihu.matisse.filter.Filter;
 import com.zzj.open.base.bean.UpdateVersion;
+import com.zzj.open.base.http.HttpUrl;
 import com.zzj.open.base.router.RouterFragmentPath;
+import com.zzj.open.base.utils.Glide4Engine;
+import com.zzj.open.base.utils.ImageUtils;
 import com.zzj.open.base.utils.UpdateVersionUtils;
+import com.zzj.open.module_mine.bean.UsersVO;
 import com.zzj.open.module_mine.databinding.MineFragmentMineBinding;
 import com.zzj.open.module_mine.fragment.LoginFragment;
 import com.zzj.open.module_mine.fragment.MineFeedbackFragment;
 import com.zzj.open.module_mine.viewmodel.MineViewModel;
+
+import java.util.List;
 
 import me.goldze.mvvmhabit.base.BaseFragment;
 
@@ -31,6 +47,7 @@ import me.goldze.mvvmhabit.base.BaseFragment;
  */
 @Route(path = RouterFragmentPath.Mine.MINE_HOME)
 public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewModel> {
+    public int REQUEST_CODE_CHOOSE = 111;
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     @Override
     public int initContentView(LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
@@ -50,9 +67,22 @@ public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewM
         if(!SPUtils.getInstance().getString("username","").equals("")){
             binding.tvUsername.setText(SPUtils.getInstance().getString("username",""));
         }
+        if(!SPUtils.getInstance().getString("headerpic","").equals("")){
+            Glide.with(MineFragment.this)
+                    .load(HttpUrl.IMAGE_URL+SPUtils.getInstance().getString("headerpic",""))
+                    .apply(new RequestOptions().placeholder(R.mipmap.ic_logo_512)).into(binding.ivHeader);
+        }
         binding.ivHeader.setOnClickListener(v -> {
 //            if(SPUtils.getInstance().getString("userName","").equals("")){
-                _mActivity.start(new LoginFragment());
+            Matisse.from(this)
+                    .choose(MimeType.ofAll())
+                    .countable(true)
+                    .maxSelectable(1)
+//                    .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                    .thumbnailScale(0.85f)
+                    .imageEngine(new Glide4Engine())
+                    .forResult(REQUEST_CODE_CHOOSE);
 //            }
         });
 
@@ -97,6 +127,10 @@ public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewM
 //            viewModel.updateVersion();
         });
 
+        binding.llExit.setOnClickListener(v -> {
+            SPUtils.getInstance().clear();
+            _mActivity.finish();
+        });
         //版本升级弹窗
         viewModel.updateVersionObservableField.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
@@ -107,8 +141,30 @@ public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewM
             }
         });
 
+        /**
+         * 更换头像通知   刷新头像
+         */
+        viewModel.userInfo.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                UsersVO vo = viewModel.userInfo.get();
+                Glide.with(MineFragment.this).load(HttpUrl.IMAGE_URL+vo.getFaceImage()).apply(new RequestOptions().placeholder(R.mipmap.ic_logo_512)).into(binding.ivHeader);
+            }
+        });
     }
-
+    List<String> mSelected;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
+            mSelected = Matisse.obtainPathResult(data);
+            if(mSelected!=null&&mSelected.size()!=0){
+                String imageBase64 = ImageUtils.imageToBase64(mSelected.get(0));
+                viewModel.uploadFaceImage(imageBase64);
+            }
+            Log.e("OnActivityResult ", mSelected.toString());
+        }
+    }
 
     private void showSingleChoiceDialog() {
         final String[] items = new String[]{"线路一", "线路二"};

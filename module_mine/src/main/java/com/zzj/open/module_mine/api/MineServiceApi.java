@@ -1,6 +1,7 @@
 package com.zzj.open.module_mine.api;
 
 import com.zzj.open.base.bean.Result;
+import com.zzj.open.module_mine.bean.UsersBo;
 import com.zzj.open.module_mine.bean.UsersVO;
 
 import io.reactivex.Observable;
@@ -24,5 +25,13 @@ public interface MineServiceApi {
 
     @POST("u/registerOrLogin")
     Observable<Result<UsersVO>> login(@Body()UsersVO vo);
+
+    /**
+     * 头像上传
+     * @param bo
+     * @return
+     */
+    @POST("u/uploadFace")
+    Observable<Result<UsersVO>> uploadFace(@Body()UsersBo bo);
 
 }
