@@ -3,7 +3,6 @@ package com.zzj.open.base.http;
 import android.content.Context;
 import android.text.TextUtils;
 
-
 import com.zzj.open.base.BuildConfig;
 import com.zzj.open.base.http.upload.FileUploadObserver;
 import com.zzj.open.base.http.upload.MultipartBuilder;
@@ -21,7 +20,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import me.goldze.mvvmhabit.http.cookie.CookieJarImpl;
 import me.goldze.mvvmhabit.http.cookie.store.PersistentCookieStore;
-import me.goldze.mvvmhabit.http.interceptor.BaseInterceptor;
 import me.goldze.mvvmhabit.http.interceptor.CacheInterceptor;
 import me.goldze.mvvmhabit.http.interceptor.logging.Level;
 import me.goldze.mvvmhabit.http.interceptor.logging.LoggingInterceptor;
@@ -46,10 +44,10 @@ public class RetrofitClient {
     //缓存时间
     private static final int CACHE_TIMEOUT = 10 * 1024 * 1024;
 //    public static String baseUrl = "http://192.168.0.105:8080/api/";
-//    public static String baseUrl = "http://192.168.0.105:8080/";
+    public static String baseUrl = "http://192.168.0.105:8080/";
     //服务端根路径
 //    public static String baseUrl = "http://211.87.227.119:8080/api/";
-    public static String baseUrl = "http://192.168.2.129:8080/";
+//    public static String baseUrl = "http://192.168.2.129:8080/";
 //    public static String baseUrl = "http://47.75.50.156:8080/bengshiwei/api/";
     public static String web_baseUrl = "http://47.75.50.156:8080/bengshiwei-html/";
 

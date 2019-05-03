@@ -9,10 +9,8 @@ import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.TimeUtils;
-import com.dhh.rxlifecycle2.RxLifecycle;
 import com.dhh.websocket.Config;
 import com.dhh.websocket.RxWebSocket;
-import com.dhh.websocket.WebSocketInfo;
 import com.dhh.websocket.WebSocketSubscriber;
 import com.zzj.open.base.http.HttpsUtils;
 import com.zzj.open.module_chat.ChatModuleInit;
@@ -29,9 +27,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
-import me.goldze.mvvmhabit.utils.ToastUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
 import okio.ByteString;
@@ -44,8 +39,8 @@ import okio.ByteString;
  */
 public class ChatMessageService extends Service {
 
-//    public static final String url = "ws://192.168.0.110:8088/ws";
-    public static final String url = "ws://192.168.2.129:8088/ws";
+    public static final String url = "ws://192.168.0.105:8088/ws";
+//    public static final String url = "ws://192.168.2.129:8088/ws";
 
 
     @Override
