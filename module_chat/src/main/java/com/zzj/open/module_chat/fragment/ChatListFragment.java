@@ -14,16 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.dhh.websocket.RxWebSocket;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_chat.R;
 import com.zzj.open.module_chat.adapter.ChatListAdapter;
 import com.zzj.open.module_chat.bean.ChatListModel;
-import com.zzj.open.module_chat.bean.ChatMessageModel;
 import com.zzj.open.module_chat.bean.DataContent;
 import com.zzj.open.module_chat.databinding.ChatFragmentChatlistBinding;
 import com.zzj.open.module_chat.service.ChatMessageService;
@@ -35,7 +32,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import me.goldze.mvvmhabit.base.BaseFragment;
 import me.tatarka.bindingcollectionadapter2.BR;
-import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * @author : zzj
@@ -113,7 +109,7 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 if(menuItem.getItemId() == R.id.menu_contact){
-                    _mActivity.start(new ChatSearchFriendFragment());
+                    _mActivity.start(new GroupCreateFragment());
                 }
                 return false;
             }

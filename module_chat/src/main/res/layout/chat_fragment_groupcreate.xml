@@ -24,8 +24,6 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/actionBarWithStatusBarSize"
-                android:background="@color/colorAccent"
-                android:paddingTop="@dimen/statusBarSize"
                 app:titleTextAppearance="@style/TextAppearance.Title" />
 
             <LinearLayout

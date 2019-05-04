@@ -41,6 +41,8 @@ public class RouterFragmentPath {
         public static final String CHAT_HOME = CHAT + "/Chat";
         //联系人
         public static final String CHAT_CONTACT = CHAT + "/Contact";
+        //群组列表
+        public static final String CHAT_GROUP = CHAT + "/Group";
     }
     /**
      * 我的组件

@@ -39,7 +39,7 @@ import okio.ByteString;
  */
 public class ChatMessageService extends Service {
 
-    public static final String url = "ws://192.168.0.105:8088/ws";
+    public static final String url = "ws://192.168.0.107:8088/ws";
 //    public static final String url = "ws://192.168.2.129:8088/ws";
 
 
