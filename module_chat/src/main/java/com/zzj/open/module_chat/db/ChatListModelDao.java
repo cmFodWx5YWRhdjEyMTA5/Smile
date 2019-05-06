@@ -30,7 +30,8 @@ public class ChatListModelDao extends AbstractDao<ChatListModel, String> {
         public final static Property Time = new Property(3, String.class, "time", false, "TIME");
         public final static Property ChatUserId = new Property(4, String.class, "chatUserId", true, "CHAT_USER_ID");
         public final static Property IsSend = new Property(5, boolean.class, "isSend", false, "IS_SEND");
-        public final static Property UnreadNum = new Property(6, int.class, "unreadNum", false, "UNREAD_NUM");
+        public final static Property ChatType = new Property(6, int.class, "chatType", false, "CHAT_TYPE");
+        public final static Property UnreadNum = new Property(7, int.class, "unreadNum", false, "UNREAD_NUM");
     }
 
 
@@ -52,7 +53,8 @@ public class ChatListModelDao extends AbstractDao<ChatListModel, String> {
                 "\"TIME\" TEXT," + // 3: time
                 "\"CHAT_USER_ID\" TEXT PRIMARY KEY NOT NULL ," + // 4: chatUserId
                 "\"IS_SEND\" INTEGER NOT NULL ," + // 5: isSend
-                "\"UNREAD_NUM\" INTEGER NOT NULL );"); // 6: unreadNum
+                "\"CHAT_TYPE\" INTEGER NOT NULL ," + // 6: chatType
+                "\"UNREAD_NUM\" INTEGER NOT NULL );"); // 7: unreadNum
     }
 
     /** Drops the underlying database table. */
@@ -90,7 +92,8 @@ public class ChatListModelDao extends AbstractDao<ChatListModel, String> {
             stmt.bindString(5, chatUserId);
         }
         stmt.bindLong(6, entity.getIsSend() ? 1L: 0L);
-        stmt.bindLong(7, entity.getUnreadNum());
+        stmt.bindLong(7, entity.getChatType());
+        stmt.bindLong(8, entity.getUnreadNum());
     }
 
     @Override
@@ -122,7 +125,8 @@ public class ChatListModelDao extends AbstractDao<ChatListModel, String> {
             stmt.bindString(5, chatUserId);
         }
         stmt.bindLong(6, entity.getIsSend() ? 1L: 0L);
-        stmt.bindLong(7, entity.getUnreadNum());
+        stmt.bindLong(7, entity.getChatType());
+        stmt.bindLong(8, entity.getUnreadNum());
     }
 
     @Override
@@ -139,7 +143,8 @@ public class ChatListModelDao extends AbstractDao<ChatListModel, String> {
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // time
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // chatUserId
             cursor.getShort(offset + 5) != 0, // isSend
-            cursor.getInt(offset + 6) // unreadNum
+            cursor.getInt(offset + 6), // chatType
+            cursor.getInt(offset + 7) // unreadNum
         );
         return entity;
     }
@@ -152,7 +157,8 @@ public class ChatListModelDao extends AbstractDao<ChatListModel, String> {
         entity.setTime(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setChatUserId(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setIsSend(cursor.getShort(offset + 5) != 0);
-        entity.setUnreadNum(cursor.getInt(offset + 6));
+        entity.setChatType(cursor.getInt(offset + 6));
+        entity.setUnreadNum(cursor.getInt(offset + 7));
      }
     
     @Override

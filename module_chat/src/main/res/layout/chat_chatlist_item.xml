@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <ImageView
+        <com.zzj.open.base.utils.PortraitView
             android:id="@+id/iv_header"
             android:layout_width="65dp"
             android:layout_height="65dp"

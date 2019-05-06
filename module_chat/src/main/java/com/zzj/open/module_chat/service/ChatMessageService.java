@@ -17,14 +17,18 @@ import com.zzj.open.module_chat.ChatModuleInit;
 import com.zzj.open.module_chat.bean.ChatListModel;
 import com.zzj.open.module_chat.bean.ChatMessageModel;
 import com.zzj.open.module_chat.bean.DataContent;
+import com.zzj.open.module_chat.bean.GroupCard;
 import com.zzj.open.module_chat.bean.MyFriendModel;
 import com.zzj.open.module_chat.db.ChatMessageModelDao;
+import com.zzj.open.module_chat.db.GroupCardDao;
 import com.zzj.open.module_chat.db.MyFriendModelDao;
 import com.zzj.open.module_chat.utils.Cons;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -39,10 +43,11 @@ import okio.ByteString;
  */
 public class ChatMessageService extends Service {
 
-    public static final String url = "ws://192.168.0.107:8088/ws";
-//    public static final String url = "ws://192.168.2.129:8088/ws";
+//    public static final String url = "ws://192.168.0.107:8088/ws";
+    public static final String url = "ws://192.168.2.129:8088/ws";
 
 
+    private Timer timer;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -69,8 +74,7 @@ public class ChatMessageService extends Service {
                     @Override
                     protected void onOpen(@android.support.annotation.NonNull WebSocket webSocket) {
                         Log.d("MainActivity", " on WebSocket open");
-
-
+                        startHeartBeatCheck();
                         ChatMessageModel chatMessageModel = new ChatMessageModel();
                         chatMessageModel.setSenderId(SPUtils.getInstance().getString(Cons.SaveKey.USER_ID));
                         //发送文本消息
@@ -81,11 +85,10 @@ public class ChatMessageService extends Service {
                         RxWebSocket.send(ChatMessageService.url,GsonUtils.toJson(content));
                         if(SPUtils.getInstance().getInt("websocket",0) == 0){
                             EventBus.getDefault().post(content);
-
                         }
 
                         //查询数据库是否有未发送的消息，进行发送
-                        unSendMessage();
+//                        unSendMessage();
 
 
                     }
@@ -99,16 +102,24 @@ public class ChatMessageService extends Service {
                        if(dataContent.getAction() == 2){
                            ChatMessageModel chatMessageModel = dataContent.getChatMsg();
                            ChatModuleInit.getDaoSession().getChatMessageModelDao().insert(chatMessageModel);
-
                            //存储消息到会话列表数据库
-                           //查询当前好友信息
-                           MyFriendModel myFriendModel = ChatModuleInit.getDaoSession().getMyFriendModelDao().queryBuilder().where(MyFriendModelDao.Properties.FriendUserId.eq(chatMessageModel.getSenderId())).unique();
+
                            ChatListModel chatListModel = new ChatListModel();
                            chatListModel.setMsg(chatMessageModel.getMsg());
                            chatListModel.setChatUserId(chatMessageModel.getSenderId());
                            chatListModel.setTime(chatMessageModel.getTime());
-                           chatListModel.setChatFaceImage(myFriendModel.getFriendFaceImage());
-                           chatListModel.setChatUserName(myFriendModel.getFriendUsername());
+                           // 群聊  单聊
+                           if(chatMessageModel.getChatType() == 0){
+                               //查询当前好友信息
+                               MyFriendModel myFriendModel = ChatModuleInit.getDaoSession().getMyFriendModelDao().queryBuilder().where(MyFriendModelDao.Properties.FriendUserId.eq(chatMessageModel.getSenderId())).unique();
+                               chatListModel.setChatFaceImage(myFriendModel.getFriendFaceImage());
+                               chatListModel.setChatUserName(myFriendModel.getFriendUsername());
+                           }else if(chatMessageModel.getChatType() == 1){
+                               GroupCard groupCard = ChatModuleInit.getDaoSession().getGroupCardDao().queryBuilder().where(GroupCardDao.Properties.Id.eq(chatMessageModel.getSenderId())).unique();
+                               chatListModel.setChatFaceImage(groupCard.getPicture());
+                               chatListModel.setChatUserName(groupCard.getName());
+                           }
+                           chatListModel.setChatType(chatMessageModel.getChatType());
                            chatListModel.setSend(true);
                            ChatModuleInit.getDaoSession().getChatListModelDao().insertOrReplace(chatListModel);
                            EventBus.getDefault().post(dataContent);
@@ -148,6 +159,18 @@ public class ChatMessageService extends Service {
 
     }
 
+    private void startHeartBeatCheck() {
+        DataContent dataContent = new DataContent();
+        dataContent.setAction(4);
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                RxWebSocket.send(ChatMessageService.url,GsonUtils.toJson(dataContent));
+            }
+        },2000,2000);
+    }
+
     /**
      * 查询当前10分钟内未发送的消息进行发送
      */
@@ -159,7 +182,12 @@ public class ChatMessageService extends Service {
                 if(TimeUtils.string2Millis(chatMessageModel.getTime())>(System.currentTimeMillis()-60*1000)){
                     DataContent content = new DataContent();
                     content.setChatMsg(chatMessageModel);
-                    content.setAction(2);
+                    //判断群聊还是单聊
+                    if(chatMessageModel.getChatType() == 0){
+                        content.setAction(2);
+                    }else if(chatMessageModel.getChatType() == 1){
+                        content.setAction(7);
+                    }
                     content.setExtand("");
                     RxWebSocket.send(ChatMessageService.url,GsonUtils.toJson(content));
                 }else {
@@ -177,15 +205,23 @@ public class ChatMessageService extends Service {
 
     //存储消息到会话列表数据库
     private void saveChatList(ChatMessageModel chatMessageModel){
-        //查询当前好友信息
-        MyFriendModel myFriendModel = ChatModuleInit.getDaoSession().getMyFriendModelDao().queryBuilder().where(MyFriendModelDao.Properties.FriendUserId.eq(chatMessageModel.getReceiverId())).unique();
         ChatListModel chatListModel = new ChatListModel();
         chatListModel.setMsg(chatMessageModel.getMsg());
         chatListModel.setChatUserId(chatMessageModel.getReceiverId());
         chatListModel.setTime(chatMessageModel.getTime());
-        chatListModel.setChatFaceImage(myFriendModel.getFriendFaceImage());
-        chatListModel.setChatUserName(myFriendModel.getFriendUsername());
+        // 群聊  单聊
+        if(chatMessageModel.getChatType() == 0){
+            //查询当前好友信息
+            MyFriendModel myFriendModel = ChatModuleInit.getDaoSession().getMyFriendModelDao().queryBuilder().where(MyFriendModelDao.Properties.FriendUserId.eq(chatMessageModel.getReceiverId())).unique();
+            chatListModel.setChatFaceImage(myFriendModel.getFriendFaceImage());
+            chatListModel.setChatUserName(myFriendModel.getFriendUsername());
+        }else if(chatMessageModel.getChatType() == 1){
+            GroupCard groupCard = ChatModuleInit.getDaoSession().getGroupCardDao().queryBuilder().where(GroupCardDao.Properties.Id.eq(chatMessageModel.getReceiverId())).unique();
+            chatListModel.setChatFaceImage(groupCard.getPicture());
+            chatListModel.setChatUserName(groupCard.getName());
+        }
         chatListModel.setSend(true);
+        chatListModel.setChatType(chatMessageModel.getChatType());
         ChatModuleInit.getDaoSession().getChatListModelDao().insertOrReplace(chatListModel);
     }
     @Override

@@ -113,6 +113,5 @@ dependencies {
     api 'com.github.lguipeng:BubbleView:1.0.1'
     //图片选择器
     api 'com.zhihu.android:matisse:0.5.2-beta4'
-
     api "de.hdodenhof:circleimageview:2.2.0"
 }

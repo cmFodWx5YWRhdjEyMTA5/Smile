@@ -77,7 +77,7 @@ public class ChatContactFragment extends BaseFragment<ChatFragmentContactBinding
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 MyFriendModel myFriendBean = users.get(position);
-                _mActivity.start(ChatFragment.newInstance(myFriendBean.getFriendUserId(),myFriendBean.getFriendUsername(),myFriendBean.getFriendFaceImage()));
+                _mActivity.start(ChatFragment.newInstance(myFriendBean.getFriendUserId(),myFriendBean.getFriendUsername(),myFriendBean.getFriendFaceImage(),0));
             }
         });
     }
@@ -130,9 +130,16 @@ public class ChatContactFragment extends BaseFragment<ChatFragmentContactBinding
         View newFriendView = LayoutInflater.from(_mActivity).inflate(R.layout.chat_item_contact_list,null);
         TextView textView = newFriendView.findViewById(R.id.tv_username);
         textView.setText("新的朋友");
+        View addFriendView = LayoutInflater.from(_mActivity).inflate(R.layout.chat_item_contact_list,null);
+        TextView addView = addFriendView.findViewById(R.id.tv_username);
+        addView.setText("添加朋友");
         chatContactAdapter.addHeaderView(newFriendView);
+        chatContactAdapter.addHeaderView(addFriendView);
         newFriendView.setOnClickListener(v -> {
             _mActivity.start(new ChatNewFriendFragment());
+        });
+        addFriendView.setOnClickListener(v -> {
+            _mActivity.start(new ChatSearchFriendFragment());
         });
     }
 }

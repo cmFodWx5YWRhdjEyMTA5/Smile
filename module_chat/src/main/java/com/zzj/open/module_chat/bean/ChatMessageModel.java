@@ -41,6 +41,10 @@ public class ChatMessageModel implements MultiItemEntity {
     private int type;//消息类型
     @Expose
     private int itemType;//消息item类型
+    /**
+     * 聊天类型
+     */
+    private int chatType;
     @Expose
     private String msg;//消息
 
@@ -79,19 +83,28 @@ public class ChatMessageModel implements MultiItemEntity {
         isRead = read;
     }
 
-    @Generated(hash = 1913566775)
-    public ChatMessageModel(String msgId, String senderId, String receiverId, int type, int itemType, String msg,
-            String time, boolean isSend, boolean isRead, boolean sendFails) {
+    @Generated(hash = 1224785888)
+    public ChatMessageModel(String msgId, String senderId, String receiverId, int type, int itemType, int chatType,
+            String msg, String time, boolean isSend, boolean isRead, boolean sendFails) {
         this.msgId = msgId;
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.type = type;
         this.itemType = itemType;
+        this.chatType = chatType;
         this.msg = msg;
         this.time = time;
         this.isSend = isSend;
         this.isRead = isRead;
         this.sendFails = sendFails;
+    }
+
+    public int getChatType() {
+        return chatType;
+    }
+
+    public void setChatType(int chatType) {
+        this.chatType = chatType;
     }
 
     public boolean isSendFails() {

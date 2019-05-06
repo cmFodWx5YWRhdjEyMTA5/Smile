@@ -28,6 +28,7 @@ public class MyFriendModelDao extends AbstractDao<MyFriendModel, String> {
         public final static Property FriendUsername = new Property(1, String.class, "friendUsername", false, "FRIEND_USERNAME");
         public final static Property FriendFaceImage = new Property(2, String.class, "friendFaceImage", false, "FRIEND_FACE_IMAGE");
         public final static Property FriendNickname = new Property(3, String.class, "friendNickname", false, "FRIEND_NICKNAME");
+        public final static Property IsSelect = new Property(4, boolean.class, "isSelect", false, "IS_SELECT");
     }
 
 
@@ -46,7 +47,8 @@ public class MyFriendModelDao extends AbstractDao<MyFriendModel, String> {
                 "\"FRIEND_USER_ID\" TEXT PRIMARY KEY NOT NULL ," + // 0: friendUserId
                 "\"FRIEND_USERNAME\" TEXT," + // 1: friendUsername
                 "\"FRIEND_FACE_IMAGE\" TEXT," + // 2: friendFaceImage
-                "\"FRIEND_NICKNAME\" TEXT);"); // 3: friendNickname
+                "\"FRIEND_NICKNAME\" TEXT," + // 3: friendNickname
+                "\"IS_SELECT\" INTEGER NOT NULL );"); // 4: isSelect
     }
 
     /** Drops the underlying database table. */
@@ -78,6 +80,7 @@ public class MyFriendModelDao extends AbstractDao<MyFriendModel, String> {
         if (friendNickname != null) {
             stmt.bindString(4, friendNickname);
         }
+        stmt.bindLong(5, entity.getIsSelect() ? 1L: 0L);
     }
 
     @Override
@@ -103,6 +106,7 @@ public class MyFriendModelDao extends AbstractDao<MyFriendModel, String> {
         if (friendNickname != null) {
             stmt.bindString(4, friendNickname);
         }
+        stmt.bindLong(5, entity.getIsSelect() ? 1L: 0L);
     }
 
     @Override
@@ -116,7 +120,8 @@ public class MyFriendModelDao extends AbstractDao<MyFriendModel, String> {
             cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // friendUserId
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // friendUsername
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // friendFaceImage
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // friendNickname
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // friendNickname
+            cursor.getShort(offset + 4) != 0 // isSelect
         );
         return entity;
     }
@@ -127,6 +132,7 @@ public class MyFriendModelDao extends AbstractDao<MyFriendModel, String> {
         entity.setFriendUsername(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setFriendFaceImage(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setFriendNickname(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setIsSelect(cursor.getShort(offset + 4) != 0);
      }
     
     @Override

@@ -163,6 +163,9 @@ public class QqUtils extends SimpleCommonUtils {
     }
 
     public static void spannableEmoticonFilter(TextView tv_content, String content) {
+        if(content == null || content.equals("")){
+            return;
+        }
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(content);
         Spannable spannable = QqFilter.spannableFilter(tv_content.getContext(),
                 spannableStringBuilder,

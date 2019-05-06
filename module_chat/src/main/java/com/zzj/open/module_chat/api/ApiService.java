@@ -4,12 +4,15 @@ import com.zzj.open.base.bean.Result;
 import com.zzj.open.module_chat.bean.ChatMessageModel;
 import com.zzj.open.module_chat.bean.ChatMsg;
 import com.zzj.open.module_chat.bean.FriendRequestBean;
+import com.zzj.open.module_chat.bean.GroupCard;
+import com.zzj.open.module_chat.bean.GroupCreateModel;
 import com.zzj.open.module_chat.bean.MyFriendModel;
 import com.zzj.open.module_chat.bean.User;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -84,4 +87,19 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("u/getUnReadMsgList")
     Observable<Result<List<ChatMsg>>> getUnReadMsgList(@Field("acceptUserId") String acceptUserId);
+    /**
+     * 创建群
+     * @param createModel 创建的群的信息
+     * @return
+     */
+    @POST("group/createGroup")
+    Observable<Result<GroupCard>> createGroup(@Body() GroupCreateModel createModel);
+    /**
+     * 拉取群的列表
+     * @param userId 用户id
+     * @param dateStr 日期
+     * @return
+     */
+    @GET("group/list")
+    Observable<Result<List<GroupCard>>> groupList(@Query("userId")String userId,@Query("dateStr")String dateStr);
 }

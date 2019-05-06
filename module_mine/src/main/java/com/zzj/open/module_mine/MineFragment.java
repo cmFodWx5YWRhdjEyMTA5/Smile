@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.databinding.Observable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -20,19 +19,19 @@ import com.bumptech.glide.request.RequestOptions;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
-import com.zhihu.matisse.filter.Filter;
+import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.bean.UpdateVersion;
 import com.zzj.open.base.http.HttpUrl;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.Glide4Engine;
 import com.zzj.open.base.utils.ImageUtils;
 import com.zzj.open.base.utils.UpdateVersionUtils;
-import com.zzj.open.module_mine.bean.UsersVO;
+import com.zzj.open.base.bean.UsersVO;
 import com.zzj.open.module_mine.databinding.MineFragmentMineBinding;
-import com.zzj.open.module_mine.fragment.LoginFragment;
 import com.zzj.open.module_mine.fragment.MineFeedbackFragment;
 import com.zzj.open.module_mine.viewmodel.MineViewModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -129,7 +128,10 @@ public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewM
 
         binding.llExit.setOnClickListener(v -> {
             SPUtils.getInstance().clear();
-            _mActivity.finish();
+            Result result = new Result();
+            result.setCode(404);
+            EventBus.getDefault().post(result);
+
         });
         //版本升级弹窗
         viewModel.updateVersionObservableField.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {

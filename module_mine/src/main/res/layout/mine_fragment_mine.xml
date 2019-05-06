@@ -23,7 +23,7 @@
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
                 >
-                <ImageView
+                <com.zzj.open.base.utils.PortraitView
                     android:id="@+id/iv_header"
                     android:layout_width="80dp"
                     android:layout_height="80dp"

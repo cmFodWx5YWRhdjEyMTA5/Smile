@@ -14,10 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
+import com.zzj.open.module_chat.ChatModuleInit;
 import com.zzj.open.module_chat.R;
 import com.zzj.open.module_chat.adapter.ChatListAdapter;
 import com.zzj.open.module_chat.bean.ChatListModel;
@@ -75,7 +78,7 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 ChatListModel chatListModel = viewModel.chatListModels.get(position);
-                _mActivity.start(ChatFragment.newInstance(chatListModel.getChatUserId(),chatListModel.getChatUserName(),chatListModel.getChatFaceImage()));
+                _mActivity.start(ChatFragment.newInstance(chatListModel.getChatUserId(),chatListModel.getChatUserName(),chatListModel.getChatFaceImage(),chatListModel.getChatType()));
             }
         });
         viewModel.isUpdateList.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
@@ -117,12 +120,19 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void receiverMessage(DataContent dataContent) {
-
         //接收到聊天消息
         viewModel.initData();
         if(dataContent.getAction() == 1){
             SPUtils.getInstance().put("websocket",1);
             viewModel.getUnReadMsgList();
         }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void receiverMessage(Result result) {
+      if(result!=null&&result.getCode() == 404){
+          ChatModuleInit.getDaoSession().clear();
+          BaseFragment fragment = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_LOGIN).navigation();
+          _mActivity.start(fragment);
+      }
     }
 }

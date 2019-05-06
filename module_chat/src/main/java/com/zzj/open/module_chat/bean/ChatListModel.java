@@ -37,25 +37,37 @@ public class ChatListModel {
     private String chatUserId;
 
     private boolean isSend;
+
+    private int chatType;
     /**
      * 未读数量
      */
     private int unreadNum;
 
-    @Generated(hash = 1860871288)
+    @Generated(hash = 1549840491)
     public ChatListModel(String chatFaceImage, String chatUserName, String msg,
-            String time, String chatUserId, boolean isSend, int unreadNum) {
+            String time, String chatUserId, boolean isSend, int chatType,
+            int unreadNum) {
         this.chatFaceImage = chatFaceImage;
         this.chatUserName = chatUserName;
         this.msg = msg;
         this.time = time;
         this.chatUserId = chatUserId;
         this.isSend = isSend;
+        this.chatType = chatType;
         this.unreadNum = unreadNum;
     }
 
     @Generated(hash = 2047655589)
     public ChatListModel() {
+    }
+
+    public int getChatType() {
+        return chatType;
+    }
+
+    public void setChatType(int chatType) {
+        this.chatType = chatType;
     }
 
     public boolean isSend() {

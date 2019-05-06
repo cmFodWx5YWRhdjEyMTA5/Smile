@@ -1,4 +1,4 @@
-package com.zzj.open.module_mine.bean;
+package com.zzj.open.base.bean;
 
 public class UsersVO {
 

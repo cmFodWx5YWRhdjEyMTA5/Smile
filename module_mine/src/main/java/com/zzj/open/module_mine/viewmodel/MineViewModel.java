@@ -13,7 +13,7 @@ import com.zzj.open.base.http.RetrofitClient;
 import com.zzj.open.base.http.ServiceApi;
 import com.zzj.open.module_mine.api.MineServiceApi;
 import com.zzj.open.module_mine.bean.UsersBo;
-import com.zzj.open.module_mine.bean.UsersVO;
+import com.zzj.open.base.bean.UsersVO;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;

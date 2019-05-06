@@ -23,8 +23,8 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/actionBarWithStatusBarSize"
-                app:titleTextAppearance="@style/TextAppearance.Title" />
+                android:layout_height="wrap_content"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"

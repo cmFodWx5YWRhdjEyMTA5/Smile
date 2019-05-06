@@ -17,7 +17,7 @@ import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_mine.BR;
 import com.zzj.open.module_mine.R;
 import com.zzj.open.module_mine.api.MineServiceApi;
-import com.zzj.open.module_mine.bean.UsersVO;
+import com.zzj.open.base.bean.UsersVO;
 import com.zzj.open.module_mine.databinding.MineFragmentLoginBinding;
 
 import io.reactivex.disposables.Disposable;

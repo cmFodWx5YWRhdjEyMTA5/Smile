@@ -74,21 +74,28 @@ import sj.keyboard.widget.FuncLayout;
  */
 public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,BaseViewModel> implements FuncLayout.OnFuncKeyBoardListener, AutoHeightLayout.OnMaxParentHeightChangeListener{
 
+    public static int SINGLE_CHAT = 2;
+    public static int GROUP_CHAT = 7;
 
     private ImageRecyclerView imageRecyclerView;
 
     private String chatUserId;
     private String chatUsername;
     private String chatFaceImage;
+    /**
+     * 0是单聊 1是群聊
+     */
+    private int chatType;
     private ChatMessageAdapter messageAdapter;
     private List<ChatMessageModel> chatMessageModels = new ArrayList<>();
     private Map<String,ChatMessageModel> chatMessageModelMap = new HashMap<>();
-    public static ChatFragment newInstance(String chatUserId,String chatUsername,String chatFaceImage) {
+    public static ChatFragment newInstance(String chatUserId,String chatUsername,String chatFaceImage,int chatType) {
 
         Bundle args = new Bundle();
         args.putString("chatUserId",chatUserId);
         args.putString("chatUsername",chatUsername);
         args.putString("chatFaceImage",chatFaceImage);
+        args.putInt("chatType",chatType);
         ChatFragment fragment = new ChatFragment();
         fragment.setArguments(args);
         return fragment;
@@ -111,22 +118,15 @@ public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,Ba
         chatUserId = getArguments().getString("chatUserId");
         chatUsername = getArguments().getString("chatUsername");
         chatFaceImage = getArguments().getString("chatFaceImage");
+        chatType = getArguments().getInt("chatType");
         new ToolbarHelper(_mActivity,binding.toolbar,"");
 
         binding.toolbarTitle.setText(chatUsername);
-        //设置未读消息为已读
-        List<ChatMessageModel>  unReadChatMsgs = ChatModuleInit.getDaoSession().getChatMessageModelDao().queryBuilder().where(
-                ChatMessageModelDao.Properties.SenderId.eq(chatUserId),ChatMessageModelDao.Properties.IsRead.eq(false)).list();
-        if(unReadChatMsgs!=null){
-            for(ChatMessageModel chatMessageModel : unReadChatMsgs){
-                chatMessageModel.setRead(true);
-                ChatModuleInit.getDaoSession().getChatMessageModelDao().update(chatMessageModel);
-            }
-        }
+        settingMessageRead();
         //查询聊天记录
         QueryBuilder<ChatMessageModel> builder = ChatModuleInit.getDaoSession().getChatMessageModelDao().queryBuilder();
-        builder.whereOr(ChatMessageModelDao.Properties.SenderId.eq(SPUtils.getInstance().getString(Cons.SaveKey.USER_ID))
-                , ChatMessageModelDao.Properties.SenderId.eq(chatUserId)).orderDesc(ChatMessageModelDao.Properties.Time).limit(10);
+        builder.whereOr(ChatMessageModelDao.Properties.SenderId.eq(chatUserId)
+                , ChatMessageModelDao.Properties.ReceiverId.eq(chatUserId)).orderDesc(ChatMessageModelDao.Properties.Time).limit(10);
 
         chatMessageModels.addAll(builder.build().list());
 
@@ -158,8 +158,12 @@ public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,Ba
             @Override
             public void onClick(View view) {
                 String msg =  binding.kbLayout.getEtChat().getText().toString();
+                if(chatType == 0){
+                    onSendTextMsg(msg,SINGLE_CHAT);
+                }else if(chatType == 1){
+                    onSendTextMsg(msg,GROUP_CHAT);
+                }
 
-                onSendTextMsg(msg);
             }
         });
         /**
@@ -331,13 +335,14 @@ public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,Ba
      * 发送文本消息
      * @param message
      */
-    private void onSendTextMsg(String message){
+    private void onSendTextMsg(String message,int action){
         if(message.equalsIgnoreCase("")){
             return;
         }
         ChatMessageModel chatMessageModel = new ChatMessageModel();
         chatMessageModel.setMsg(message);
         chatMessageModel.setType(ChatMessageModel.CHAT_MSG_TYPE_TEXT);
+        chatMessageModel.setChatType(chatType);
         chatMessageModel.setReceiverId(chatUserId);
         chatMessageModel.setSenderId(SPUtils.getInstance().getString(Cons.SaveKey.USER_ID));
         chatMessageModel.setRead(true);
@@ -346,7 +351,7 @@ public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,Ba
         //发送文本消息
         DataContent content = new DataContent();
         content.setChatMsg(chatMessageModel);
-        content.setAction(2);
+        content.setAction(action);
         content.setExtand("");
         chatMessageModelMap.put(chatMessageModel.getMsgId(),chatMessageModel);
         messageAdapter.addData(chatMessageModel);
@@ -376,13 +381,18 @@ public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,Ba
     public void receiverMessage(DataContent dataContent){
         //接收到聊天消息
         if(dataContent.getAction() == 2){
-            messageAdapter.addData(dataContent.getChatMsg());
-            binding.recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
-            //接收到消息发送消息签收通知
-            DataContent signMessage = new DataContent();
-            signMessage.setAction(3);
-            signMessage.setExtand(","+dataContent.getChatMsg().getMsgId());
-            RxWebSocket.send(ChatMessageService.url,GsonUtils.toJson(signMessage));
+            //判断是否是当前消息
+            if(dataContent.getChatMsg().getSenderId().equals(chatUserId)){
+                messageAdapter.addData(dataContent.getChatMsg());
+                binding.recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
+                //接收到消息发送消息签收通知
+                DataContent signMessage = new DataContent();
+                signMessage.setAction(3);
+                signMessage.setExtand(","+dataContent.getChatMsg().getMsgId());
+                RxWebSocket.send(ChatMessageService.url,GsonUtils.toJson(signMessage));
+                settingMessageRead();
+            }
+
             //聊天消息发送成功
         }else if(dataContent.getAction() == 6){
             String msgId = dataContent.getExtand();
@@ -394,15 +404,29 @@ public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,Ba
 
     //存储消息到会话列表数据库
     private void saveChatList(ChatMessageModel chatMessageModel){
-        //查询当前好友信息
-        MyFriendModel myFriendModel = ChatModuleInit.getDaoSession().getMyFriendModelDao().queryBuilder().where(MyFriendModelDao.Properties.FriendUserId.eq(chatMessageModel.getReceiverId())).unique();
         ChatListModel chatListModel = new ChatListModel();
         chatListModel.setMsg(chatMessageModel.getMsg());
         chatListModel.setChatUserId(chatMessageModel.getReceiverId());
         chatListModel.setTime(chatMessageModel.getTime());
-        chatListModel.setChatFaceImage(myFriendModel.getFriendFaceImage());
-        chatListModel.setChatUserName(myFriendModel.getFriendUsername());
         chatListModel.setSend(false);
+        chatListModel.setChatType(chatMessageModel.getChatType());
+        chatListModel.setChatFaceImage(chatFaceImage);
+        chatListModel.setChatUserName(chatUsername);
         ChatModuleInit.getDaoSession().getChatListModelDao().insertOrReplace(chatListModel);
+    }
+
+    /**
+     * 设置消息已读
+     */
+    private void settingMessageRead(){
+        //设置未读消息为已读
+        List<ChatMessageModel>  unReadChatMsgs = ChatModuleInit.getDaoSession().getChatMessageModelDao().queryBuilder().where(
+                ChatMessageModelDao.Properties.SenderId.eq(chatUserId),ChatMessageModelDao.Properties.IsRead.eq(false)).list();
+        if(unReadChatMsgs!=null){
+            for(ChatMessageModel chatMessageModel : unReadChatMsgs){
+                chatMessageModel.setRead(true);
+                ChatModuleInit.getDaoSession().getChatMessageModelDao().update(chatMessageModel);
+            }
+        }
     }
 }

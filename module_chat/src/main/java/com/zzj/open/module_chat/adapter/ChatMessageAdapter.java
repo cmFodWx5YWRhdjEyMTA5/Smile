@@ -4,11 +4,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zzj.open.base.http.HttpUrl;
+import com.zzj.open.base.utils.WechatTimeUtils;
 import com.zzj.open.module_chat.R;
 import com.zzj.open.module_chat.bean.ChatMessageModel;
 import com.zzj.open.module_chat.bean.User;
@@ -17,6 +19,8 @@ import com.zzj.open.module_chat.utils.QqUtils;
 
 
 import java.util.List;
+
+import cn.hutool.core.date.DateUtil;
 
 //import com.sunfusheng.GlideImageView;
 
@@ -72,7 +76,7 @@ public class ChatMessageAdapter extends BaseMultiItemQuickAdapter<ChatMessageMod
                 }else {
                     helper.setGone(R.id.iv_send_fail,false);
                 }
-                helper.setText(R.id.tv_time,item.getTime());
+                helper.setText(R.id.tv_time,WechatTimeUtils.getTimeStringAutoShort2(TimeUtils.string2Date(item.getTime()),true));
                 QqUtils.spannableEmoticonFilter((TextView) helper.getView(R.id.tv_chat_msg), item.getMsg());
                 return;
             case ChatMessageModel.CHAT_MSG_TYPE_LEFT_PIC:

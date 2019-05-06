@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-        <import type="me.goldze.mvvmhabit.base.BaseViewModel"/>
+        <import type="com.zzj.open.module_chat.vm.ChatGroupListViewModel"/>
 
         <variable
             name="viewModel"
-            type="me.goldze.mvvmhabit.base.BaseViewModel"/>
+            type="com.zzj.open.module_chat.vm.ChatGroupListViewModel"/>
     </data>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -17,10 +17,12 @@
             android:id="@+id/toolbar"
             layout="@layout/include_toolbar"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/recycler"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+      </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
 </layout>

@@ -20,18 +20,27 @@ public class MyFriendModel {
     private String friendUsername;
     private String friendFaceImage;
     private String friendNickname;
-
-    @Generated(hash = 400312017)
+    private boolean isSelect;
+    @Generated(hash = 673771016)
     public MyFriendModel(String friendUserId, String friendUsername,
-            String friendFaceImage, String friendNickname) {
+            String friendFaceImage, String friendNickname, boolean isSelect) {
         this.friendUserId = friendUserId;
         this.friendUsername = friendUsername;
         this.friendFaceImage = friendFaceImage;
         this.friendNickname = friendNickname;
+        this.isSelect = isSelect;
     }
 
     @Generated(hash = 1164430959)
     public MyFriendModel() {
+    }
+
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
     }
 
     public String getFriendUserId() {
@@ -64,5 +73,13 @@ public class MyFriendModel {
 
     public void setFriendNickname(String friendNickname) {
         this.friendNickname = friendNickname;
+    }
+
+    public boolean getIsSelect() {
+        return this.isSelect;
+    }
+
+    public void setIsSelect(boolean isSelect) {
+        this.isSelect = isSelect;
     }
 }

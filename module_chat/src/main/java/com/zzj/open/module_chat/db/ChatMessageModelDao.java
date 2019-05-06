@@ -29,11 +29,12 @@ public class ChatMessageModelDao extends AbstractDao<ChatMessageModel, String> {
         public final static Property ReceiverId = new Property(2, String.class, "receiverId", false, "RECEIVER_ID");
         public final static Property Type = new Property(3, int.class, "type", false, "TYPE");
         public final static Property ItemType = new Property(4, int.class, "itemType", false, "ITEM_TYPE");
-        public final static Property Msg = new Property(5, String.class, "msg", false, "MSG");
-        public final static Property Time = new Property(6, String.class, "time", false, "TIME");
-        public final static Property IsSend = new Property(7, boolean.class, "isSend", false, "IS_SEND");
-        public final static Property IsRead = new Property(8, boolean.class, "isRead", false, "IS_READ");
-        public final static Property SendFails = new Property(9, boolean.class, "sendFails", false, "SEND_FAILS");
+        public final static Property ChatType = new Property(5, int.class, "chatType", false, "CHAT_TYPE");
+        public final static Property Msg = new Property(6, String.class, "msg", false, "MSG");
+        public final static Property Time = new Property(7, String.class, "time", false, "TIME");
+        public final static Property IsSend = new Property(8, boolean.class, "isSend", false, "IS_SEND");
+        public final static Property IsRead = new Property(9, boolean.class, "isRead", false, "IS_READ");
+        public final static Property SendFails = new Property(10, boolean.class, "sendFails", false, "SEND_FAILS");
     }
 
 
@@ -54,11 +55,12 @@ public class ChatMessageModelDao extends AbstractDao<ChatMessageModel, String> {
                 "\"RECEIVER_ID\" TEXT," + // 2: receiverId
                 "\"TYPE\" INTEGER NOT NULL ," + // 3: type
                 "\"ITEM_TYPE\" INTEGER NOT NULL ," + // 4: itemType
-                "\"MSG\" TEXT," + // 5: msg
-                "\"TIME\" TEXT," + // 6: time
-                "\"IS_SEND\" INTEGER NOT NULL ," + // 7: isSend
-                "\"IS_READ\" INTEGER NOT NULL ," + // 8: isRead
-                "\"SEND_FAILS\" INTEGER NOT NULL );"); // 9: sendFails
+                "\"CHAT_TYPE\" INTEGER NOT NULL ," + // 5: chatType
+                "\"MSG\" TEXT," + // 6: msg
+                "\"TIME\" TEXT," + // 7: time
+                "\"IS_SEND\" INTEGER NOT NULL ," + // 8: isSend
+                "\"IS_READ\" INTEGER NOT NULL ," + // 9: isRead
+                "\"SEND_FAILS\" INTEGER NOT NULL );"); // 10: sendFails
     }
 
     /** Drops the underlying database table. */
@@ -87,19 +89,20 @@ public class ChatMessageModelDao extends AbstractDao<ChatMessageModel, String> {
         }
         stmt.bindLong(4, entity.getType());
         stmt.bindLong(5, entity.getItemType());
+        stmt.bindLong(6, entity.getChatType());
  
         String msg = entity.getMsg();
         if (msg != null) {
-            stmt.bindString(6, msg);
+            stmt.bindString(7, msg);
         }
  
         String time = entity.getTime();
         if (time != null) {
-            stmt.bindString(7, time);
+            stmt.bindString(8, time);
         }
-        stmt.bindLong(8, entity.getIsSend() ? 1L: 0L);
-        stmt.bindLong(9, entity.getIsRead() ? 1L: 0L);
-        stmt.bindLong(10, entity.getSendFails() ? 1L: 0L);
+        stmt.bindLong(9, entity.getIsSend() ? 1L: 0L);
+        stmt.bindLong(10, entity.getIsRead() ? 1L: 0L);
+        stmt.bindLong(11, entity.getSendFails() ? 1L: 0L);
     }
 
     @Override
@@ -122,19 +125,20 @@ public class ChatMessageModelDao extends AbstractDao<ChatMessageModel, String> {
         }
         stmt.bindLong(4, entity.getType());
         stmt.bindLong(5, entity.getItemType());
+        stmt.bindLong(6, entity.getChatType());
  
         String msg = entity.getMsg();
         if (msg != null) {
-            stmt.bindString(6, msg);
+            stmt.bindString(7, msg);
         }
  
         String time = entity.getTime();
         if (time != null) {
-            stmt.bindString(7, time);
+            stmt.bindString(8, time);
         }
-        stmt.bindLong(8, entity.getIsSend() ? 1L: 0L);
-        stmt.bindLong(9, entity.getIsRead() ? 1L: 0L);
-        stmt.bindLong(10, entity.getSendFails() ? 1L: 0L);
+        stmt.bindLong(9, entity.getIsSend() ? 1L: 0L);
+        stmt.bindLong(10, entity.getIsRead() ? 1L: 0L);
+        stmt.bindLong(11, entity.getSendFails() ? 1L: 0L);
     }
 
     @Override
@@ -150,11 +154,12 @@ public class ChatMessageModelDao extends AbstractDao<ChatMessageModel, String> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // receiverId
             cursor.getInt(offset + 3), // type
             cursor.getInt(offset + 4), // itemType
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // msg
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // time
-            cursor.getShort(offset + 7) != 0, // isSend
-            cursor.getShort(offset + 8) != 0, // isRead
-            cursor.getShort(offset + 9) != 0 // sendFails
+            cursor.getInt(offset + 5), // chatType
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // msg
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // time
+            cursor.getShort(offset + 8) != 0, // isSend
+            cursor.getShort(offset + 9) != 0, // isRead
+            cursor.getShort(offset + 10) != 0 // sendFails
         );
         return entity;
     }
@@ -166,11 +171,12 @@ public class ChatMessageModelDao extends AbstractDao<ChatMessageModel, String> {
         entity.setReceiverId(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setType(cursor.getInt(offset + 3));
         entity.setItemType(cursor.getInt(offset + 4));
-        entity.setMsg(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setTime(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setIsSend(cursor.getShort(offset + 7) != 0);
-        entity.setIsRead(cursor.getShort(offset + 8) != 0);
-        entity.setSendFails(cursor.getShort(offset + 9) != 0);
+        entity.setChatType(cursor.getInt(offset + 5));
+        entity.setMsg(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setTime(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setIsSend(cursor.getShort(offset + 8) != 0);
+        entity.setIsRead(cursor.getShort(offset + 9) != 0);
+        entity.setSendFails(cursor.getShort(offset + 10) != 0);
      }
     
     @Override

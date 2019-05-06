@@ -139,6 +139,9 @@ public class ChatListViewModel extends BaseViewModel {
             for(ChatMessageModel chatMessageModel : chatMessageModels){
                 String senderId = chatMessageModel.getSenderId();
                 ChatListModel chatListModel = ChatModuleInit.getDaoSession().getChatListModelDao().queryBuilder().where(ChatListModelDao.Properties.ChatUserId.eq(senderId)).unique();
+                if(chatListModel == null){
+                    return;
+                }
                 chatListModel.setUnreadNum(chatListModel.getUnreadNum()+1);
                 ChatModuleInit.getDaoSession().getChatListModelDao().update(chatListModel);
             }

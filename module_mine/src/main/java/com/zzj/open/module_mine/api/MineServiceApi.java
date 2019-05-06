@@ -2,7 +2,7 @@ package com.zzj.open.module_mine.api;
 
 import com.zzj.open.base.bean.Result;
 import com.zzj.open.module_mine.bean.UsersBo;
-import com.zzj.open.module_mine.bean.UsersVO;
+import com.zzj.open.base.bean.UsersVO;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
