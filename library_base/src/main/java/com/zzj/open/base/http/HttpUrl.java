@@ -16,5 +16,14 @@ public class HttpUrl {
     public static String BSW_API_URL = BASE_URL+":8080/bengshiwei/api/";
     //服务端根路径
     public static String API_URL = BASE_URL+":8080/";
-
+    //StartRTC消息服务
+    public static String RTC_IM_SERVER = "47.75.50.156:19903";
+    //StartRTC聊天室服务
+    public static String RTC_CHATROOM_SERVER = "47.75.50.156:19906";
+    //liveSrc服务
+    public static String RTC_LIVESRC_SERVER = "47.75.50.156:19931";
+    //liveVdn服务
+    public static String RTC_LIVEVDN_SERVER = "47.75.50.156:19925";
+    //voip服务
+    public static String RTC_VOIP_SERVER = "47.75.50.156:10086";
 }

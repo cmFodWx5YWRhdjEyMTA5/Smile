@@ -1,5 +1,7 @@
 package com.zzj.open.module_chat.fragment;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.global.SPKeyGlobal;
 import com.zzj.open.base.http.RetrofitClient;
@@ -20,6 +23,7 @@ import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_chat.BR;
 import com.zzj.open.module_chat.ChatModuleInit;
 import com.zzj.open.module_chat.R;
+import com.zzj.open.module_chat.activity.VoipActivity;
 import com.zzj.open.module_chat.adapter.ChatContactAdapter;
 import com.zzj.open.module_chat.api.ApiService;
 import com.zzj.open.module_chat.bean.MyFriendModel;
@@ -78,6 +82,22 @@ public class ChatContactFragment extends BaseFragment<ChatFragmentContactBinding
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 MyFriendModel myFriendBean = users.get(position);
                 _mActivity.start(ChatFragment.newInstance(myFriendBean.getFriendUserId(),myFriendBean.getFriendUsername(),myFriendBean.getFriendFaceImage(),0));
+            }
+        });
+        chatContactAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+                final String[] items = new String[]{"视频通话", "音频通话"};
+                new QMUIDialog.MenuDialogBuilder(_mActivity).addItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(_mActivity,VoipActivity.class);
+                        intent.putExtra("targetId",chatContactAdapter.getData().get(position).getFriendUserId());
+                        intent.putExtra(VoipActivity.ACTION,VoipActivity.CALLING);
+                        startActivity(intent);
+                    }
+                }).create().show();
+                return false;
             }
         });
     }

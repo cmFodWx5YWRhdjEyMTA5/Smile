@@ -5,5 +5,8 @@
        <service android:name=".service.ChatMessageService">
 
        </service>
+        <activity android:name="com.zzj.open.module_chat.activity.VoipActivity"/>
+        <activity android:name="com.zzj.open.module_chat.activity.VoIPBaseActivity"/>
+        <activity android:name="com.zzj.open.module_chat.activity.VoipRingingActivity"/>
     </application>
 </manifest>

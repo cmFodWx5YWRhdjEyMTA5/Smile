@@ -17,21 +17,27 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.zzj.open.base.bean.NotifiyEventBean;
 import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_chat.ChatModuleInit;
 import com.zzj.open.module_chat.R;
+import com.zzj.open.module_chat.activity.VoIPBaseActivity;
+import com.zzj.open.module_chat.activity.VoipRingingActivity;
 import com.zzj.open.module_chat.adapter.ChatListAdapter;
 import com.zzj.open.module_chat.bean.ChatListModel;
 import com.zzj.open.module_chat.bean.DataContent;
 import com.zzj.open.module_chat.databinding.ChatFragmentChatlistBinding;
 import com.zzj.open.module_chat.service.ChatMessageService;
+import com.zzj.open.module_chat.utils.MLOC;
 import com.zzj.open.module_chat.vm.ChatListViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import me.goldze.mvvmhabit.base.BaseFragment;
 import me.tatarka.bindingcollectionadapter2.BR;
@@ -133,6 +139,27 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
           ChatModuleInit.getDaoSession().clear();
           BaseFragment fragment = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_LOGIN).navigation();
           _mActivity.start(fragment);
+      }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void receiverMessage(NotifiyEventBean eventBean) {
+      if(eventBean.type == 1){
+          if(!MLOC.canPickupVoip){
+              MLOC.hasNewVoipMsg = true;
+              try {
+                  JSONObject alertData = new JSONObject();
+                  alertData.put("type",2);
+                  alertData.put("farId",eventBean.fromId);
+                  alertData.put("msg","收到视频通话请求");
+                  MLOC.showDialog(_mActivity,alertData);
+              } catch (JSONException e) {
+                  e.printStackTrace();
+              }
+          }else{
+              Intent intent = new Intent(_mActivity,VoipRingingActivity.class);
+              intent.putExtra("targetId",eventBean.fromId);
+              startActivity(intent);
+          }
       }
     }
 }
