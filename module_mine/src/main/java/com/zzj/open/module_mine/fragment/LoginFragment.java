@@ -1,8 +1,11 @@
 package com.zzj.open.module_mine.fragment;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -10,15 +13,22 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.ReflectUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.gyf.immersionbar.ImmersionBar;
 import com.zzj.open.base.bean.Result;
+import com.zzj.open.base.bean.UsersVO;
 import com.zzj.open.base.http.RetrofitClient;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_mine.BR;
 import com.zzj.open.module_mine.R;
 import com.zzj.open.module_mine.api.MineServiceApi;
-import com.zzj.open.base.bean.UsersVO;
 import com.zzj.open.module_mine.databinding.MineFragmentLoginBinding;
+
+import net.qiujuer.genius.ui.compat.UiCompat;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
@@ -49,12 +59,29 @@ public class LoginFragment extends BaseFragment<MineFragmentLoginBinding,BaseVie
     @Override
     public void initData() {
         super.initData();
-        new ToolbarHelper(_mActivity, (Toolbar) binding.toolbar,"登录");
+        ImmersionBar.with(this).transparentStatusBar().init();
+        // 初始化背景
+        Glide.with(this)
+                .load(R.mipmap.bg_src_tianjin)
+                .apply(new RequestOptions().centerCrop())//居中剪切
+                .into(new SimpleTarget<Drawable>() {
 
-        binding.btnLogin.setOnClickListener(v -> {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        // 使用适配类进行包装
+                        resource = DrawableCompat.wrap(resource);
+                        resource.setColorFilter(UiCompat.getColor(getResources(), R.color.colorAccent),
+                                PorterDuff.Mode.SCREEN); // 设置着色的效果和颜色，蒙板模式
+                        binding.llBg.setBackground(resource);
+                    }
+                });
+
+        new ToolbarHelper(_mActivity, binding.toolbar,"登录",false);
+
+        binding.btnSubmit.setOnClickListener(v -> {
             UsersVO usersVO = new UsersVO();
-            usersVO.setUsername(binding.etUsername.getText().toString().trim());
-            usersVO.setPassword(binding.etPassword.getText().toString().trim());
+            usersVO.setUsername(binding.editPhone.getText().toString().trim());
+            usersVO.setPassword(binding.editPassword.getText().toString().trim());
             RetrofitClient.getInstance().create(MineServiceApi.class)
                    .login(usersVO)
                     //请求与View周期同步

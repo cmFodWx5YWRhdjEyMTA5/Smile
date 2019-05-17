@@ -68,6 +68,10 @@
             android:name="YOUMI_CHANNEL"
             android:value="11030" >
         </meta-data>
+        <!--//状态栏全面屏与刘海-->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.4" />
     </application>
 
 </manifest>

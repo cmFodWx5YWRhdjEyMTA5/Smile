@@ -23,7 +23,6 @@ import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_chat.ChatModuleInit;
 import com.zzj.open.module_chat.R;
-import com.zzj.open.module_chat.activity.VoIPBaseActivity;
 import com.zzj.open.module_chat.activity.VoipRingingActivity;
 import com.zzj.open.module_chat.adapter.ChatListAdapter;
 import com.zzj.open.module_chat.bean.ChatListModel;
@@ -135,10 +134,13 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void receiverMessage(Result result) {
+        //接收到退出通知，清理数据库数据，跳转登录页
       if(result!=null&&result.getCode() == 404){
-          ChatModuleInit.getDaoSession().clear();
+          ChatModuleInit.getDaoSession().getChatListModelDao().deleteAll();
+          ChatModuleInit.getDaoSession().getChatMessageModelDao().deleteAll();
+          _mActivity.stopService(new Intent(_mActivity,ChatMessageService.class));
           BaseFragment fragment = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_LOGIN).navigation();
-          _mActivity.start(fragment);
+          _mActivity.replaceFragment(fragment,false);
       }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)

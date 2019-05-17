@@ -26,15 +26,21 @@ public class ToolbarHelper {
         this.toolbar = toolbar;
         isShowNavigationIcon(isShow);
     }
+    public ToolbarHelper(Context context,Toolbar toolbar,String title,boolean isShow){
+        activity = (BaseActivity) context;
+        this.toolbar = toolbar;
+        this.title = title;
+        initToolbar(isShow);
+    }
     public ToolbarHelper(Context context,Toolbar toolbar,String title){
         activity = (BaseActivity) context;
         this.toolbar = toolbar;
         this.title = title;
-        initToolbar();
+        initToolbar(true);
     }
 
-    public void initToolbar(){
-        isShowNavigationIcon(true);
+    public void initToolbar(boolean isShow){
+        isShowNavigationIcon(isShow);
         toolbar.setTitle(title);
         toolbar.setTitleTextColor(activity.getResources().getColor(R.color.white));
 
