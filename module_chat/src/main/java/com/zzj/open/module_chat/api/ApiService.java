@@ -37,6 +37,14 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("u/search")
     Observable<Result<User>> searchUser(@Field("myUserId") String myUserId,@Field("friendUsername") String friendUsername);
+    /**
+     * 搜索好友
+     * @param myUserId
+     * @param name
+     * @return
+     */
+    @GET("group/search")
+    Observable<Result<List<GroupCard>>> searchGroup(@Query("userId") String myUserId,@Query("name") String name);
 
     /**
      * 根据id查询用户信息

@@ -153,13 +153,20 @@ public class ChatContactFragment extends BaseFragment<ChatFragmentContactBinding
         View addFriendView = LayoutInflater.from(_mActivity).inflate(R.layout.chat_item_contact_list,null);
         TextView addView = addFriendView.findViewById(R.id.tv_username);
         addView.setText("添加朋友");
+        View addGroupView = LayoutInflater.from(_mActivity).inflate(R.layout.chat_item_contact_list,null);
+        TextView groupView = addGroupView.findViewById(R.id.tv_username);
+        groupView.setText("添加群组");
         chatContactAdapter.addHeaderView(newFriendView);
         chatContactAdapter.addHeaderView(addFriendView);
+        chatContactAdapter.addHeaderView(addGroupView);
         newFriendView.setOnClickListener(v -> {
             _mActivity.start(new ChatNewFriendFragment());
         });
         addFriendView.setOnClickListener(v -> {
-            _mActivity.start(new ChatSearchFriendFragment());
+            _mActivity.start(ChatSearchFriendFragment.newInstance(ChatSearchFriendFragment.SEARCH_FRIEND_TYPE));
+        });
+        addGroupView.setOnClickListener(v -> {
+            _mActivity.start(ChatSearchFriendFragment.newInstance(ChatSearchFriendFragment.SEARCH_GROUP_TYPE));
         });
     }
 }
