@@ -15,22 +15,14 @@ import org.greenrobot.greendao.annotation.Generated;
  */
 @Entity
 public class GroupCard {
-    @Expose
     @Id
     private String id;// Id
-    @Expose
     private String name;// 名称
-    @Expose
     private String desc;// 描述
-    @Expose
     private String picture;// 群图片
-    @Expose
     private String ownerId;// 创建者Id
-    @Expose
     private int notifyLevel;// 对于当前用户的通知级别
-    @Expose
     private Date joinAt;// 加入时间
-    @Expose
     private Date modifyAt;// 最后修改时间
 
     @Generated(hash = 1656647812)

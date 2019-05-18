@@ -105,6 +105,10 @@ public class LoginFragment extends BaseFragment<MineFragmentLoginBinding,BaseVie
                         SPUtils.getInstance().put("username",users.getUsername());
                         SPUtils.getInstance().put("password",users.getPassword());
                         SPUtils.getInstance().put("headerpic",users.getFaceImage());
+                        if(users.getFaceImage().equals("")||users.getNickname().equals("")||users.getDesc().equals("")){
+                            _mActivity.start(new MineUpdateUserInfoFragment());
+                            return;
+                        }
                         try {
                             String className = "com.zzj.open.module_main.activity.MainActivity";
                             ReflectUtils reflectUtils = ReflectUtils.reflect(className);

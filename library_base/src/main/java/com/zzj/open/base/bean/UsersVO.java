@@ -16,6 +16,16 @@ public class UsersVO {
 
     private String qrcode;
 
+    private String desc;
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
     public String getId() {
         return id;
     }
