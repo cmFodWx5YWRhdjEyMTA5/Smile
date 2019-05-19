@@ -26,6 +26,9 @@ public interface MineServiceApi {
     @POST("u/registerOrLogin")
     Observable<Result<UsersVO>> login(@Body()UsersVO vo);
 
+    @POST("u/updateUserInfo")
+    Observable<Result<UsersVO>> updateUserInfo(@Body()UsersVO vo);
+
     /**
      * 头像上传
      * @param bo

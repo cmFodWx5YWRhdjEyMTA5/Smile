@@ -77,6 +77,7 @@ public class MineFragment extends BaseFragment<MineFragmentMineBinding,MineViewM
                     .choose(MimeType.ofAll())
                     .countable(true)
                     .maxSelectable(1)
+                    
 //                    .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                     .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                     .thumbnailScale(0.85f)

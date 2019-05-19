@@ -44,11 +44,11 @@ public class RetrofitClient {
     //缓存时间
     private static final int CACHE_TIMEOUT = 10 * 1024 * 1024;
 //    public static String baseUrl = "http://192.168.0.105:8080/api/";
-//    public static String baseUrl = "http://192.168.0.107:8080/";
+    public static String baseUrl = "http://192.168.0.107:8080/";
     //服务端根路径
 //    public static String baseUrl = "http://211.87.227.119:8080/api/";
 //    public static String baseUrl = "http://192.168.2.129:8080/";
-    public static String baseUrl = "http://192.168.1.101:8080/";
+//    public static String baseUrl = "http://192.168.1.101:8080/";
 //    public static String baseUrl = "http://47.75.50.156:8080/bengshiwei/api/";
     public static String web_baseUrl = "http://47.75.50.156:8080/bengshiwei-html/";
 

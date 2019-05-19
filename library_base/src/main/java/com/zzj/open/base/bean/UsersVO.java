@@ -16,14 +16,24 @@ public class UsersVO {
 
     private String qrcode;
 
-    private String desc;
+    private String description;
 
-    public String getDesc() {
-        return desc;
+    private Integer chatSex;
+
+    public Integer getChatSex() {
+        return chatSex;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setChatSex(Integer chatSex) {
+        this.chatSex = chatSex;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getId() {

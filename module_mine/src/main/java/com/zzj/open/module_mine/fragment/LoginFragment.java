@@ -36,6 +36,7 @@ import io.reactivex.functions.Consumer;
 import me.goldze.mvvmhabit.base.BaseFragment;
 import me.goldze.mvvmhabit.base.BaseViewModel;
 import me.goldze.mvvmhabit.utils.RxUtils;
+import me.goldze.mvvmhabit.utils.StringUtils;
 
 /**
  * @author : zzj
@@ -103,9 +104,9 @@ public class LoginFragment extends BaseFragment<MineFragmentLoginBinding,BaseVie
                         UsersVO users = o.getResult();
                         SPUtils.getInstance().put("userId",users.getId());
                         SPUtils.getInstance().put("username",users.getUsername());
-                        SPUtils.getInstance().put("password",users.getPassword());
+                        SPUtils.getInstance().put("password",usersVO.getPassword());
                         SPUtils.getInstance().put("headerpic",users.getFaceImage());
-                        if(users.getFaceImage().equals("")||users.getNickname().equals("")||users.getDesc().equals("")){
+                        if(users.getFaceImage().equals("")||users.getNickname().equals("")|| StringUtils.isEmpty(users.getDescription())){
                             _mActivity.start(new MineUpdateUserInfoFragment());
                             return;
                         }

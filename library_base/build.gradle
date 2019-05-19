@@ -144,6 +144,8 @@ dependencies {
 
     //图片选择器
     api 'com.zhihu.android:matisse:0.5.2-beta4'
+    api 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
+
     api 'de.hdodenhof:circleimageview:2.2.0'
 
     api files('libs/star_rtc_sdk.jar')

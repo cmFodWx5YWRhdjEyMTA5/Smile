@@ -4,17 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
-import android.util.Log;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SPUtils;
-import com.dhh.rxlifecycle2.RxLifecycle;
-import com.dhh.websocket.Config;
-import com.dhh.websocket.RxWebSocket;
-import com.dhh.websocket.WebSocketInfo;
-import com.dhh.websocket.WebSocketSubscriber;
-import com.zzj.open.base.http.HttpsUtils;
+import com.gyf.immersionbar.ImmersionBar;
 import com.zzj.open.base.router.RouterActivityPath;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.module_main.BR;
@@ -23,7 +17,6 @@ import com.zzj.open.module_main.databinding.ActivityMainBinding;
 import com.zzj.open.module_main.fragment.MainFragment;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.concurrent.TimeUnit;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -31,9 +24,6 @@ import javax.crypto.SecretKey;
 import me.goldze.mvvmhabit.base.BaseActivity;
 import me.goldze.mvvmhabit.base.BaseFragment;
 import me.goldze.mvvmhabit.base.BaseViewModel;
-import okhttp3.OkHttpClient;
-import okhttp3.WebSocket;
-import okio.ByteString;
 
 /**
  * @author : zzj
@@ -55,7 +45,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
     @Override
     public void initData() {
         super.initData();
-
+        ImmersionBar.with(this).statusBarColor(R.color.colorPrimaryDark).autoDarkModeEnable(true).fitsSystemWindows(true).init();
 //        keystore();
         if(!SPUtils.getInstance().getString("userId","").equals("")){
             loadRootFragment(R.id.fl_container,new MainFragment());

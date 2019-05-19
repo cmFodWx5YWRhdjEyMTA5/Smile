@@ -12,7 +12,9 @@
     <!--<color name="colorAccent">#e55222</color>-->
     <color name="black_text_color">#000000</color>
     <color name="white_text_color">#ffffff</color>
-    <color name="main_text_color">#363636</color>
+    <color name="main_text_color">#4e4e4e</color>
+    <color name="gray_text_color">#b2b2b2</color>
+    <color name="light_gray_text_color">#cdcdcd</color>
     <color name="sub_text_color">#999999</color>
     <color name="textColor">#333333</color>
     <color name="textColorVice">#6C6C6C</color>
@@ -28,17 +30,28 @@
     <color name="tab_panel_divider">@color/bar_divider</color>
 
     <!--基础主色-->
-    <color name="colorPrimary">#31373d</color>
-    <color name="colorPrimaryDark">#31373d</color>
-    <color name="colorAccent">#1572fc</color>
+    <!--toolbar 等控件颜色-->
+    <color name="colorPrimary">#fdfdfe</color>
+    <!--//状态栏-->
+    <color name="colorPrimaryDark">#fdfdfe</color>
+    <color name="colorAccent">#f45b43</color>
     <color name="colorLight">@color/white</color>
     <color name="colorDark">@color/black</color>
     <color name="colorAccentAlpha">#801572fc</color>
 
     <!--背景色-->
-    <color name="windowsBackground">#f7f7f7</color>
+    <color name="windowsBackground">#f6f8fa</color>
     <color name="windowsBackgroundLight">#f8f8f8</color>
 
+    <!--点缀色-->
+    <color name="md_pink">#ff6361</color>
+    <color name="md_blue">#19a5fa</color>
+    <color name="md_green">#ff835f</color>
+    <color name="md_yellow">#fad961</color>
+    <color name="md_purple">#b64ced</color>
+    <color name="md_purple_gray">#aaa8c1</color>
+    <color name="md_main_gradient_start">#ff835f</color>
+    <color name="md_main_gradient_end">#f45b43</color>
     <!--字体颜色-->
     <color name="textPrimary">#4e5864</color>
     <color name="textSecond">#8d9ca9</color>

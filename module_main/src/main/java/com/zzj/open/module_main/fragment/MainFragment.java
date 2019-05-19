@@ -47,16 +47,16 @@ public class MainFragment extends BaseFragment<MainFragmentMainBinding,BaseViewM
         super.initData();
         setSwipeBackEnable(false);
         getFragments();
-        binding.tabBottom.setMode(BottomNavigationBar.MODE_FIXED);
+        binding.tabBottom.setMode(BottomNavigationBar.MODE_DEFAULT);
         binding.tabBottom.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
         binding.tabBottom.setBarBackgroundColor(R.color.white);
-        binding.tabBottom.addItem(new BottomNavigationItem(R.mipmap.ic_movie, "首页").setActiveColorResource(R.color.colorPrimary))
-                .addItem(new BottomNavigationItem(R.mipmap.ic_news, "联系人").setActiveColorResource(R.color.colorPrimary))
-                .addItem(new BottomNavigationItem(R.mipmap.ic_movie, "群组").setActiveColorResource(R.color.colorPrimary))
+        binding.tabBottom.addItem(new BottomNavigationItem(R.mipmap.ic_movie, "首页").setActiveColorResource(R.color.main_text_color))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_news, "联系人").setActiveColorResource(R.color.main_text_color))
+//                .addItem(new BottomNavigationItem(R.mipmap.ic_movie, "群组").setActiveColorResource(R.color.main_text_color))
 //                .addItem(new BottomNavigationItem(R.mipmap.ic_movie, "影视").setActiveColorResource(R.color.colorPrimary))
 //                .addItem(new BottomNavigationItem(R.mipmap.ic_news, "资讯").setActiveColorResource(R.color.colorPrimary))
 //                .addItem(new BottomNavigationItem(R.mipmap.ic_news, "福利").setActiveColorResource(R.color.amber_800))
-                .addItem(new BottomNavigationItem(R.mipmap.ic_mine, "我的").setActiveColorResource(R.color.colorPrimary))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_mine, "我的").setActiveColorResource(R.color.main_text_color))
                 .setFirstSelectedPosition(0)
                 .initialise(); //所有的设置需在调用该方法前完成
         binding.tabBottom.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
@@ -83,16 +83,15 @@ public class MainFragment extends BaseFragment<MainFragmentMainBinding,BaseViewM
 //        if (firstFragment == null) {
         mFragments[FIRST] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Chat.CHAT_HOME).navigation();
         mFragments[SECOND] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Chat.CHAT_CONTACT).navigation();
-        mFragments[THIRD] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Chat.CHAT_GROUP).navigation();
+//        mFragments[THIRD] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Chat.CHAT_GROUP).navigation();
 //        mFragments[THIRD] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Movie.MOVIE_HOME).navigation();
 //        mFragments[THIRD] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.News.NEWS_HOME).navigation();
-        mFragments[FOUTR] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_HOME).navigation();
+        mFragments[THIRD] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_HOME).navigation();
 
         loadMultipleRootFragment(R.id.fl_container, FIRST,
                 mFragments[FIRST],
                 mFragments[SECOND],
-                mFragments[THIRD],
-                mFragments[FOUTR]);
+                mFragments[THIRD]);
 //        } else {
 //            // 这里库已经做了Fragment恢复,所有不需要额外的处理了, 不会出现重叠问题
 //

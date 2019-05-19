@@ -50,7 +50,7 @@
                 android:src="@mipmap/default_head"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
             <TextView
                 android:id="@+id/textView"
@@ -81,6 +81,28 @@
                 app:layout_constraintEnd_toEndOf="@+id/im_portrait" />
 
             <net.qiujuer.genius.ui.widget.EditText
+                android:id="@+id/edit_nickname"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:hint="@string/label_nickname_tips"
+                android:inputType="textMultiLine"
+                android:maxLength="64"
+                android:maxLines="2"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white_alpha_128"
+                android:textSize="@dimen/font_16"
+                app:gHintTitle="none"
+                app:gLineColor="@color/white_alpha_160"
+                app:gLineSize="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+            <net.qiujuer.genius.ui.widget.EditText
                 android:id="@+id/edit_desc"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -101,7 +123,7 @@
                 app:gLineSize="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_nickname" />
         </android.support.constraint.ConstraintLayout>
 
         <Space
@@ -119,6 +141,7 @@
                 android:layout_width="@dimen/len_172"
                 android:layout_height="@dimen/len_44"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:background="@drawable/sel_btn_bg_black_alpha_44"
                 android:text="@string/label_submit"
                 android:textColor="@color/white"

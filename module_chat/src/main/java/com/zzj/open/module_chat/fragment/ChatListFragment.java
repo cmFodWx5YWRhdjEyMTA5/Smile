@@ -9,26 +9,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.zzj.open.base.bean.NotifiyEventBean;
-import com.zzj.open.base.bean.Result;
-import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
-import com.zzj.open.module_chat.ChatModuleInit;
 import com.zzj.open.module_chat.R;
 import com.zzj.open.module_chat.activity.VoipRingingActivity;
 import com.zzj.open.module_chat.adapter.ChatListAdapter;
 import com.zzj.open.module_chat.bean.ChatListModel;
 import com.zzj.open.module_chat.bean.DataContent;
 import com.zzj.open.module_chat.databinding.ChatFragmentChatlistBinding;
-import com.zzj.open.module_chat.service.ChatMessageService;
 import com.zzj.open.module_chat.utils.MLOC;
 import com.zzj.open.module_chat.vm.ChatListViewModel;
 
@@ -48,7 +41,7 @@ import me.tatarka.bindingcollectionadapter2.BR;
  * @desc :  聊天列表
  * @version: 1.0
  */
-@Route(path = RouterFragmentPath.Chat.CHAT_HOME)
+
 public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,ChatListViewModel> {
 
 
@@ -68,7 +61,7 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
     public void initData() {
         super.initData();
         EventBus.getDefault().register(this);
-        _mActivity.startService(new Intent(_mActivity,ChatMessageService.class));
+
         setSwipeBackEnable(false);
         ToolbarHelper toolbarHelper =new ToolbarHelper(getActivity(), (Toolbar) binding.toolbar,"消息");
         toolbarHelper.isShowNavigationIcon(false);
@@ -112,16 +105,16 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 //        ((Toolbar)binding.toolbar).inflateMenu(R.menu.chat_menu);
-        inflater.inflate(R.menu.chat_menu,menu);
-        ((Toolbar)binding.toolbar).setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                if(menuItem.getItemId() == R.id.menu_contact){
-                    _mActivity.start(new GroupCreateFragment());
-                }
-                return false;
-            }
-        });
+//        inflater.inflate(R.menu.chat_menu,menu);
+//        ((Toolbar)binding.toolbar).setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem menuItem) {
+//                if(menuItem.getItemId() == R.id.menu_contact){
+//                    _mActivity.start(new GroupCreateFragment());
+//                }
+//                return false;
+//            }
+//        });
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void receiverMessage(DataContent dataContent) {
@@ -132,17 +125,7 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
             viewModel.getUnReadMsgList();
         }
     }
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void receiverMessage(Result result) {
-        //接收到退出通知，清理数据库数据，跳转登录页
-      if(result!=null&&result.getCode() == 404){
-          ChatModuleInit.getDaoSession().getChatListModelDao().deleteAll();
-          ChatModuleInit.getDaoSession().getChatMessageModelDao().deleteAll();
-          _mActivity.stopService(new Intent(_mActivity,ChatMessageService.class));
-          BaseFragment fragment = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_LOGIN).navigation();
-          _mActivity.replaceFragment(fragment,false);
-      }
-    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void receiverMessage(NotifiyEventBean eventBean) {
       if(eventBean.type == 1){
