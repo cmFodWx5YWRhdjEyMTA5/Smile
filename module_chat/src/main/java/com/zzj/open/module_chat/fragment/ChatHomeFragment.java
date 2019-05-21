@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.ToastUtils;
 import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
@@ -82,7 +83,7 @@ public class ChatHomeFragment extends BaseFragment<ChatFragmentHomeBinding,ChatH
             @Override
             public void onSwiping(RecyclerView.ViewHolder viewHolder, float ratio, int direction) {
 //                MyAdapter.MyViewHolder myHolder = (MyAdapter.MyViewHolder) viewHolder;
-                viewHolder.itemView.setAlpha(1 - Math.abs(ratio) * 0.2f);
+//                viewHolder.itemView.setAlpha(1 - Math.abs(ratio) * 0.2f);
 
             }
 
@@ -104,6 +105,9 @@ public class ChatHomeFragment extends BaseFragment<ChatFragmentHomeBinding,ChatH
         binding.recyclerView.setLayoutManager(cardLayoutManager);
         touchHelper.attachToRecyclerView(binding.recyclerView);
 
+        binding.fbChat.setOnClickListener(v -> {
+            ToastUtils.showShort("liaotian-----");
+        });
 
     }
 
