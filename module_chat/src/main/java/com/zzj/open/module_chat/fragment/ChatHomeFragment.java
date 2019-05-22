@@ -105,7 +105,28 @@ public class ChatHomeFragment extends BaseFragment<ChatFragmentHomeBinding,ChatH
         binding.recyclerView.setLayoutManager(cardLayoutManager);
         touchHelper.attachToRecyclerView(binding.recyclerView);
 
+        /**
+         * 发起聊天
+         */
         binding.fbChat.setOnClickListener(v -> {
+            ToastUtils.showShort("liaotian-----");
+        });
+        /**
+         * 不喜欢
+         */
+        binding.fbDislike.setOnClickListener(v -> {
+            ToastUtils.showShort("liaotian-----");
+        });
+        /**
+         * 喜欢
+         */
+        binding.fbLike.setOnClickListener(v -> {
+            ToastUtils.showShort("liaotian-----");
+        });
+        /**
+         * 收藏
+         */
+        binding.fbCollect.setOnClickListener(v -> {
             ToastUtils.showShort("liaotian-----");
         });
 
