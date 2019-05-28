@@ -101,7 +101,7 @@ public class MineViewModel extends BaseViewModel {
                         if(result.getCode() == SPKeyGlobal.REQUEST_SUCCESS){
                            ToastUtils.showShort("更换成功");
                             userInfo.set(result.getResult());
-                           SPUtils.getInstance().put("headerpic",result.getResult().getFaceImage());
+                           SPUtils.getInstance().put("headerpic",result.getResult().getFaceImageBig());
                         }
                     }
                 }, new Consumer<Throwable>() {

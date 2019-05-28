@@ -20,6 +20,46 @@ public class UsersVO {
 
     private Integer chatSex;
 
+    private String professional;
+
+    private Integer bswAge;
+
+    private Integer pictureNum;
+
+    private String bswConstellation;
+
+    public String getProfessional() {
+        return professional;
+    }
+
+    public void setProfessional(String professional) {
+        this.professional = professional;
+    }
+
+    public Integer getBswAge() {
+        return bswAge;
+    }
+
+    public void setBswAge(Integer bswAge) {
+        this.bswAge = bswAge;
+    }
+
+    public Integer getPictureNum() {
+        return pictureNum;
+    }
+
+    public void setPictureNum(Integer pictureNum) {
+        this.pictureNum = pictureNum;
+    }
+
+    public String getBswConstellation() {
+        return bswConstellation;
+    }
+
+    public void setBswConstellation(String bswConstellation) {
+        this.bswConstellation = bswConstellation;
+    }
+
     public Integer getChatSex() {
         return chatSex;
     }

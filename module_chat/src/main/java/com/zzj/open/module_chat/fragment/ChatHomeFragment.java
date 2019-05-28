@@ -1,6 +1,7 @@
 package com.zzj.open.module_chat.fragment;
 
 import android.content.Intent;
+import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,8 +14,11 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zzj.open.base.bean.Result;
+import com.zzj.open.base.bean.UsersVO;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_chat.BR;
@@ -50,8 +54,9 @@ public class ChatHomeFragment extends BaseFragment<ChatFragmentHomeBinding,ChatH
 
     private ChatHomeSlideCardAdapter slideCardAdapter;
 
-    private List<SlideCardBean> slideCardBeans = new ArrayList<>();
+    private List<UsersVO> slideCardBeans = new ArrayList<>();
 
+    private UsersVO usersVO = null;
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return R.layout.chat_fragment_home;
@@ -68,9 +73,15 @@ public class ChatHomeFragment extends BaseFragment<ChatFragmentHomeBinding,ChatH
         new ToolbarHelper(_mActivity, (Toolbar) binding.toolbar,"首页",false);
         setSwipeBackEnable(false);
         _mActivity.startService(new Intent(_mActivity,ChatMessageService.class));
-        slideCardBeans.addAll(viewModel.initData());
         initAdapter();
-
+        viewModel.listUserCard(SPUtils.getInstance().getString("userId"),"");
+        viewModel.listObservableField.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                slideCardBeans.addAll(viewModel.listObservableField.get());
+                slideCardAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void initAdapter() {
@@ -78,7 +89,7 @@ public class ChatHomeFragment extends BaseFragment<ChatFragmentHomeBinding,ChatH
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(slideCardAdapter);
         CardItemTouchHelperCallback cardCallback = new CardItemTouchHelperCallback( binding.recyclerView.getAdapter(), slideCardBeans);
-        cardCallback.setOnSwipedListener(new OnSwipeListener<SlideCardBean>() {
+        cardCallback.setOnSwipedListener(new OnSwipeListener<UsersVO>() {
 
             @Override
             public void onSwiping(RecyclerView.ViewHolder viewHolder, float ratio, int direction) {
@@ -88,8 +99,8 @@ public class ChatHomeFragment extends BaseFragment<ChatFragmentHomeBinding,ChatH
             }
 
             @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, SlideCardBean slideCardBean, int direction) {
-
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, UsersVO slideCardBean, int direction) {
+                usersVO = slideCardBean;
                 Toast.makeText(_mActivity, direction == CardConfig.SWIPED_LEFT ? "swiped left" : "swiped right", Toast.LENGTH_SHORT).show();
             }
 
@@ -109,25 +120,30 @@ public class ChatHomeFragment extends BaseFragment<ChatFragmentHomeBinding,ChatH
          * 发起聊天
          */
         binding.fbChat.setOnClickListener(v -> {
-            ToastUtils.showShort("liaotian-----");
+
+            if(usersVO == null){
+                usersVO = slideCardBeans.get(0);
+            }
+            LogUtils.e("haha"+usersVO.getId());
+            _mActivity.start(ChatFragment.newInstance(usersVO.getId(),usersVO.getNickname(),usersVO.getFaceImageBig(),0));
         });
         /**
          * 不喜欢
          */
         binding.fbDislike.setOnClickListener(v -> {
-            ToastUtils.showShort("liaotian-----");
+            ToastUtils.showShort("fbDislike-----");
         });
         /**
          * 喜欢
          */
         binding.fbLike.setOnClickListener(v -> {
-            ToastUtils.showShort("liaotian-----");
+            ToastUtils.showShort("fbLike-----");
         });
         /**
          * 收藏
          */
         binding.fbCollect.setOnClickListener(v -> {
-            ToastUtils.showShort("liaotian-----");
+            ToastUtils.showShort("fbCollect-----");
         });
 
     }

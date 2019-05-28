@@ -1,6 +1,7 @@
 package com.zzj.open.module_chat.api;
 
 import com.zzj.open.base.bean.Result;
+import com.zzj.open.base.bean.UsersVO;
 import com.zzj.open.module_chat.bean.ChatMessageModel;
 import com.zzj.open.module_chat.bean.ChatMsg;
 import com.zzj.open.module_chat.bean.FriendRequestBean;
@@ -110,4 +111,12 @@ public interface ApiService {
      */
     @GET("group/list")
     Observable<Result<List<GroupCard>>> groupList(@Query("userId")String userId,@Query("dateStr")String dateStr);
+    /**
+     * 获取卡片列表
+     * @param userId 用户id
+     * @param location 地址
+     * @return
+     */
+    @GET("u/listUserCard")
+    Observable<Result<List<UsersVO>>> listUserCard(@Query("userId")String userId, @Query("location")String location);
 }

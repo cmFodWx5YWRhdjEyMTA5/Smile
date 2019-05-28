@@ -105,7 +105,7 @@ public class LoginFragment extends BaseFragment<MineFragmentLoginBinding,BaseVie
                         SPUtils.getInstance().put("userId",users.getId());
                         SPUtils.getInstance().put("username",users.getUsername());
                         SPUtils.getInstance().put("password",usersVO.getPassword());
-                        SPUtils.getInstance().put("headerpic",users.getFaceImage());
+                        SPUtils.getInstance().put("headerpic",users.getFaceImageBig());
                         if(users.getFaceImage().equals("")||users.getNickname().equals("")|| StringUtils.isEmpty(users.getDescription())){
                             _mActivity.start(new MineUpdateUserInfoFragment());
                             return;
