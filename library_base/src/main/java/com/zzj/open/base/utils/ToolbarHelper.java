@@ -40,10 +40,9 @@ public class ToolbarHelper {
     }
 
     public void initToolbar(boolean isShow){
-        isShowNavigationIcon(isShow);
         toolbar.setTitle(title);
         toolbar.setTitleTextColor(activity.getResources().getColor(R.color.main_text_color));
-
+        isShowNavigationIcon(isShow);
     }
 
     public void isShowNavigationIcon(boolean isShow){

@@ -17,6 +17,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.bean.UsersVO;
 import com.zzj.open.base.router.RouterFragmentPath;
@@ -50,13 +51,14 @@ import me.goldze.mvvmhabit.base.BaseFragment;
  * @version: 1.0
  */
 @Route(path = RouterFragmentPath.Chat.CHAT_HOME)
-public class ChatHomeFragment extends BaseFragment<ChatFragmentHomeBinding,ChatHomeViewModel> {
+public class ChatHomeFragment extends BaseFragment<ChatFragmentHomeBinding, ChatHomeViewModel> {
 
     private ChatHomeSlideCardAdapter slideCardAdapter;
 
     private List<UsersVO> slideCardBeans = new ArrayList<>();
 
     private UsersVO usersVO = null;
+    private CardItemTouchHelperCallback cardCallback;
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return R.layout.chat_fragment_home;
@@ -70,11 +72,11 @@ public class ChatHomeFragment extends BaseFragment<ChatFragmentHomeBinding,ChatH
     @Override
     public void initData() {
         super.initData();
-        new ToolbarHelper(_mActivity, (Toolbar) binding.toolbar,"首页",false);
+        new ToolbarHelper(_mActivity, (Toolbar) binding.toolbar, "首页", false);
         setSwipeBackEnable(false);
-        _mActivity.startService(new Intent(_mActivity,ChatMessageService.class));
+        _mActivity.startService(new Intent(_mActivity, ChatMessageService.class));
         initAdapter();
-        viewModel.listUserCard(SPUtils.getInstance().getString("userId"),"");
+        viewModel.listUserCard(SPUtils.getInstance().getString("userId"), "");
         viewModel.listObservableField.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
@@ -85,10 +87,11 @@ public class ChatHomeFragment extends BaseFragment<ChatFragmentHomeBinding,ChatH
     }
 
     private void initAdapter() {
-        slideCardAdapter = new ChatHomeSlideCardAdapter(R.layout.chat_item_home_slide_card_layout,slideCardBeans);
+        slideCardAdapter = new ChatHomeSlideCardAdapter(R.layout.chat_item_home_slide_card_layout, slideCardBeans);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        slideCardAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_RIGHT);
         binding.recyclerView.setAdapter(slideCardAdapter);
-        CardItemTouchHelperCallback cardCallback = new CardItemTouchHelperCallback( binding.recyclerView.getAdapter(), slideCardBeans);
+        cardCallback = new CardItemTouchHelperCallback(binding.recyclerView.getAdapter(), slideCardBeans);
         cardCallback.setOnSwipedListener(new OnSwipeListener<UsersVO>() {
 
             @Override
@@ -100,7 +103,6 @@ public class ChatHomeFragment extends BaseFragment<ChatFragmentHomeBinding,ChatH
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, UsersVO slideCardBean, int direction) {
-                usersVO = slideCardBean;
                 Toast.makeText(_mActivity, direction == CardConfig.SWIPED_LEFT ? "swiped left" : "swiped right", Toast.LENGTH_SHORT).show();
             }
 
@@ -112,37 +114,47 @@ public class ChatHomeFragment extends BaseFragment<ChatFragmentHomeBinding,ChatH
 
         });
         final ItemTouchHelper touchHelper = new ItemTouchHelper(cardCallback);
-        final CardLayoutManager cardLayoutManager = new CardLayoutManager( binding.recyclerView, touchHelper);
+        final CardLayoutManager cardLayoutManager = new CardLayoutManager(binding.recyclerView, touchHelper);
         binding.recyclerView.setLayoutManager(cardLayoutManager);
         touchHelper.attachToRecyclerView(binding.recyclerView);
-
         /**
          * 发起聊天
          */
         binding.fbChat.setOnClickListener(v -> {
-
-            if(usersVO == null){
-                usersVO = slideCardBeans.get(0);
+            if(slideCardBeans.size() == 0){
+                return;
             }
-            LogUtils.e("haha"+usersVO.getId());
-            _mActivity.start(ChatFragment.newInstance(usersVO.getId(),usersVO.getNickname(),usersVO.getFaceImageBig(),0));
+            usersVO = slideCardBeans.get(0);
+            LogUtils.e("haha" + usersVO.getId());
+            _mActivity.start(ChatFragment.newInstance(usersVO.getId(), usersVO.getNickname(), usersVO.getFaceImageBig(), 0));
         });
         /**
          * 不喜欢
          */
         binding.fbDislike.setOnClickListener(v -> {
+            if(slideCardBeans.size() == 0){
+                return;
+            }
+
             ToastUtils.showShort("fbDislike-----");
         });
         /**
          * 喜欢
          */
         binding.fbLike.setOnClickListener(v -> {
+            if(slideCardBeans.size() == 0){
+                return;
+            }
+
             ToastUtils.showShort("fbLike-----");
         });
         /**
          * 收藏
          */
         binding.fbCollect.setOnClickListener(v -> {
+            if(slideCardBeans.size() == 0){
+                return;
+            }
             ToastUtils.showShort("fbCollect-----");
         });
 
@@ -152,12 +164,12 @@ public class ChatHomeFragment extends BaseFragment<ChatFragmentHomeBinding,ChatH
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void receiverMessage(Result result) {
         //接收到退出通知，清理数据库数据，跳转登录页
-        if(result!=null&&result.getCode() == 404){
+        if (result != null && result.getCode() == 404) {
             ChatModuleInit.getDaoSession().getChatListModelDao().deleteAll();
             ChatModuleInit.getDaoSession().getChatMessageModelDao().deleteAll();
-            _mActivity.stopService(new Intent(_mActivity,ChatMessageService.class));
+            _mActivity.stopService(new Intent(_mActivity, ChatMessageService.class));
             BaseFragment fragment = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_LOGIN).navigation();
-            _mActivity.replaceFragment(fragment,false);
+            _mActivity.replaceFragment(fragment, false);
         }
     }
 
