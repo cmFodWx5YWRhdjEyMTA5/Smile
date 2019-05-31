@@ -50,8 +50,8 @@ import me.goldze.mvvmhabit.base.BaseFragment;
  * @desc : 首页
  * @version: 1.0
  */
-@Route(path = RouterFragmentPath.Chat.CHAT_HOME)
-public class ChatHomeFragment extends BaseFragment<ChatFragmentHomeBinding, ChatHomeViewModel> {
+
+public class TANTANHomeFragment extends BaseFragment<ChatFragmentHomeBinding, ChatHomeViewModel> {
 
     private ChatHomeSlideCardAdapter slideCardAdapter;
 

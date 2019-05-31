@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="me.goldze.mvvmhabit.base.BaseViewModel" />
+        <variable
+            name="viewModel"
+            type="me.goldze.mvvmhabit.base.BaseViewModel" />
+    </data>
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_test"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="测试"
+            />
+    </android.support.constraint.ConstraintLayout>
+</layout>
