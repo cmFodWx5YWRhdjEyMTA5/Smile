@@ -11,6 +11,7 @@ import me.goldze.mvvmhabit.base.BaseApplication;
  */
 
 public class DebugApplication extends BaseApplication {
+
     @Override
     public void onCreate() {
         super.onCreate();

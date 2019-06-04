@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.module_chat.R;
+import com.zzj.open.module_chat.activity.ChatActivity;
 import com.zzj.open.module_chat.databinding.ChatYjhomeFragmentBinding;
 
 import me.goldze.mvvmhabit.BR;
@@ -37,7 +38,8 @@ public class YJHomeFragment extends BaseFragment<ChatYjhomeFragmentBinding, Base
     public void initData() {
         super.initData();
         binding.tvTest.setOnClickListener(v -> {
-            _mActivity.start(new ChatDetailsFragment());
+//            _mActivity.start(new ChatDetailsFragment());
+            ChatActivity.start(_mActivity);
         });
     }
 }

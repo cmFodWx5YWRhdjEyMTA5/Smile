@@ -34,7 +34,7 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api rootProject.ext.support["appcompat-v7"]
-    api 'net.qiujuer.genius:res:2.0.0'
-    api "net.qiujuer.genius:ui:2.0.0"
+    api 'net.qiujuer.genius:res:2.1.1'
+    api 'net.qiujuer.genius:ui:2.1.1'
     api 'net.qiujuer.genius:kit-handler:2.0.0'
 }

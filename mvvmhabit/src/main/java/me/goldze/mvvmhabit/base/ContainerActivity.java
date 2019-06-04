@@ -15,7 +15,9 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.lang.ref.WeakReference;
 
+import me.goldze.mvvmhabit.BR;
 import me.goldze.mvvmhabit.R;
+import me.goldze.mvvmhabit.databinding.ActivityContainerBinding;
 
 import static android.view.View.generateViewId;
 
@@ -24,39 +26,36 @@ import static android.view.View.generateViewId;
  * 盛装Fragment的一个容器(代理)Activity
  * 普通界面只需要编写Fragment,使用此Activity盛装,这样就不需要每个界面都在AndroidManifest中注册一遍
  */
-public class ContainerActivity extends RxAppCompatActivity {
+public class ContainerActivity extends BaseActivity<ActivityContainerBinding,BaseViewModel> {
     private static final String FRAGMENT_TAG = "content_fragment_tag";
     public static final String FRAGMENT = "fragment";
     public static final String BUNDLE = "bundle";
-    protected WeakReference<Fragment> mFragment;
+    protected WeakReference<BaseFragment> mFragment;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_container);
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = null;
-        if (savedInstanceState != null) {
-            fragment = fm.getFragment(savedInstanceState, FRAGMENT_TAG);
-        }
+    public int initContentView(Bundle savedInstanceState) {
+        return R.layout.activity_container;
+    }
+
+    @Override
+    public int initVariableId() {
+        return 0;
+    }
+
+    @Override
+    public void initData() {
+        super.initData();
+        BaseFragment fragment = null;
+
         if (fragment == null) {
             fragment = initFromIntent(getIntent());
         }
-        FragmentTransaction trans = getSupportFragmentManager()
-                .beginTransaction();
-        trans.replace(R.id.content, fragment);
-        trans.commitAllowingStateLoss();
+        loadRootFragment(R.id.content,fragment);
         mFragment = new WeakReference<>(fragment);
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, FRAGMENT_TAG, mFragment.get());
-    }
-
-    protected Fragment initFromIntent(Intent data) {
+    protected BaseFragment initFromIntent(Intent data) {
         if (data == null) {
             throw new RuntimeException(
                     "you must provide a page info to display");
@@ -67,7 +66,7 @@ public class ContainerActivity extends RxAppCompatActivity {
                 throw new IllegalArgumentException("can not find page fragmentName");
             }
             Class<?> fragmentClass = Class.forName(fragmentName);
-            Fragment fragment = (Fragment) fragmentClass.newInstance();
+            BaseFragment fragment = (BaseFragment) fragmentClass.newInstance();
             Bundle args = data.getBundleExtra(BUNDLE);
             if (args != null) {
                 fragment.setArguments(args);
@@ -84,14 +83,8 @@ public class ContainerActivity extends RxAppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content);
-        if (fragment instanceof BaseFragment) {
-            if (!((BaseFragment) fragment).isBackPressed()) {
-                super.onBackPressed();
-            }
-        } else {
-            super.onBackPressed();
-        }
+    public void onBackPressedSupport() {
+            super.onBackPressedSupport();
     }
+
 }

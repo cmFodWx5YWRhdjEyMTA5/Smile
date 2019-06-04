@@ -37,7 +37,11 @@ public class ModuleLifecycleReflexs {
      * 聊天的模块
      */
     private static final String ChatInit = "com.zzj.open.module_chat.ChatModuleInit";
+    /**
+     * 旅记的模块
+     */
+    private static final String LvJiInit = "com.zzj.open.module_lvji.LvJiModuleInit";
 
 
-    public static String[] initModuleNames = {BaseInit, MainInit,NewsInit,MovieInit,WelfareInit,MineInit,ChatInit};
+    public static String[] initModuleNames = {BaseInit, MainInit,NewsInit,MovieInit,WelfareInit,MineInit,ChatInit,LvJiInit};
 }

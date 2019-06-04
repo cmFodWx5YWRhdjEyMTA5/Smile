@@ -29,7 +29,7 @@ import me.goldze.mvvmhabit.base.BaseViewModel;
  * @author : zzj
  * @e-mail : zhangzhijun@pansoft.com
  * @date : 2018/12/28 14:47
- * @desc :
+ * @desc : 首页
  * @version: 1.0
  */
 @Route(path = RouterActivityPath.Main.PAGER_MAIN)
