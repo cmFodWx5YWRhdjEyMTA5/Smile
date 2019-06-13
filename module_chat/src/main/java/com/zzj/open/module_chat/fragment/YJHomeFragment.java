@@ -22,7 +22,7 @@ import me.goldze.mvvmhabit.base.BaseViewModel;
  * @desc : 游记首页
  * @version: 1.0
  */
-@Route(path = RouterFragmentPath.Chat.CHAT_HOME)
+
 public class YJHomeFragment extends BaseFragment<ChatYjhomeFragmentBinding, BaseViewModel> {
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

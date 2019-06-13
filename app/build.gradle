@@ -101,6 +101,8 @@ dependencies {
         implementation project(':module_welfare')
         //聊天
         implementation project(':module_chat')
+        //游记
+        implementation project(':module_lvji')
     }
 
 

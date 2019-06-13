@@ -1,11 +1,16 @@
 package com.zzj.open.base.base;
 
 import android.app.Application;
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.multidex.MultiDex;
+import android.widget.ImageView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
+import com.bumptech.glide.Glide;
 import com.danikula.videocache.HttpProxyCacheServer;
+import com.lzy.ninegrid.NineGridView;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.smtt.sdk.QbSdk;
 import com.zzj.open.base.BuildConfig;
@@ -19,7 +24,7 @@ import me.goldze.mvvmhabit.utils.KLog;
  */
 
 public class BaseModuleInit implements IModuleInit {
-    public static   Application application;
+    public static  Application application;
 
     private static BaseModuleInit instance;
 
@@ -71,6 +76,7 @@ public class BaseModuleInit implements IModuleInit {
 //                .setSkinStatusBarColorEnable(false)                     // 关闭状态栏换肤，默认打开[可选]
 //                .setSkinWindowBackgroundEnable(false)                   // 关闭windowBackground换肤，默认打开[可选]
 //                .loadSkin();
+        NineGridView.setImageLoader(new GlideImageLoader());
         return false;
     }
 
@@ -92,4 +98,19 @@ public class BaseModuleInit implements IModuleInit {
         return instance;
     }
 
+
+    /** Picasso 加载 */
+    private class GlideImageLoader implements NineGridView.ImageLoader {
+
+        @Override
+        public void onDisplayImage(Context context, ImageView imageView, String url) {
+
+            Glide.with(context).load(url).into(imageView);
+        }
+
+        @Override
+        public Bitmap getCacheImage(String url) {
+            return null;
+        }
+    }
 }

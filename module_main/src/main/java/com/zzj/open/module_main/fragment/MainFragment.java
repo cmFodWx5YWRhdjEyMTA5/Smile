@@ -81,7 +81,7 @@ public class MainFragment extends BaseFragment<MainFragmentMainBinding,BaseViewM
     private void getFragments() {
 //        BaseFragment firstFragment = findFragment((BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Movie.MOVIE_HOME).navigation());
 //        if (firstFragment == null) {
-        mFragments[FIRST] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Chat.CHAT_HOME).navigation();
+        mFragments[FIRST] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Lvji.PAGER_HOME).navigation();
         mFragments[SECOND] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Chat.CHAT_CONTACT).navigation();
 //        mFragments[THIRD] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Chat.CHAT_GROUP).navigation();
 //        mFragments[THIRD] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Movie.MOVIE_HOME).navigation();

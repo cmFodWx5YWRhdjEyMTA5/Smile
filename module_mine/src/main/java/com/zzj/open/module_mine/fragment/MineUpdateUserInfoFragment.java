@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.blankj.utilcode.util.ReflectUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ThreadUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -20,12 +22,16 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.zzj.open.base.base.BaseModuleInit;
 import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.bean.UsersVO;
 import com.zzj.open.base.global.SPKeyGlobal;
 import com.zzj.open.base.http.RetrofitClient;
 import com.zzj.open.base.utils.ImageUtils;
+import com.zzj.open.base.utils.PicturesCompressor;
+import com.zzj.open.base.utils.StreamUtil;
 import com.zzj.open.base.utils.ToolbarHelper;
+import com.zzj.open.base.utils.UploadHelper;
 import com.zzj.open.module_mine.BR;
 import com.zzj.open.module_mine.R;
 import com.zzj.open.module_mine.api.MineServiceApi;
@@ -36,8 +42,15 @@ import net.qiujuer.genius.ui.compat.UiCompat;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import me.goldze.mvvmhabit.base.BaseFragment;
 import me.goldze.mvvmhabit.base.BaseViewModel;
 import me.goldze.mvvmhabit.utils.RxUtils;
@@ -223,10 +236,54 @@ public class MineUpdateUserInfoFragment extends BaseFragment<MineFragmentUpdateu
                     // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
                     // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
                     // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
-                    if(selectList != null&& selectList.size()!=0){
-                        UsersBo usersBo = new UsersBo();
-                        usersBo.setUserId(SPUtils.getInstance().getString("userId",""));
-                        String imageBase64 = ImageUtils.imageToBase64(selectList.get(0).getCutPath());
+                    Observable.create(new ObservableOnSubscribe<String>() {
+                        @Override
+                        public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                            //执行上传操作
+                            // 进行压缩
+                            String cacheDir = BaseModuleInit.application.getCacheDir().getAbsolutePath();
+                            final String tempFile = String.format("%s/image/Cache_%s.png", cacheDir, SystemClock.uptimeMillis());
+                            // 压缩工具类
+                            if (PicturesCompressor.compressImage(selectList.get(0).getCutPath(), tempFile,
+                                    UploadHelper.MAX_UPLOAD_IMAGE_LENGTH)) {
+
+                                // 上传
+                                String ossPath = UploadHelper.uploadImage(tempFile);
+                                // 清理缓存
+                                StreamUtil.delete(tempFile);
+                                emitter.onNext(ossPath);
+                                emitter.onComplete();
+                            }
+                        }
+                    }).subscribeOn(Schedulers.newThread())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<String>() {
+                                @Override
+                                public void onSubscribe(Disposable d) {
+
+                                }
+
+                                @Override
+                                public void onNext(String s) {
+                                    SPUtils.getInstance().put("headerpic",s);
+                                    imagePath = s;
+                                    binding.imPortrait.setup(s);
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onComplete() {
+                                    ToastUtils.showShort("上传成功");
+
+                                }
+                            });
+//                        UsersBo usersBo = new UsersBo();
+//                        usersBo.setUserId(SPUtils.getInstance().getString("userId",""));
+                      /*  String imageBase64 = ImageUtils.imageToBase64(selectList.get(0).getCutPath());
                         usersBo.setFaceData(imageBase64);
                         RetrofitClient.getInstance().create(MineServiceApi.class)
                                 .uploadFace(usersBo)
@@ -256,8 +313,8 @@ public class MineUpdateUserInfoFragment extends BaseFragment<MineFragmentUpdateu
                                     public void run() throws Exception {
                                         dismissDialog();
                                     }
-                                });
-                    }
+                                });*/
+
 
                     break;
             }

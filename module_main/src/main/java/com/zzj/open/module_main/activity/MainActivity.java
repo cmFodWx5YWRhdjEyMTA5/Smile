@@ -9,12 +9,17 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SPUtils;
 import com.gyf.immersionbar.ImmersionBar;
+import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.router.RouterActivityPath;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.module_main.BR;
 import com.zzj.open.module_main.R;
 import com.zzj.open.module_main.databinding.ActivityMainBinding;
 import com.zzj.open.module_main.fragment.MainFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -45,6 +50,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
     @Override
     public void initData() {
         super.initData();
+        EventBus.getDefault().register(this);
         ImmersionBar.with(this).statusBarColor(R.color.colorPrimaryDark).autoDarkModeEnable(true).fitsSystemWindows(true).init();
 //        keystore();
         if(!SPUtils.getInstance().getString("userId","").equals("")){
@@ -85,6 +91,15 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
             System.out.println(keyInBase64);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void receiverMessage(Result result) {
+        //接收到退出通知，清理数据库数据，跳转登录页
+        if (result != null && result.getCode() == 404) {
+            BaseFragment fragment = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_LOGIN).navigation();
+           replaceFragment(fragment, false);
         }
     }
 }

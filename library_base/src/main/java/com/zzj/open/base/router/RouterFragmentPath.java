@@ -97,4 +97,12 @@ public class RouterFragmentPath {
         /*我的*/
         public static final String PAGER_ME = USER + "/Me";
     }
+    /**
+     * 游记组件
+     */
+    public static class Lvji {
+        private static final String LVJI = "/lvji";
+        /*首页*/
+        public static final String PAGER_HOME = LVJI + "/Home";
+    }
 }
