@@ -12,9 +12,11 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.zzj.open.base.bean.NotifiyEventBean;
+import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_chat.R;
 import com.zzj.open.module_chat.activity.VoipRingingActivity;
@@ -41,7 +43,7 @@ import me.tatarka.bindingcollectionadapter2.BR;
  * @desc :  聊天列表
  * @version: 1.0
  */
-
+@Route(path = RouterFragmentPath.Chat.CHAT_HOME)
 public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,ChatListViewModel> {
 
 

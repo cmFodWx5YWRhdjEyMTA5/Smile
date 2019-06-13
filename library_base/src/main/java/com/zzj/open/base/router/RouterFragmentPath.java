@@ -104,5 +104,9 @@ public class RouterFragmentPath {
         private static final String LVJI = "/lvji";
         /*首页*/
         public static final String PAGER_HOME = LVJI + "/Home";
+        /**
+         * 发现
+         */
+        public static final String PAGER_DISCOVER = LVJI + "/Discover";
     }
 }

@@ -71,7 +71,7 @@ public class LvJiHomeFragment extends BaseFragment<LvjiFragmentHomeBinding, LvJi
     public void initData() {
         super.initData();
         EventBus.getDefault().register(this);
-        new ToolbarHelper(_mActivity, (Toolbar) binding.toolbar,"发现",false);
+        new ToolbarHelper(_mActivity, (Toolbar) binding.toolbar,"动态",false);
         setHasOptionsMenu(true);
         viewModel.getPublishList(page);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));

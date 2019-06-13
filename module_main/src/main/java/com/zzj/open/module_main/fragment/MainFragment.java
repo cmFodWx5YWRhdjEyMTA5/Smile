@@ -50,8 +50,9 @@ public class MainFragment extends BaseFragment<MainFragmentMainBinding,BaseViewM
         binding.tabBottom.setMode(BottomNavigationBar.MODE_DEFAULT);
         binding.tabBottom.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
         binding.tabBottom.setBarBackgroundColor(R.color.white);
-        binding.tabBottom.addItem(new BottomNavigationItem(R.mipmap.ic_movie, "首页").setActiveColorResource(R.color.main_text_color))
-                .addItem(new BottomNavigationItem(R.mipmap.ic_news, "联系人").setActiveColorResource(R.color.main_text_color))
+        binding.tabBottom.addItem(new BottomNavigationItem(R.mipmap.ic_movie, "动态").setActiveColorResource(R.color.main_text_color))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_news, "发现").setActiveColorResource(R.color.main_text_color))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_news, "消息").setActiveColorResource(R.color.main_text_color))
 //                .addItem(new BottomNavigationItem(R.mipmap.ic_movie, "群组").setActiveColorResource(R.color.main_text_color))
 //                .addItem(new BottomNavigationItem(R.mipmap.ic_movie, "影视").setActiveColorResource(R.color.colorPrimary))
 //                .addItem(new BottomNavigationItem(R.mipmap.ic_news, "资讯").setActiveColorResource(R.color.colorPrimary))
@@ -82,16 +83,18 @@ public class MainFragment extends BaseFragment<MainFragmentMainBinding,BaseViewM
 //        BaseFragment firstFragment = findFragment((BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Movie.MOVIE_HOME).navigation());
 //        if (firstFragment == null) {
         mFragments[FIRST] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Lvji.PAGER_HOME).navigation();
-        mFragments[SECOND] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Chat.CHAT_CONTACT).navigation();
+        mFragments[SECOND] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Lvji.PAGER_DISCOVER).navigation();
+        mFragments[THIRD] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Chat.CHAT_HOME).navigation();
 //        mFragments[THIRD] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Chat.CHAT_GROUP).navigation();
 //        mFragments[THIRD] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Movie.MOVIE_HOME).navigation();
 //        mFragments[THIRD] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.News.NEWS_HOME).navigation();
-        mFragments[THIRD] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_HOME).navigation();
+        mFragments[FOUTR] = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_HOME).navigation();
 
         loadMultipleRootFragment(R.id.fl_container, FIRST,
                 mFragments[FIRST],
                 mFragments[SECOND],
-                mFragments[THIRD]);
+                mFragments[THIRD],
+                mFragments[FOUTR]);
 //        } else {
 //            // 这里库已经做了Fragment恢复,所有不需要额外的处理了, 不会出现重叠问题
 //
