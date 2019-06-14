@@ -12,10 +12,16 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ScreenUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
@@ -42,6 +48,8 @@ import java.util.List;
 import me.goldze.mvvmhabit.base.BaseFragment;
 import me.goldze.mvvmhabit.base.BaseViewModel;
 
+import static com.qmuiteam.qmui.widget.popup.QMUIPopup.DIRECTION_NONE;
+
 /**
  * @author : zzj
  * @e-mail : zhangzhijun@pansoft.com
@@ -53,10 +61,11 @@ import me.goldze.mvvmhabit.base.BaseViewModel;
 public class LvJiHomeFragment extends BaseFragment<LvjiFragmentHomeBinding, LvJiHomeViewModel> {
 
     public int REQUEST_CODE_CHOOSE = 111;
-    public int REQUEST_CODE_SUCCESS= 112;
+    public int REQUEST_CODE_SUCCESS = 112;
     private int page = 0;
-//    private List<LvjiPublishModel> publishModels = new ArrayList<>();
+    //    private List<LvjiPublishModel> publishModels = new ArrayList<>();
     private LvjiHomeDynamicAdapter dynamicAdapter;
+
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return R.layout.lvji_fragment_home;
@@ -71,43 +80,92 @@ public class LvJiHomeFragment extends BaseFragment<LvjiFragmentHomeBinding, LvJi
     public void initData() {
         super.initData();
         EventBus.getDefault().register(this);
-        new ToolbarHelper(_mActivity, (Toolbar) binding.toolbar,"动态",false);
+        new ToolbarHelper(_mActivity, (Toolbar) binding.toolbar, "动态", false);
         setHasOptionsMenu(true);
         viewModel.getPublishList(page);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         dynamicAdapter = new LvjiHomeDynamicAdapter(viewModel.lvjiPublishModels.get());
         binding.recyclerView.setAdapter(dynamicAdapter);
+        initListener();
+        initPop();
+    }
 
+    /**
+     * 事件监听
+     */
+    private void initListener() {
         /**
          * 监听请求的数据变化
          */
         viewModel.lvjiPublishModels.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
-                if (page == 0){
+                if (page == 0) {
                     dynamicAdapter.setNewData(viewModel.lvjiPublishModels.get());
-                }else {
+                } else {
                     dynamicAdapter.addData(viewModel.lvjiPublishModels.get());
                 }
             }
         });
+
+        /**
+         * item中的控件点击事件
+         */
+        dynamicAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                //更多按钮的点击事件   弹窗
+                if(view.getId() == R.id.iv_more){
+                    int[] location = new int[2];
+                    view.getLocationOnScreen(location);
+                    if(location[1]< ScreenUtils.getScreenHeight()- ConvertUtils.dp2px(120)){
+                        popup.setPreferredDirection(QMUIPopup.DIRECTION_BOTTOM);
+                    }else {
+                        popup.setPreferredDirection(QMUIPopup.DIRECTION_TOP);
+                    }
+                    LogUtils.e("iv_more--->y--->"+location[1]);
+                    popup.show(view);
+                }
+            }
+        });
+        /**
+         * item点击事件
+         */
+        dynamicAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+        });
+    }
+
+    private QMUIPopup popup;
+    /**
+     * 显示更多弹窗
+     */
+    private void initPop() {
+        if (popup == null) {
+            popup = new QMUIPopup(_mActivity);
+            popup.setContentView(R.layout.lvji_pop_dynamic_more_layout);
+            popup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+        }
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.lvji_menu_home,menu);
-        ((Toolbar)binding.toolbar).setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        inflater.inflate(R.menu.lvji_menu_home, menu);
+        ((Toolbar) binding.toolbar).setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 //点击相机功能
-                if(menuItem.getItemId() == R.id.action_camera){
+                if (menuItem.getItemId() == R.id.action_camera) {
                     Matisse.from(LvJiHomeFragment.this)
                             .choose(MimeType.ofAll())
                             .countable(true)
                             .maxSelectable(9)
                             .capture(true)
-                            .captureStrategy(new CaptureStrategy(true,""))
+                            .captureStrategy(new CaptureStrategy(true, ""))
 //                    .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                             .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                             .thumbnailScale(0.85f)
@@ -123,12 +181,13 @@ public class LvJiHomeFragment extends BaseFragment<LvjiFragmentHomeBinding, LvJi
      * 图片地址集合
      */
     List<String> mSelected;
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             mSelected = Matisse.obtainPathResult(data);
-            if(mSelected!=null&&mSelected.size()!=0){
+            if (mSelected != null && mSelected.size() != 0) {
 //                String imageBase64 = ImageUtils.imageToBase64(mSelected.get(0));
                 _mActivity.start(LvJiPublishFragment.newInstance((ArrayList<String>) mSelected));
             }
@@ -137,7 +196,7 @@ public class LvJiHomeFragment extends BaseFragment<LvjiFragmentHomeBinding, LvJi
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void receiverMessage(EventBean eventBean) {
-        if(eventBean.getMsg().equals("上传成功")){
+        if (eventBean.getMsg().equals("上传成功")) {
             page = 0;
             viewModel.getPublishList(page);
         }

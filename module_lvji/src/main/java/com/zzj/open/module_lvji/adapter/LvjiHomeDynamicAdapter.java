@@ -44,6 +44,7 @@ public class LvjiHomeDynamicAdapter extends BaseMultiItemQuickAdapter<LvjiPublis
         helper.setText(R.id.tv_content,item.getPublishContent());
         helper.setText(R.id.tv_time, WechatTimeUtils.getTimeStringAutoShort2(item.getCreateAt(),true));
         helper.setText(R.id.tv_location, item.getPublishLocation());
+        helper.addOnClickListener(R.id.iv_more);
         if(helper.getItemViewType() == LvjiPublishModel.IMG_TEXT){
             if(item.getPublishContent().isEmpty()){
                 helper.setGone(R.id.tv_content,false);
