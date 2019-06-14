@@ -13,17 +13,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.zzj.open.base.bean.NotifiyEventBean;
+import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
+import com.zzj.open.module_chat.ChatModuleInit;
 import com.zzj.open.module_chat.R;
 import com.zzj.open.module_chat.activity.VoipRingingActivity;
 import com.zzj.open.module_chat.adapter.ChatListAdapter;
 import com.zzj.open.module_chat.bean.ChatListModel;
 import com.zzj.open.module_chat.bean.DataContent;
 import com.zzj.open.module_chat.databinding.ChatFragmentChatlistBinding;
+import com.zzj.open.module_chat.service.ChatMessageService;
 import com.zzj.open.module_chat.utils.MLOC;
 import com.zzj.open.module_chat.vm.ChatListViewModel;
 
@@ -63,7 +67,7 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
     public void initData() {
         super.initData();
         EventBus.getDefault().register(this);
-
+        _mActivity.startService(new Intent(_mActivity, ChatMessageService.class));
         setSwipeBackEnable(false);
         ToolbarHelper toolbarHelper =new ToolbarHelper(getActivity(), (Toolbar) binding.toolbar,"消息");
         toolbarHelper.isShowNavigationIcon(false);
@@ -148,5 +152,17 @@ public class ChatListFragment extends BaseFragment<ChatFragmentChatlistBinding,C
               startActivity(intent);
           }
       }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void receiverMessage(Result result) {
+        //接收到退出通知，清理数据库数据，跳转登录页
+        if (result != null && result.getCode() == 404) {
+            ChatModuleInit.getDaoSession().getChatListModelDao().deleteAll();
+            ChatModuleInit.getDaoSession().getChatMessageModelDao().deleteAll();
+            _mActivity.stopService(new Intent(_mActivity, ChatMessageService.class));
+            BaseFragment fragment = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_LOGIN).navigation();
+            _mActivity.replaceFragment(fragment, false);
+        }
     }
 }

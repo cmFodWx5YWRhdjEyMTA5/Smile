@@ -97,9 +97,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void receiverMessage(Result result) {
         //接收到退出通知，清理数据库数据，跳转登录页
-        if (result != null && result.getCode() == 404) {
-            BaseFragment fragment = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_LOGIN).navigation();
-           replaceFragment(fragment, false);
-        }
+//        if (result != null && result.getCode() == 404) {
+//            BaseFragment fragment = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Mine.MINE_LOGIN).navigation();
+//           replaceFragment(fragment, false);
+//        }
     }
 }

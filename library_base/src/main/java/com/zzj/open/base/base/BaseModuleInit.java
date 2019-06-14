@@ -7,6 +7,10 @@ import android.support.multidex.MultiDex;
 import android.widget.ImageView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.blankj.utilcode.util.LogUtils;
 import com.bumptech.glide.Glide;
 import com.danikula.videocache.HttpProxyCacheServer;
@@ -77,6 +81,7 @@ public class BaseModuleInit implements IModuleInit {
 //                .setSkinWindowBackgroundEnable(false)                   // 关闭windowBackground换肤，默认打开[可选]
 //                .loadSkin();
         NineGridView.setImageLoader(new GlideImageLoader());
+        initLocation();
         return false;
     }
 
@@ -112,5 +117,79 @@ public class BaseModuleInit implements IModuleInit {
         public Bitmap getCacheImage(String url) {
             return null;
         }
+    }
+
+    //######################################定位################################
+    //声明AMapLocationClient类对象
+    public static AMapLocationClient mLocationClient = null;
+    //声明定位回调监听器
+    public AMapLocationListener mLocationListener = new AMapLocationListener() {
+        @Override
+        public void onLocationChanged(AMapLocation aMapLocation) {
+
+//            LogUtils.e("定位信息---》"+aMapLocation.getCity());
+            if(aMapLocation!=null){
+                if(getInstance().locationChangeListener!=null){
+                    getInstance().locationChangeListener.getLocationSuccess(aMapLocation.getAddress());
+                }
+            }
+        }
+    };
+    //声明AMapLocationClientOption对象
+    public AMapLocationClientOption mLocationOption = null;
+
+    private void initLocation(){
+        //初始化定位
+        mLocationClient = new AMapLocationClient(application);
+        //设置定位回调监听
+        mLocationClient.setLocationListener(mLocationListener);
+        //初始化AMapLocationClientOption对象
+        mLocationOption = new AMapLocationClientOption();
+        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+//获取一次定位结果：
+//该方法默认为false。
+        mLocationOption.setOnceLocation(true);
+
+//获取最近3s内精度最高的一次定位结果：
+//设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
+        mLocationOption.setOnceLocationLatest(true);
+        //设置是否返回地址信息（默认返回地址信息）
+        mLocationOption.setNeedAddress(true);
+        AMapLocationClientOption option = new AMapLocationClientOption();
+        /**
+         * 设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
+         */
+        option.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.SignIn);
+        if(null != mLocationClient){
+            mLocationClient.setLocationOption(option);
+            //设置场景模式后最好调用一次stop，再调用start以保证场景模式生效
+            mLocationClient.stopLocation();
+            mLocationClient.startLocation();
+        }
+    }
+
+    /**
+     * 开启定位
+     */
+    public static void startLocation(){
+        if(null != mLocationClient){
+            //设置场景模式后最好调用一次stop，再调用start以保证场景模式生效
+            mLocationClient.startLocation();
+        }
+    }
+
+    private LocationChangeListener locationChangeListener;
+
+    public  void setLocationChangeListener(LocationChangeListener locationChangeListener) {
+        this.locationChangeListener = locationChangeListener;
+    }
+
+    public interface LocationChangeListener{
+        /**
+         * 获取定位信息成功
+         * @param address 地址
+         */
+        void getLocationSuccess(String address);
     }
 }

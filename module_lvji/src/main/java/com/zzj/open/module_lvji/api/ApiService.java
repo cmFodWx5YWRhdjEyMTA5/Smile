@@ -31,7 +31,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("lvji/publish")
-    Observable<Result<LvjiPublishModel>> publish(@Field("userId") String myUserId
+    Observable<Result<LvjiPublishModel>> publish(@Field("userId") String myUserId,@Field("location")String location
             , @Field("imageUrlList") String imageUrlList,@Field("content")String content);
 
     @GET("lvji/getPublishList")

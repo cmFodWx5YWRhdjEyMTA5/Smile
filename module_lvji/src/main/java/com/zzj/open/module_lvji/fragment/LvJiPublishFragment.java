@@ -84,6 +84,7 @@ public class LvJiPublishFragment extends BaseFragment<LvjiFragmentPublishBinding
     @Override
     public void initData() {
         super.initData();
+
         ArrayList<String> arrayList = getArguments().getStringArrayList("imageList");
         if (arrayList != null) {
             imageList.addAll(arrayList);
@@ -94,6 +95,17 @@ public class LvJiPublishFragment extends BaseFragment<LvjiFragmentPublishBinding
         binding.recyclerView.setLayoutManager(layoutManager);
         imageAdapter = new LvJiPublishImageAdapter(R.layout.lvji_item_publish_image_layout, imageList);
         binding.recyclerView.setAdapter(imageAdapter);
+
+        //获取定位信息
+        BaseModuleInit.getInstance().setLocationChangeListener(new BaseModuleInit.LocationChangeListener() {
+            @Override
+            public void getLocationSuccess(String address) {
+                LogUtils.e("获取的地址----》"+address);
+                location = address;
+            }
+        });
+        //开启定位
+        BaseModuleInit.startLocation();
     }
 
     @Override
@@ -110,6 +122,7 @@ public class LvJiPublishFragment extends BaseFragment<LvjiFragmentPublishBinding
                         @Override
                         public void subscribe(ObservableEmitter<String> emitter) throws Exception {
                             LogUtils.e("ObservableEmitter--->" + Thread.currentThread().getName());
+                            imageUrlList.clear();
                             for (String path : imageList) {
                                 //执行上传操作
                                 // 进行压缩
@@ -166,13 +179,18 @@ public class LvJiPublishFragment extends BaseFragment<LvjiFragmentPublishBinding
         });
     }
 
+    /**
+     * 位置
+     */
+    private String location = "";
+
 
     /**
      * 上传分享图片
      */
     private void publish(){
         RetrofitClient.getInstance().create(ApiService.class)
-                .publish(SPUtils.getInstance().getString("userId"),imageUrlList.toString(),binding.etContent.getText().toString().trim())
+                .publish(SPUtils.getInstance().getString("userId"),location,imageUrlList.toString(),binding.etContent.getText().toString().trim())
                 .compose(RxUtils.bindToLifecycle(viewModel.getLifecycleProvider()))
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())

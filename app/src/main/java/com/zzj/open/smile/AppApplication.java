@@ -33,7 +33,7 @@ public class AppApplication extends BaseApplication {
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-                ToastUtils.showShort("请求失败");
+//                ToastUtils.showShort("请求失败");
             }
         });
     }

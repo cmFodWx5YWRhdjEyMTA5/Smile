@@ -30,7 +30,17 @@ public class LvjiPublishModel implements MultiItemEntity {
 
     private String userName;
 
-   private String faceImage;
+    private String faceImage;
+
+    private String publishLocation;
+
+    public String getPublishLocation() {
+        return publishLocation;
+    }
+
+    public void setPublishLocation(String publishLocation) {
+        this.publishLocation = publishLocation;
+    }
 
     public String getFaceImage() {
         return faceImage;
@@ -114,9 +124,9 @@ public class LvjiPublishModel implements MultiItemEntity {
 
     @Override
     public int getItemType() {
-        if(pictureUrlList.isEmpty()){
-            return TEXT;
+        if (pictureUrlList != null && !pictureUrlList.isEmpty()) {
+            return IMG_TEXT;
         }
-        return IMG_TEXT;
+        return TEXT;
     }
 }

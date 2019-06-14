@@ -50,7 +50,7 @@ public class SplashActivity extends AppCompatActivity  {
 
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions
-                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.READ_PHONE_STATE,Manifest.permission.RECORD_AUDIO,Manifest.permission.CAMERA)
                 .subscribe(granted -> {
                     if (granted) {
