@@ -79,6 +79,7 @@ public class LvJiHomeFragment extends BaseFragment<LvjiFragmentHomeBinding, LvJi
     @Override
     public void initData() {
         super.initData();
+        setSwipeBackEnable(false);
         EventBus.getDefault().register(this);
         new ToolbarHelper(_mActivity, (Toolbar) binding.toolbar, "动态", false);
         setHasOptionsMenu(true);

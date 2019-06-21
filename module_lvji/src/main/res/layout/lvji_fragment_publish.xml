@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-        <import type="me.goldze.mvvmhabit.base.BaseViewModel" />
+        <import type="com.zzj.open.module_lvji.viewmodel.LvJiPublishViewModel" />
         <variable
             name="viewModel"
-            type="me.goldze.mvvmhabit.base.BaseViewModel" />
+            type="com.zzj.open.module_lvji.viewmodel.LvJiPublishViewModel" />
     </data>
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
         <include layout="@layout/include_toolbar"
             android:id="@+id/toolbar"
             />
-        <EditText
+        <com.zzj.open.module_lvji.view.REditText
             android:id="@+id/et_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,5 +38,37 @@
             app:layout_constraintRight_toRightOf="parent"
             >
         </android.support.v7.widget.RecyclerView>
+        <LinearLayout
+            android:id="@+id/ll_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/gray_text_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:visibility="gone"
+            >
+            <TextView
+                android:id="@+id/tv_topic"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="话题"
+                android:drawablePadding="6dp"
+                android:drawableLeft="@mipmap/ic_launcher_round"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="地点"
+                android:drawablePadding="6dp"
+                android:drawableLeft="@mipmap/ic_launcher_round"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="35dp"
+                />
+        </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 </layout>

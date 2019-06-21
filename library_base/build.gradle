@@ -163,5 +163,9 @@ dependencies {
 
     api 'com.lzy.widget:ninegridview:0.2.0'
     //高德定位
-    compile 'com.amap.api:location:latest.integration'
+    api 'com.amap.api:location:latest.integration'
+    //@
+    api 'com.github.luckyandyzhang:MentionEditText:1.0.0'
+
+    api 'com.github.hackware1993:MagicIndicator:1.5.0'
 }

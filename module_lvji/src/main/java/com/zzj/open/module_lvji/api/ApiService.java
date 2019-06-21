@@ -2,11 +2,11 @@ package com.zzj.open.module_lvji.api;
 
 import com.zzj.open.base.bean.Result;
 import com.zzj.open.module_lvji.model.LvjiPublishModel;
+import com.zzj.open.module_lvji.model.LvjiTopicModel;
 
 import java.util.List;
 
 import io.reactivex.Observable;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -32,9 +32,16 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("lvji/publish")
     Observable<Result<LvjiPublishModel>> publish(@Field("userId") String myUserId,@Field("location")String location
-            , @Field("imageUrlList") String imageUrlList,@Field("content")String content);
+            , @Field("imageUrlList") String imageUrlList,@Field("content")String content,@Field("city")String city,@Field("topic")String topic);
 
     @GET("lvji/getPublishList")
     Observable<Result<List<LvjiPublishModel>>> getPublishList(@Query("page") int page,@Query("pagesize") int pagesize);
+
+    /**
+     * 获取话题列表
+     * @return
+     */
+    @GET("lvji/getTopicList")
+    Observable<Result<List<LvjiTopicModel>>> getTopicList();
 
 }

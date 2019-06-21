@@ -130,7 +130,7 @@ public class BaseModuleInit implements IModuleInit {
 //            LogUtils.e("定位信息---》"+aMapLocation.getCity());
             if(aMapLocation!=null){
                 if(getInstance().locationChangeListener!=null){
-                    getInstance().locationChangeListener.getLocationSuccess(aMapLocation.getAddress());
+                    getInstance().locationChangeListener.getLocationSuccess(aMapLocation.getCity(),aMapLocation.getAddress());
                 }
             }
         }
@@ -190,6 +190,6 @@ public class BaseModuleInit implements IModuleInit {
          * 获取定位信息成功
          * @param address 地址
          */
-        void getLocationSuccess(String address);
+        void getLocationSuccess(String city,String address);
     }
 }

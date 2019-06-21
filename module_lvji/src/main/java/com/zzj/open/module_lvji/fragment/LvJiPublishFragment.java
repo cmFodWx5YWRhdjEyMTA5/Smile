@@ -1,17 +1,24 @@
 package com.zzj.open.module_lvji.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.databinding.Observable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.zzj.open.base.base.BaseModuleInit;
@@ -28,12 +35,14 @@ import com.zzj.open.module_lvji.api.ApiService;
 import com.zzj.open.module_lvji.databinding.LvjiFragmentPublishBinding;
 import com.zzj.open.module_lvji.model.EventBean;
 import com.zzj.open.module_lvji.model.LvjiPublishModel;
+import com.zzj.open.module_lvji.model.LvjiTopicModel;
+import com.zzj.open.module_lvji.view.RObject;
+import com.zzj.open.module_lvji.viewmodel.LvJiPublishViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
-import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
@@ -53,14 +62,26 @@ import me.goldze.mvvmhabit.utils.ToastUtils;
  * @desc : 发布图片fragment
  * @version: 1.0
  */
-public class LvJiPublishFragment extends BaseFragment<LvjiFragmentPublishBinding, BaseViewModel> {
+public class LvJiPublishFragment extends BaseFragment<LvjiFragmentPublishBinding, LvJiPublishViewModel> {
 
     LvJiPublishImageAdapter imageAdapter;
     private ArrayList<String> imageList = new ArrayList<>();
+
+
     /**
-     * 上传图片的url
+     * 位置
      */
-    private ArrayList<String> imageUrlList = new ArrayList<>();
+    private String location = "";
+
+    /**
+     * 城市
+     */
+    private String city;
+    /**
+     * 话题
+     */
+    private String topic = "";
+
     public static LvJiPublishFragment newInstance(ArrayList<String> imageList) {
 
         Bundle args = new Bundle();
@@ -84,13 +105,14 @@ public class LvJiPublishFragment extends BaseFragment<LvjiFragmentPublishBinding
     @Override
     public void initData() {
         super.initData();
-
         ArrayList<String> arrayList = getArguments().getStringArrayList("imageList");
         if (arrayList != null) {
             imageList.addAll(arrayList);
         }
         new ToolbarHelper(_mActivity, (Toolbar) binding.toolbar, "", true);
         setHasOptionsMenu(true);
+//        binding.etContent.setMentionTextColor(R.color.blue_600);
+//        binding.etContent.setPattern("@[\\u4e00-\\u9fa5\\w\\-]+");
         GridLayoutManager layoutManager = new GridLayoutManager(_mActivity, 3);
         binding.recyclerView.setLayoutManager(layoutManager);
         imageAdapter = new LvJiPublishImageAdapter(R.layout.lvji_item_publish_image_layout, imageList);
@@ -99,13 +121,68 @@ public class LvJiPublishFragment extends BaseFragment<LvjiFragmentPublishBinding
         //获取定位信息
         BaseModuleInit.getInstance().setLocationChangeListener(new BaseModuleInit.LocationChangeListener() {
             @Override
-            public void getLocationSuccess(String address) {
-                LogUtils.e("获取的地址----》"+address);
+            public void getLocationSuccess(String city,String address) {
+//                LogUtils.e("获取的地址----》"+address);
                 location = address;
+                LvJiPublishFragment.this.city = city;
             }
         });
         //开启定位
         BaseModuleInit.startLocation();
+
+        initListener();
+    }
+    ConstraintLayout.LayoutParams layoutParams;
+    /**
+     * 事件监听
+     */
+    private void initListener() {
+        //监听发布成功事件执行关闭页面
+        viewModel.aBoolean.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                _mActivity.pop();
+            }
+        });
+        /**
+         * 话题点击事件
+         */
+        binding.tvTopic.setOnClickListener(v -> {
+           startForResult(new TopicSelectListFragment(),1001);
+        });
+
+        /**
+         * 监听键盘的高度变化
+         */
+        KeyboardUtils.registerSoftInputChangedListener(_mActivity, new KeyboardUtils.OnSoftInputChangedListener() {
+            @Override
+            public void onSoftInputChanged(int height) {
+                LogUtils.e("onSoftInputChanged---》"+height);
+                layoutParams = (ConstraintLayout.LayoutParams) binding.llBottom.getLayoutParams();
+                layoutParams.bottomMargin = height;
+                if(height>0){
+                    binding.llBottom.setVisibility(View.VISIBLE);
+                }else {
+                    binding.llBottom.setVisibility(View.GONE);
+                }
+
+            }
+        });
+    }
+
+
+    @Override
+    public void onFragmentResult(int requestCode, int resultCode, Bundle data) {
+        super.onFragmentResult(requestCode, resultCode, data);
+        if(requestCode == 1001&&resultCode == RESULT_OK){
+            LvjiTopicModel model = (LvjiTopicModel) data.getSerializable("topic");
+            RObject rObject = new RObject();
+            rObject.setObjectRule("#");
+            rObject.setObjectText(model.getTopicTitle());
+            topic = model.getTopicTitle();
+            binding.etContent.setObject(rObject);
+//            binding.etContent.setSelection(binding.etContent.getText().toString().length());
+        }
     }
 
     @Override
@@ -118,102 +195,17 @@ public class LvJiPublishFragment extends BaseFragment<LvjiFragmentPublishBinding
                 //发布按钮事件
                 if (menuItem.getItemId() == R.id.action_publish) {
                     showDialog("上传中…");
-                    Observable.create(new ObservableOnSubscribe<String>() {
-                        @Override
-                        public void subscribe(ObservableEmitter<String> emitter) throws Exception {
-                            LogUtils.e("ObservableEmitter--->" + Thread.currentThread().getName());
-                            imageUrlList.clear();
-                            for (String path : imageList) {
-                                //执行上传操作
-                                // 进行压缩
-                                String cacheDir = BaseModuleInit.application.getCacheDir().getAbsolutePath();
-                                final String tempFile = String.format("%s/image/Cache_%s.png", cacheDir, SystemClock.uptimeMillis());
-                                // 压缩工具类
-                                if (PicturesCompressor.compressImage(path, tempFile,
-                                        UploadHelper.MAX_UPLOAD_IMAGE_LENGTH)) {
-
-                                    // 上传
-                                    String ossPath = UploadHelper.uploadImage(tempFile);
-                                    // 清理缓存
-                                    StreamUtil.delete(tempFile);
-                                    emitter.onNext(ossPath);
-                                }
-                            }
-                            emitter.onComplete();
-                        }
-                    }).subscribeOn(Schedulers.newThread())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Observer<String>() {
-                                private Disposable mDisposable;
-
-                                @Override
-                                public void onSubscribe(Disposable d) {
-                                    mDisposable = d;
-                                }
-
-                                @Override
-                                public void onNext(String s) {
-                                    LogUtils.e("onNext--->" + s);
-                                    imageUrlList.add(s);
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-                                    mDisposable.dispose();
-                                    dismissDialog();
-                                    ToastUtils.showShort("上传失败");
-                                    LogUtils.e("onError---->" + e.getMessage());
-                                }
-
-                                @Override
-                                public void onComplete() {
-                                    publish();
-
-
-                                }
-                            });
-
+                    viewModel.uploadingPicture(imageList,location,binding.etContent.getText().toString().trim(),city,topic);
                 }
                 return false;
             }
         });
     }
 
-    /**
-     * 位置
-     */
-    private String location = "";
-
-
-    /**
-     * 上传分享图片
-     */
-    private void publish(){
-        RetrofitClient.getInstance().create(ApiService.class)
-                .publish(SPUtils.getInstance().getString("userId"),location,imageUrlList.toString(),binding.etContent.getText().toString().trim())
-                .compose(RxUtils.bindToLifecycle(viewModel.getLifecycleProvider()))
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribe(new Consumer<Result<LvjiPublishModel>>() {
-                    @Override
-                    public void accept(Result<LvjiPublishModel> result) throws Exception {
-                        dismissDialog();
-                        if(result.getCode() == 200){
-                            ToastUtils.showShort("上传成功");
-                            setFragmentResult(LvJiHomeFragment.RESULT_OK,null);
-                            EventBus.getDefault().post(new EventBean("上传成功"));
-                            _mActivity.pop();
-                        }else {
-                            ToastUtils.showShort(result.getMessage());
-                        }
-
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        dismissDialog();
-                        ToastUtils.showShort("服务器错误");
-                    }
-                });
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        KeyboardUtils.unregisterSoftInputChangedListener(_mActivity);
+        KeyboardUtils.fixSoftInputLeaks(_mActivity);
     }
 }

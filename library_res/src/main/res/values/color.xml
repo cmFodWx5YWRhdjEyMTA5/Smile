@@ -35,6 +35,7 @@
     <!--//状态栏-->
     <color name="colorPrimaryDark">#fdfdfe</color>
     <color name="colorAccent">#f45b43</color>
+    <color name="lj_colorAccent">#2bd983</color>
     <color name="colorLight">@color/white</color>
     <color name="colorDark">@color/black</color>
     <color name="colorAccentAlpha">#801572fc</color>
