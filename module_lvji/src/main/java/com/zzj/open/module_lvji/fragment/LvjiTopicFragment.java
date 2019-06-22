@@ -3,10 +3,14 @@ package com.zzj.open.module_lvji.fragment;
 import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -16,9 +20,11 @@ import com.zzj.open.module_lvji.BR;
 import com.zzj.open.module_lvji.R;
 import com.zzj.open.module_lvji.databinding.LvjiFragmentNearbyBinding;
 import com.zzj.open.module_lvji.databinding.LvjiFragmentTopicBinding;
+import com.zzj.open.module_lvji.impl.ScaleTransformer;
 import com.zzj.open.module_lvji.model.LvjiTopicModel;
 import com.zzj.open.module_lvji.viewmodel.LvjiTopicViewModel;
 
+import github.hellocsl.layoutmanager.gallery.GalleryLayoutManager;
 import me.goldze.mvvmhabit.base.BaseFragment;
 import me.goldze.mvvmhabit.base.BaseViewModel;
 
@@ -31,7 +37,17 @@ import me.goldze.mvvmhabit.base.BaseViewModel;
  */
 public class LvjiTopicFragment extends BaseFragment<LvjiFragmentTopicBinding, LvjiTopicViewModel> {
 
+    /**
+     * 顶部话题列表
+     */
+    private RecyclerView topBannerRecycler;
+    /**
+     * 话题分类列表
+     */
+    private RecyclerView recycler_topic_type;
+
     private BaseQuickAdapter<LvjiTopicModel, BaseViewHolder> adapter;
+    private BaseQuickAdapter<LvjiTopicModel, BaseViewHolder> topBannerAdapter;
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,23 +68,53 @@ public class LvjiTopicFragment extends BaseFragment<LvjiFragmentTopicBinding, Lv
         binding.recyclerView.setAdapter(adapter = new BaseQuickAdapter<LvjiTopicModel, BaseViewHolder>(R.layout.lvji_item_topic_layout) {
             @Override
             protected void convert(BaseViewHolder helper, LvjiTopicModel item) {
-                helper.setText(R.id.tv_topic_title,item.getTopicTitle());
-                helper.setText(R.id.tv_topic_content,item.getTopicContent());
-                helper.setText(R.id.tv_topic_name_value,item.getUserName());
+                helper.setText(R.id.tv_topic_title, item.getTopicTitle());
+                helper.setText(R.id.tv_topic_content, item.getTopicContent());
+                helper.setText(R.id.tv_topic_name_value, item.getUserName());
                 Glide.with(mContext).load(item.getTopicPicture()).apply(new RequestOptions()
                         .placeholder(R.mipmap.bg_src_tianjin)).into((ImageView) helper.getView(R.id.iv_topic_picture));
             }
         });
-
+        initTopBannerList();
         viewModel.getTopicList();
 
         viewModel.topicModels.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
                 adapter.setNewData(viewModel.topicModels.get());
+                topBannerAdapter.setNewData(viewModel.topicModels.get());
             }
         });
 
+    }
+
+    /**
+     * 加载顶部banner
+     */
+    private void initTopBannerList() {
+        View view = LayoutInflater.from(_mActivity).inflate(R.layout.lvji_include_topic_top_recycler_view, binding.recyclerView,false);
+        topBannerRecycler = view.findViewById(R.id.recycler_top_banner);
+        GalleryLayoutManager layoutManager1 = new GalleryLayoutManager(GalleryLayoutManager.HORIZONTAL);
+        layoutManager1.attach(topBannerRecycler, 0);
+        layoutManager1.setItemTransformer(new ScaleTransformer());
+        topBannerRecycler.setAdapter(topBannerAdapter = new BaseQuickAdapter<LvjiTopicModel, BaseViewHolder>(R.layout.lvji_item_topic_top_banner_layout) {
+            @Override
+            protected void convert(BaseViewHolder helper, LvjiTopicModel item) {
+                //自定义view的宽度，控制一屏显示个数
+                ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                int width = mContext.getResources().getDisplayMetrics().widthPixels;
+                params.width = (int) (width / 1.38);
+                helper.itemView.setLayoutParams(params);
+
+                helper.setText(R.id.tv_topic_title, item.getTopicTitle());
+                helper.setText(R.id.tv_topic_content, item.getTopicContent());
+                helper.setText(R.id.tv_topic_name_value, item.getUserName());
+                Glide.with(mContext).load(item.getTopicPicture()).apply(new RequestOptions()
+                        .placeholder(R.mipmap.bg_src_tianjin)).into((ImageView) helper.getView(R.id.iv_topic_picture));
+            }
+        });
+
+        adapter.addHeaderView(view);
     }
 
 

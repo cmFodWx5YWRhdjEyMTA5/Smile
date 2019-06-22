@@ -190,7 +190,7 @@ public class LvJiHomeFragment extends BaseFragment<LvjiFragmentHomeBinding, LvJi
             mSelected = Matisse.obtainPathResult(data);
             if (mSelected != null && mSelected.size() != 0) {
 //                String imageBase64 = ImageUtils.imageToBase64(mSelected.get(0));
-                _mActivity.start(LvJiPublishFragment.newInstance((ArrayList<String>) mSelected));
+                _mActivity.start(LvJiPublishFragment.newInstance((ArrayList<String>) mSelected),SINGLETOP);
             }
         }
     }

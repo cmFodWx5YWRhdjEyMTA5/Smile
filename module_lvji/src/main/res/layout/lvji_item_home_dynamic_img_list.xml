@@ -79,7 +79,6 @@
             android:text="山东省"
             android:textSize="12dp"
             android:textColor="@color/blue_600"
-
             />
         <TextView
             android:id="@+id/tv_time"

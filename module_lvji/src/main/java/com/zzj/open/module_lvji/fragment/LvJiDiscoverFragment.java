@@ -1,6 +1,7 @@
 package com.zzj.open.module_lvji.fragment;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -10,13 +11,21 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.SnackbarUtils;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zzj.open.base.router.RouterFragmentPath;
+import com.zzj.open.base.utils.Glide4Engine;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_lvji.BR;
 import com.zzj.open.module_lvji.R;
@@ -37,6 +46,7 @@ import java.util.List;
 import me.goldze.mvvmhabit.base.BaseFragment;
 import me.goldze.mvvmhabit.base.BaseViewModel;
 import me.goldze.mvvmhabit.utils.ConvertUtils;
+import me.goldze.mvvmhabit.utils.ToastUtils;
 
 import static android.support.design.widget.TabLayout.MODE_FIXED;
 
@@ -67,42 +77,12 @@ public class LvJiDiscoverFragment extends BaseFragment<LvjiFragmentDiscoverBindi
     public void initData() {
         super.initData();
         setSwipeBackEnable(false);
+        new ToolbarHelper(_mActivity,binding.toolbar,"",false);
+        setHasOptionsMenu(true);
         fragments.add(new LvjiNearbyFragment());
         fragments.add(new LvjiTopicFragment());
 
-//        binding.tabSegment.setHasIndicator(true);
-//        binding.tabSegment.setIndicatorPosition(false);
-//        binding.tabSegment.setIndicatorWidthAdjustContent(true);
-//        binding.tabSegment.setDefaultSelectedColor(getResources().getColor(R.color.lj_colorAccent));
-////        binding.tabSegment.setIndicatorDrawable(getResources().getDrawable(R.drawable.lj_tab_indicator_bg));
-//        binding.tabSegment.addTab(new QMUITabSegment.Tab("附近"));
-//        binding.tabSegment.addTab(new QMUITabSegment.Tab("话题"));
-//        binding.tabSegment.setItemSpaceInScrollMode(ConvertUtils.dp2px(20));
-//        binding.tabSegment.getTab(0).setTextSize(ConvertUtils.dp2px(20));
-//
-//
-//        //设置字体样式
-//        binding.tabSegment.setTypefaceProvider(new QMUITabSegment.TypefaceProvider() {
-//            @Override
-//            public boolean isNormalTabBold() {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean isSelectedTabBold() {
-//                return true;
-//            }
-//
-//            @Nullable
-//            @Override
-//            public Typeface getTypeface() {
-//                return null;
-//            }
-//        });
-//        binding.tabSegment.notifyDataChanged();
-//        binding.tabSegment.setMode(QMUITabSegment.MODE_SCROLLABLE);
-
-        binding.contentViewPager.setAdapter(new FragmentStatePagerAdapter(_mActivity.getSupportFragmentManager()) {
+        binding.contentViewPager.setAdapter(new FragmentStatePagerAdapter(getFragmentManager()) {
             @Override
             public Fragment getItem(int i) {
                 return fragments.get(i);
@@ -113,31 +93,6 @@ public class LvJiDiscoverFragment extends BaseFragment<LvjiFragmentDiscoverBindi
                 return fragments.size();
             }
         });
-//        binding.tabSegment.setupWithViewPager(binding.contentViewPager,false);
-
-//        binding.tabSegment.addOnTabSelectedListener(new QMUITabSegment.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(int index) {
-////                binding.tabSegment.getTab(index).setTextSize(ConvertUtils.dp2px(20));
-////                binding.tabSegment.notifyDataChanged();
-//            }
-//
-//            @Override
-//            public void onTabUnselected(int index) {
-////                binding.tabSegment.getTab(index).setTextSize(ConvertUtils.dp2px(16));
-////                binding.tabSegment.notifyDataChanged();
-//            }
-//
-//            @Override
-//            public void onTabReselected(int index) {
-//
-//            }
-//
-//            @Override
-//            public void onDoubleTap(int index) {
-//
-//            }
-//        });
 
         CommonNavigator commonNavigator = new CommonNavigator(_mActivity);
         commonNavigator.setScrollPivotX(0.25f);
@@ -174,5 +129,22 @@ public class LvJiDiscoverFragment extends BaseFragment<LvjiFragmentDiscoverBindi
         });
         binding.tabSegment.setNavigator(commonNavigator);
         ViewPagerHelper.bind( binding.tabSegment,  binding.contentViewPager);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        binding.toolbar.inflateMenu(R.menu.lvji_menu_create_topic);
+        (binding.toolbar).setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                //点击创建话题功能
+                if (menuItem.getItemId() == R.id.action_create_topic) {
+                    ToastUtils.showShort("创建话题");
+                    _mActivity.start(new LvJiCreateTopicFragment());
+                }
+                return false;
+            }
+        });
     }
 }

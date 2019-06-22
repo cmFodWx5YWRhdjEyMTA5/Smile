@@ -19,18 +19,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 >
-                <EditText
-                    android:id="@+id/et_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:background="@drawable/lj_shape_topic_search_bg"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:hint="搜索你感兴趣的话题"
-                    android:gravity="center"
-                    android:textSize="@dimen/len_14"
-                    />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"

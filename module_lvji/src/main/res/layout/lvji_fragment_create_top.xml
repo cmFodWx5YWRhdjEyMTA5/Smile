@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="me.goldze.mvvmhabit.base.BaseViewModel" />
+        <variable
+            name="viewModel"
+            type="me.goldze.mvvmhabit.base.BaseViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/include_toolbar"/>
+        <ImageView
+            android:id="@+id/iv_topic_picture"
+            android:layout_width="@dimen/len_80"
+            android:layout_height="@dimen/len_80"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            android:layout_margin="20dp"
+            />
+        <EditText
+            android:id="@+id/et_topic_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@+id/iv_topic_picture"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_topic_picture"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_topic_picture"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:hint="填写话题名称"
+            />
+
+        <View
+            android:id="@+id/view_1"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@color/bar_divider"
+            app:layout_constraintTop_toBottomOf="@+id/iv_topic_picture"
+            android:layout_marginTop="20dp"
+            />
+
+        <EditText
+            android:id="@+id/et_topic_desc"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:hint="填写话题描述"
+            android:gravity="left|top"
+            app:layout_constraintTop_toBottomOf="@+id/view_1"
+            android:padding="@dimen/len_20"
+            android:background="@null"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="山东省"
+            android:textSize="12dp"
+            android:textColor="@color/blue_600"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_topic_desc"
+            android:layout_marginLeft="20dp"
+            />
+    </android.support.constraint.ConstraintLayout>
+</layout>
