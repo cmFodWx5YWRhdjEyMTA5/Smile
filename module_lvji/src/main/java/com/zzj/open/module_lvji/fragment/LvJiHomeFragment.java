@@ -7,28 +7,26 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
-import com.zzj.open.base.bean.NotifiyEventBean;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.Glide4Engine;
-import com.zzj.open.base.utils.ImageUtils;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_lvji.BR;
 import com.zzj.open.module_lvji.R;
@@ -46,9 +44,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.goldze.mvvmhabit.base.BaseFragment;
-import me.goldze.mvvmhabit.base.BaseViewModel;
-
-import static com.qmuiteam.qmui.widget.popup.QMUIPopup.DIRECTION_NONE;
 
 /**
  * @author : zzj
@@ -60,12 +55,13 @@ import static com.qmuiteam.qmui.widget.popup.QMUIPopup.DIRECTION_NONE;
 @Route(path = RouterFragmentPath.Lvji.PAGER_HOME)
 public class LvJiHomeFragment extends BaseFragment<LvjiFragmentHomeBinding, LvJiHomeViewModel> {
 
-    public int REQUEST_CODE_CHOOSE = 111;
-    public int REQUEST_CODE_SUCCESS = 112;
+    public static int REQUEST_CODE_CHOOSE = 111;
+    public static int REQUEST_CODE_SUCCESS = 112;
     private int page = 0;
     //    private List<LvjiPublishModel> publishModels = new ArrayList<>();
     private LvjiHomeDynamicAdapter dynamicAdapter;
 
+    private LvjiPublishModel publishModel;
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return R.layout.lvji_fragment_home;
@@ -117,6 +113,7 @@ public class LvJiHomeFragment extends BaseFragment<LvjiFragmentHomeBinding, LvJi
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 //更多按钮的点击事件   弹窗
                 if(view.getId() == R.id.iv_more){
+                    publishModel = (LvjiPublishModel) adapter.getData().get(position);
                     int[] location = new int[2];
                     view.getLocationOnScreen(location);
                     if(location[1]< ScreenUtils.getScreenHeight()- ConvertUtils.dp2px(120)){
@@ -147,8 +144,36 @@ public class LvJiHomeFragment extends BaseFragment<LvjiFragmentHomeBinding, LvJi
     private void initPop() {
         if (popup == null) {
             popup = new QMUIPopup(_mActivity);
-            popup.setContentView(R.layout.lvji_pop_dynamic_more_layout);
+            View view = LayoutInflater.from(_mActivity).inflate(R.layout.lvji_pop_dynamic_more_layout,null);
+            TextView tvSendMessage = view.findViewById(R.id.tv_send_message);
+            tvSendMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                  try {
+//                      String className = "com.zzj.open.module_chat.fragment.ChatFragment";
+//                      ReflectUtils reflectUtils = ReflectUtils.reflect(className);
+//                      reflectUtils.method("instance", publishModel.getUserId(),publishModel.getUserName(),publishModel.getFaceImage(),0);
+                      BaseFragment fragment =(BaseFragment) ARouter.getInstance()
+                              .build(RouterFragmentPath.Msg.PAGER_MSG_DETAILS)
+                              .withString("chatUserId", publishModel.getUserId())
+                              .withString("chatUsername", publishModel.getUserId())
+                              .withString("chatFaceImage", publishModel.getUserId())
+                              .withInt("chatType", 0)
+                              .navigation();
+                      _mActivity.start(fragment);
+                      popup.dismiss();
+                  }catch (Exception e){
+                      e.printStackTrace();
+
+                  }
+                }
+            });
+            popup.setContentView(view);
+
             popup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+
+
+
         }
     }
 

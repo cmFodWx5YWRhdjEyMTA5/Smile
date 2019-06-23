@@ -13,11 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.GsonUtils;
-import com.blankj.utilcode.util.JsonUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.dhh.websocket.RxWebSocket;
 import com.sj.emoji.EmojiBean;
+import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_chat.BR;
 import com.zzj.open.module_chat.ChatModuleInit;
@@ -27,12 +28,9 @@ import com.zzj.open.module_chat.bean.ChatListModel;
 import com.zzj.open.module_chat.bean.ChatMessageModel;
 import com.zzj.open.module_chat.bean.DataContent;
 import com.zzj.open.module_chat.bean.ImageInfo;
-import com.zzj.open.module_chat.bean.MyFriendModel;
 import com.zzj.open.module_chat.bean.User;
 import com.zzj.open.module_chat.databinding.ChatFragmentChatdetailsBinding;
 import com.zzj.open.module_chat.db.ChatMessageModelDao;
-import com.zzj.open.module_chat.db.MyFriendModelDao;
-import com.zzj.open.module_chat.service.ChatMessageService;
 import com.zzj.open.module_chat.utils.Cons;
 import com.zzj.open.module_chat.utils.Factory;
 import com.zzj.open.module_chat.utils.PicturesCompressor;
@@ -54,7 +52,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import cn.hutool.core.date.DateUtil;
 import me.goldze.mvvmhabit.base.BaseFragment;
@@ -65,6 +62,8 @@ import sj.keyboard.widget.AutoHeightLayout;
 import sj.keyboard.widget.EmoticonsEditText;
 import sj.keyboard.widget.FuncLayout;
 
+import static com.zzj.open.base.http.RetrofitClient.ws_url;
+
 /**
  * @author : zzj
  * @e-mail : zhangzhijun@pansoft.com
@@ -72,6 +71,7 @@ import sj.keyboard.widget.FuncLayout;
  * @desc :  聊天 详情
  * @version: 1.0
  */
+@Route(path = RouterFragmentPath.Msg.PAGER_MSG_DETAILS)
 public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,BaseViewModel> implements FuncLayout.OnFuncKeyBoardListener, AutoHeightLayout.OnMaxParentHeightChangeListener{
 
     public static int SINGLE_CHAT = 2;
@@ -357,7 +357,7 @@ public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,Ba
         messageAdapter.addData(chatMessageModel);
         saveChatList(chatMessageModel);
         ChatModuleInit.getDaoSession().getChatMessageModelDao().insert(chatMessageModel);
-        RxWebSocket.send(ChatMessageService.url,GsonUtils.toJson(content));
+        RxWebSocket.send(ws_url,GsonUtils.toJson(content));
         binding.recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
     }
 
@@ -389,7 +389,7 @@ public class ChatFragment extends BaseFragment<ChatFragmentChatdetailsBinding,Ba
                 DataContent signMessage = new DataContent();
                 signMessage.setAction(3);
                 signMessage.setExtand(","+dataContent.getChatMsg().getMsgId());
-                RxWebSocket.send(ChatMessageService.url,GsonUtils.toJson(signMessage));
+                RxWebSocket.send(ws_url,GsonUtils.toJson(signMessage));
                 settingMessageRead();
             }
 

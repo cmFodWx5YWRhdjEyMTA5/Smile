@@ -1,13 +1,9 @@
 package com.zzj.open.module_lvji.fragment;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -18,14 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.blankj.utilcode.util.SnackbarUtils;
-import com.qmuiteam.qmui.util.QMUIDisplayHelper;
-import com.qmuiteam.qmui.widget.QMUITabSegment;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zzj.open.base.router.RouterFragmentPath;
-import com.zzj.open.base.utils.Glide4Engine;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_lvji.BR;
 import com.zzj.open.module_lvji.R;
@@ -45,10 +34,6 @@ import java.util.List;
 
 import me.goldze.mvvmhabit.base.BaseFragment;
 import me.goldze.mvvmhabit.base.BaseViewModel;
-import me.goldze.mvvmhabit.utils.ConvertUtils;
-import me.goldze.mvvmhabit.utils.ToastUtils;
-
-import static android.support.design.widget.TabLayout.MODE_FIXED;
 
 /**
  * @author : zzj
@@ -140,7 +125,6 @@ public class LvJiDiscoverFragment extends BaseFragment<LvjiFragmentDiscoverBindi
             public boolean onMenuItemClick(MenuItem menuItem) {
                 //点击创建话题功能
                 if (menuItem.getItemId() == R.id.action_create_topic) {
-                    ToastUtils.showShort("创建话题");
                     _mActivity.start(new LvJiCreateTopicFragment());
                 }
                 return false;

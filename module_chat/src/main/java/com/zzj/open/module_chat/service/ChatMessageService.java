@@ -35,6 +35,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
 import okio.ByteString;
 
+import static com.zzj.open.base.http.RetrofitClient.ws_url;
+
 /**
  * @author : zzj
  * @e-mail : zhangzhijun@pansoft.com
@@ -44,7 +46,7 @@ import okio.ByteString;
 public class ChatMessageService extends Service {
 
 //    public static final String url = "ws://192.168.0.107:8088/ws";
-    public static final String url = "ws://192.168.2.129:8088/ws";
+
 
 
     private Timer timer;
@@ -68,7 +70,7 @@ public class ChatMessageService extends Service {
         RxWebSocket.setConfig(config);
 
 
-        RxWebSocket.get(url)
+        RxWebSocket.get(ws_url)
                 //RxLifecycle : https://github.com/dhhAndroid/RxLifecycle
                 .subscribe(new WebSocketSubscriber() {
                     @Override
@@ -82,7 +84,7 @@ public class ChatMessageService extends Service {
                         content.setChatMsg(chatMessageModel);
                         content.setAction(1);
                         content.setExtand("");
-                        RxWebSocket.send(ChatMessageService.url,GsonUtils.toJson(content));
+                        RxWebSocket.send(ws_url,GsonUtils.toJson(content));
                         if(SPUtils.getInstance().getInt("websocket",0) == 0){
                             EventBus.getDefault().post(content);
                         }
@@ -166,7 +168,7 @@ public class ChatMessageService extends Service {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                RxWebSocket.send(ChatMessageService.url,GsonUtils.toJson(dataContent));
+                RxWebSocket.send(ws_url,GsonUtils.toJson(dataContent));
             }
         },2000,2000);
     }
@@ -189,7 +191,7 @@ public class ChatMessageService extends Service {
                         content.setAction(7);
                     }
                     content.setExtand("");
-                    RxWebSocket.send(ChatMessageService.url,GsonUtils.toJson(content));
+                    RxWebSocket.send(ws_url,GsonUtils.toJson(content));
                 }else {
                     chatMessageModel.setSendFails(true);
                     ChatModuleInit.getDaoSession().getChatMessageModelDao().update(chatMessageModel);

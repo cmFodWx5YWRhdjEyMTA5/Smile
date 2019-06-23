@@ -7,6 +7,7 @@ import com.zzj.open.module_lvji.model.LvjiTopicModel;
 import java.util.List;
 
 import io.reactivex.Observable;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -44,4 +45,11 @@ public interface ApiService {
     @GET("lvji/getTopicList")
     Observable<Result<List<LvjiTopicModel>>> getTopicList();
 
+    /**
+     * 创建话题
+     * @param lvjiTopicModel
+     * @return
+     */
+    @POST("lvji/createTopic")
+    Observable<Result<LvjiTopicModel>> createTopic(@Body LvjiTopicModel lvjiTopicModel);
 }

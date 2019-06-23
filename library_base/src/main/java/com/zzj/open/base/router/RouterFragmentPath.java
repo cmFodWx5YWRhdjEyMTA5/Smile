@@ -87,6 +87,7 @@ public class RouterFragmentPath {
         private static final String MSG = "/msg";
         /*消息*/
         public static final String PAGER_MSG = MSG + "/msg/Msg";
+        public static final String PAGER_MSG_DETAILS = MSG + "/msg/Details";
     }
 
     /**

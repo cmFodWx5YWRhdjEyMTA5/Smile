@@ -1,9 +1,7 @@
 package com.zzj.open.module_chat.vm;
 
 import android.app.Application;
-import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
-import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
 import com.blankj.utilcode.util.GsonUtils;
@@ -12,8 +10,6 @@ import com.dhh.websocket.RxWebSocket;
 import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.http.RetrofitClient;
 import com.zzj.open.module_chat.ChatModuleInit;
-import com.zzj.open.module_chat.R;
-import com.zzj.open.module_chat.BR;
 import com.zzj.open.module_chat.api.ApiService;
 import com.zzj.open.module_chat.bean.ChatListModel;
 import com.zzj.open.module_chat.bean.ChatMessageModel;
@@ -23,22 +19,17 @@ import com.zzj.open.module_chat.bean.MyFriendModel;
 import com.zzj.open.module_chat.db.ChatListModelDao;
 import com.zzj.open.module_chat.db.ChatMessageModelDao;
 import com.zzj.open.module_chat.db.MyFriendModelDao;
-import com.zzj.open.module_chat.service.ChatMessageService;
 import com.zzj.open.module_chat.utils.Cons;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import cn.hutool.core.date.DateUtil;
 import io.reactivex.functions.Consumer;
 import me.goldze.mvvmhabit.base.BaseViewModel;
 import me.goldze.mvvmhabit.utils.RxUtils;
-import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter;
-import me.tatarka.bindingcollectionadapter2.ItemBinding;
+
+import static com.zzj.open.base.http.RetrofitClient.ws_url;
 
 /**
  * @author : zzj
@@ -97,7 +88,7 @@ public class ChatListViewModel extends BaseViewModel {
                                         DataContent signMessage = new DataContent();
                                         signMessage.setAction(3);
                                         signMessage.setExtand(msgIds);
-                                        RxWebSocket.send(ChatMessageService.url, GsonUtils.toJson(signMessage));
+                                        RxWebSocket.send(ws_url, GsonUtils.toJson(signMessage));
                                     }
                                     initData();
                                 }

@@ -25,6 +25,28 @@ public class LvjiTopicModel implements Serializable {
 
     private String userName;
 
+    private String userId;
+
+    private String topicLocation;
+
+    public String getTopicLocation() {
+        return topicLocation;
+    }
+
+    public void setTopicLocation(String topicLocation) {
+        this.topicLocation = topicLocation;
+    }
+
+
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public String getId() {
         return id;
     }

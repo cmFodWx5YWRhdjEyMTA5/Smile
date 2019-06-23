@@ -1,9 +1,15 @@
 package com.zzj.open.base.utils;
 
+import android.os.SystemClock;
 import android.util.Base64;
 
 import com.alibaba.android.arouter.utils.TextUtils;
 import com.blankj.utilcode.util.EncodeUtils;
+import com.zzj.open.base.base.BaseModuleInit;
+import com.zzj.open.base.bean.CallBack;
+import com.zzj.open.base.bean.Result;
+import com.zzj.open.base.http.RetrofitClient;
+import com.zzj.open.base.http.ServiceApi;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,6 +17,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import me.goldze.mvvmhabit.base.BaseViewModel;
+import me.goldze.mvvmhabit.utils.RxUtils;
 
 /**
  * @author : zzj
@@ -83,4 +101,90 @@ public class ImageUtils {
             return false;
         }
     }
+
+    /**
+     * 上传图片
+     */
+    public static void uploadImage(String imagePath, BaseViewModel viewModel,CallBack<String> callBack){
+
+        Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                //执行上传操作
+                // 进行压缩
+                String cacheDir = BaseModuleInit.application.getCacheDir().getAbsolutePath();
+                final String tempFile = String.format("%s/image/Cache_%s.png", cacheDir, SystemClock.uptimeMillis());
+                // 压缩工具类
+                if (PicturesCompressor.compressImage(imagePath, tempFile,
+                        UploadHelper.MAX_UPLOAD_IMAGE_LENGTH)) {
+
+                    emitter.onNext(tempFile);
+                    emitter.onComplete();
+                }
+            }
+        }).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+
+                        RetrofitClient.getInstance().create(ServiceApi.class)
+                                .uploadImage(ImageUtils.imageToBase64(s))
+                                //请求与View周期同步
+                                .compose(RxUtils.bindToLifecycle(viewModel.getLifecycleProvider()))
+                                //线程调度
+                                .compose(RxUtils.schedulersTransformer())
+                                // 网络错误的异常转换, 这里可以换成自己的ExceptionHandle
+                                .compose(RxUtils.exceptionTransformer())
+                                .doOnSubscribe(new Consumer<Disposable>() {
+                                    @Override
+                                    public void accept(Disposable disposable) throws Exception {
+
+                                    }
+                                }).subscribe(new Consumer<Result<String>>() {
+                            @Override
+                            public void accept(Result<String> o) throws Exception {
+                                if(o!=null&&o.getCode() == 200){
+                                    StreamUtil.delete(s);
+                                    callBack.success(o.getResult());
+                                }else {
+                                    callBack.fails("");
+                                    com.blankj.utilcode.util.ToastUtils.showShort("创建失败");
+                                }
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                com.blankj.utilcode.util.ToastUtils.showShort("创建失败");
+                                callBack.fails("");
+                            }
+                        }, new Action() {
+                            @Override
+                            public void run() throws Exception {
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+
+
+
+
+    }
+
 }
