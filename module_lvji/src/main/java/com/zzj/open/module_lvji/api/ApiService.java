@@ -3,6 +3,7 @@ package com.zzj.open.module_lvji.api;
 import com.zzj.open.base.bean.Result;
 import com.zzj.open.module_lvji.model.LvjiPublishModel;
 import com.zzj.open.module_lvji.model.LvjiTopicModel;
+import com.zzj.open.module_lvji.model.LvjiTopicTypeModel;
 
 import java.util.List;
 
@@ -44,6 +45,12 @@ public interface ApiService {
      */
     @GET("lvji/getTopicList")
     Observable<Result<List<LvjiTopicModel>>> getTopicList();
+    /**
+     * 获取话题分类列表
+     * @return
+     */
+    @GET("lvji/getTopicTypeList")
+    Observable<Result<List<LvjiTopicTypeModel>>> getTopicTypeList();
 
     /**
      * 创建话题

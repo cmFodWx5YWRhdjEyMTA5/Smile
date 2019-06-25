@@ -130,6 +130,9 @@ public class LvJiCreateTopicFragment extends BaseFragment<LvjiFragmentCreateTopB
                 topicModel.setTopicContent(topicDesc);
                 topicModel.setTopicTitle(topicTitle);
                 topicModel.setTopicLocation(location);
+                topicModel.setTopicKind("user");
+                //todo:  话题类型id
+                topicModel.setTypeId("sy23syui679");
                 showDialog("正在创建...");
                 ImageUtils.uploadImage(mSelected.get(0), viewModel, new CallBack<String>() {
                     @Override
@@ -189,17 +192,20 @@ public class LvJiCreateTopicFragment extends BaseFragment<LvjiFragmentCreateTopB
                 }).subscribe(new Consumer<Result<LvjiTopicModel>>() {
             @Override
             public void accept(Result<LvjiTopicModel> o) throws Exception {
+                dismissDialog();
                 if(o!=null&&o.getCode() == 200){
                     com.blankj.utilcode.util.ToastUtils.showShort("创建成功");
                     pop();
 
                 }else {
+
                     com.blankj.utilcode.util.ToastUtils.showShort("创建失败");
                 }
             }
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
+                dismissDialog();
                 com.blankj.utilcode.util.ToastUtils.showShort("创建失败");
             }
         }, new Action() {

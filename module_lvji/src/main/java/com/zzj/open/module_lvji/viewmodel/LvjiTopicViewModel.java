@@ -8,6 +8,7 @@ import com.zzj.open.base.bean.Result;
 import com.zzj.open.base.http.RetrofitClient;
 import com.zzj.open.module_lvji.api.ApiService;
 import com.zzj.open.module_lvji.model.LvjiTopicModel;
+import com.zzj.open.module_lvji.model.LvjiTopicTypeModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ import me.goldze.mvvmhabit.utils.ToastUtils;
 public class LvjiTopicViewModel extends BaseViewModel {
 
     public ObservableField<List<LvjiTopicModel>> topicModels = new ObservableField<>();
+    public ObservableField<List<LvjiTopicTypeModel>> topicTypeModels = new ObservableField<>();
 
     public LvjiTopicViewModel(@NonNull Application application) {
         super(application);
@@ -48,6 +50,35 @@ public class LvjiTopicViewModel extends BaseViewModel {
                         dismissDialog();
                         if(result.getCode() == 200){
                             topicModels.set(result.getResult());
+                        }else {
+
+                            ToastUtils.showShort(result.getMessage());
+                        }
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        dismissDialog();
+                        ToastUtils.showShort("服务器错误");
+                    }
+                });
+    }
+    /**
+     * 获取话题分类列表
+     */
+    public void getTopicTypeList(){
+        RetrofitClient.getInstance().create(ApiService.class)
+                .getTopicTypeList()
+                .compose(RxUtils.bindToLifecycle(getLifecycleProvider()))
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribe(new Consumer<Result<List<LvjiTopicTypeModel>>>() {
+                    @Override
+                    public void accept(Result<List<LvjiTopicTypeModel>> result) throws Exception {
+                        dismissDialog();
+                        if(result.getCode() == 200){
+                            topicTypeModels.set(result.getResult());
                         }else {
 
                             ToastUtils.showShort(result.getMessage());

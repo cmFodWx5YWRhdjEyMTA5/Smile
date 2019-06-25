@@ -22,6 +22,7 @@ import com.zzj.open.module_lvji.databinding.LvjiFragmentNearbyBinding;
 import com.zzj.open.module_lvji.databinding.LvjiFragmentTopicBinding;
 import com.zzj.open.module_lvji.impl.ScaleTransformer;
 import com.zzj.open.module_lvji.model.LvjiTopicModel;
+import com.zzj.open.module_lvji.model.LvjiTopicTypeModel;
 import com.zzj.open.module_lvji.viewmodel.LvjiTopicViewModel;
 
 import github.hellocsl.layoutmanager.gallery.GalleryLayoutManager;
@@ -48,6 +49,7 @@ public class LvjiTopicFragment extends BaseFragment<LvjiFragmentTopicBinding, Lv
 
     private BaseQuickAdapter<LvjiTopicModel, BaseViewHolder> adapter;
     private BaseQuickAdapter<LvjiTopicModel, BaseViewHolder> topBannerAdapter;
+    private BaseQuickAdapter<LvjiTopicTypeModel, BaseViewHolder> topTypeAdapter;
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,6 +79,7 @@ public class LvjiTopicFragment extends BaseFragment<LvjiFragmentTopicBinding, Lv
         });
         initTopBannerList();
         viewModel.getTopicList();
+        viewModel.getTopicTypeList();
 
         viewModel.topicModels.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
@@ -85,7 +88,12 @@ public class LvjiTopicFragment extends BaseFragment<LvjiFragmentTopicBinding, Lv
                 topBannerAdapter.setNewData(viewModel.topicModels.get());
             }
         });
-
+        viewModel.topicTypeModels.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                topTypeAdapter.setNewData(viewModel.topicTypeModels.get());
+            }
+        });
     }
 
     /**
@@ -113,6 +121,17 @@ public class LvjiTopicFragment extends BaseFragment<LvjiFragmentTopicBinding, Lv
                         .placeholder(R.mipmap.bg_src_tianjin)).into((ImageView) helper.getView(R.id.iv_topic_picture));
             }
         });
+
+        //话题分类列表
+        recycler_topic_type = view.findViewById(R.id.recycler_topic_type);
+        recycler_topic_type.setLayoutManager(new LinearLayoutManager(_mActivity,LinearLayoutManager.HORIZONTAL,false));
+        recycler_topic_type.setAdapter(topTypeAdapter = new BaseQuickAdapter<LvjiTopicTypeModel, BaseViewHolder>(R.layout.lvji_item_topic_top_type_layout) {
+            @Override
+            protected void convert(BaseViewHolder helper, LvjiTopicTypeModel item) {
+                helper.setText(R.id.tv_topic_type_title,item.getTypeTitle());
+
+            }
+        } );
 
         adapter.addHeaderView(view);
     }

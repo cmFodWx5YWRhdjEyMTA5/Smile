@@ -20,7 +20,8 @@ public class LvjiTopicModel implements Serializable {
     private String topicContent;
 
     private String topicPicture;
-
+    private String typeId;
+    private String topicKind;
     private String topicTitle;
 
     private String userName;
@@ -31,6 +32,22 @@ public class LvjiTopicModel implements Serializable {
 
     public String getTopicLocation() {
         return topicLocation;
+    }
+
+    public String getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
+    }
+
+    public String getTopicKind() {
+        return topicKind;
+    }
+
+    public void setTopicKind(String topicKind) {
+        this.topicKind = topicKind;
     }
 
     public void setTopicLocation(String topicLocation) {
