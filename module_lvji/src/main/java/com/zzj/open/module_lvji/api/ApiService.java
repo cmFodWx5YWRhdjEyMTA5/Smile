@@ -44,7 +44,7 @@ public interface ApiService {
      * @return
      */
     @GET("lvji/getTopicList")
-    Observable<Result<List<LvjiTopicModel>>> getTopicList();
+    Observable<Result<List<LvjiTopicModel>>> getTopicList(@Query("topicKind") String topicKind);
     /**
      * 获取话题分类列表
      * @return

@@ -28,6 +28,7 @@ import me.goldze.mvvmhabit.utils.ToastUtils;
 public class LvjiTopicViewModel extends BaseViewModel {
 
     public ObservableField<List<LvjiTopicModel>> topicModels = new ObservableField<>();
+    public ObservableField<List<LvjiTopicModel>> topicBannerModels = new ObservableField<>();
     public ObservableField<List<LvjiTopicTypeModel>> topicTypeModels = new ObservableField<>();
 
     public LvjiTopicViewModel(@NonNull Application application) {
@@ -38,9 +39,9 @@ public class LvjiTopicViewModel extends BaseViewModel {
     /**
      * 获取话题列表
      */
-    public void getTopicList(){
+    public void getTopicList(String topicKind){
         RetrofitClient.getInstance().create(ApiService.class)
-                .getTopicList()
+                .getTopicList(topicKind)
                 .compose(RxUtils.bindToLifecycle(getLifecycleProvider()))
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
@@ -49,7 +50,11 @@ public class LvjiTopicViewModel extends BaseViewModel {
                     public void accept(Result<List<LvjiTopicModel>> result) throws Exception {
                         dismissDialog();
                         if(result.getCode() == 200){
-                            topicModels.set(result.getResult());
+                            if(topicKind.equals("sys")){
+                                topicBannerModels.set(result.getResult());
+                            }else {
+                                topicModels.set(result.getResult());
+                            }
                         }else {
 
                             ToastUtils.showShort(result.getMessage());

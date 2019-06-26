@@ -2,6 +2,7 @@ package com.zzj.open.module_lvji.viewmodel;
 
 import android.app.Application;
 import android.databinding.ObservableArrayList;
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
@@ -27,6 +28,10 @@ import me.goldze.mvvmhabit.utils.ToastUtils;
 public class LvJiHomeViewModel extends BaseViewModel {
 
     public ObservableField<List<LvjiPublishModel>> lvjiPublishModels = new ObservableField<>();
+    /**
+     * 请求回调
+     */
+    public ObservableBoolean isRefresh = new ObservableBoolean(false);
     public LvJiHomeViewModel(@NonNull Application application) {
         super(application);
     }
@@ -40,6 +45,7 @@ public class LvJiHomeViewModel extends BaseViewModel {
                 .subscribe(new Consumer<Result<List<LvjiPublishModel>>>() {
                     @Override
                     public void accept(Result<List<LvjiPublishModel>> result) throws Exception {
+                        isRefresh.set(!isRefresh.get());
                         if(result.getCode() == 200){
                             lvjiPublishModels.set(result.getResult());
                         }else {
@@ -49,6 +55,7 @@ public class LvJiHomeViewModel extends BaseViewModel {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
+                        isRefresh.set(!isRefresh.get());
                         ToastUtils.showShort(throwable.getMessage());
                     }
                 });

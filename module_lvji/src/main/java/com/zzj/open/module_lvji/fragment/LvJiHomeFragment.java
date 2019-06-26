@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.databinding.Observable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +23,8 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
@@ -97,6 +100,7 @@ public class LvJiHomeFragment extends BaseFragment<LvjiFragmentHomeBinding, LvJi
         viewModel.lvjiPublishModels.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
+
                 if (page == 0) {
                     dynamicAdapter.setNewData(viewModel.lvjiPublishModels.get());
                 } else {
@@ -133,6 +137,31 @@ public class LvJiHomeFragment extends BaseFragment<LvjiFragmentHomeBinding, LvJi
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
+            }
+        });
+
+        binding.refresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page++;
+                viewModel.getPublishList(page);
+            }
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 0;
+                viewModel.getPublishList(page);
+            }
+        });
+
+        /**
+         * 网络请求结束监听
+         */
+        viewModel.isRefresh.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                binding.refresh.finishRefresh();
+                binding.refresh.finishLoadMore();
             }
         });
     }
@@ -180,7 +209,8 @@ public class LvJiHomeFragment extends BaseFragment<LvjiFragmentHomeBinding, LvJi
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.lvji_menu_home, menu);
+        ((Toolbar) binding.toolbar).getMenu().clear();
+        ((Toolbar) binding.toolbar).inflateMenu(R.menu.lvji_menu_home);
         ((Toolbar) binding.toolbar).setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {

@@ -79,7 +79,7 @@ public class TopicSelectListFragment extends BaseFragment<LvjiFragmentTopicselec
 
     private void getTopicList(){
         RetrofitClient.getInstance().create(ApiService.class)
-                .getTopicList()
+                .getTopicList("sys")
                 .compose(RxUtils.bindToLifecycle(viewModel.getLifecycleProvider()))
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())

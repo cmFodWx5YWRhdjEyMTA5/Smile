@@ -9,7 +9,7 @@ package com.zzj.open.base.http;
  */
 public class HttpUrl {
     //base
-    public static final String BASE_URL = "http://47.75.50.156";
+    public static final String BASE_URL = "http://106.12.22.215";
     //分布式文件地址
     public static final String IMAGE_URL = BASE_URL+":88/bengshiwei/";
     //bengshiwei
@@ -17,13 +17,13 @@ public class HttpUrl {
     //服务端根路径
     public static String API_URL = BASE_URL+":8080/";
     //StartRTC消息服务
-    public static String RTC_IM_SERVER = "47.75.50.156:19903";
+    public static String RTC_IM_SERVER = "106.12.22.215:19903";
     //StartRTC聊天室服务
-    public static String RTC_CHATROOM_SERVER = "47.75.50.156:19906";
+    public static String RTC_CHATROOM_SERVER = "106.12.22.215:19906";
     //liveSrc服务
-    public static String RTC_LIVESRC_SERVER = "47.75.50.156:19931";
+    public static String RTC_LIVESRC_SERVER = "106.12.22.215:19931";
     //liveVdn服务
-    public static String RTC_LIVEVDN_SERVER = "47.75.50.156:19925";
+    public static String RTC_LIVEVDN_SERVER = "106.12.22.215:19925";
     //voip服务
     public static String RTC_VOIP_SERVER = "47.75.50.156:10086";
 }

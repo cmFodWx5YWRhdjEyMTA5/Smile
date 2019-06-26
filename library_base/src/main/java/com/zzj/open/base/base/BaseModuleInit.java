@@ -30,6 +30,9 @@ import me.goldze.mvvmhabit.utils.KLog;
 public class BaseModuleInit implements IModuleInit {
     public static  Application application;
 
+    /**
+     * 定位的城市
+     */
     private static BaseModuleInit instance;
 
 

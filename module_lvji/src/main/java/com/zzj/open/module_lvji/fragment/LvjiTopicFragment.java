@@ -16,14 +16,20 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.zzj.open.base.http.HttpUrl;
 import com.zzj.open.module_lvji.BR;
 import com.zzj.open.module_lvji.R;
 import com.zzj.open.module_lvji.databinding.LvjiFragmentNearbyBinding;
 import com.zzj.open.module_lvji.databinding.LvjiFragmentTopicBinding;
 import com.zzj.open.module_lvji.impl.ScaleTransformer;
+import com.zzj.open.module_lvji.model.EventBean;
 import com.zzj.open.module_lvji.model.LvjiTopicModel;
 import com.zzj.open.module_lvji.model.LvjiTopicTypeModel;
 import com.zzj.open.module_lvji.viewmodel.LvjiTopicViewModel;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import github.hellocsl.layoutmanager.gallery.GalleryLayoutManager;
 import me.goldze.mvvmhabit.base.BaseFragment;
@@ -64,7 +70,11 @@ public class LvjiTopicFragment extends BaseFragment<LvjiFragmentTopicBinding, Lv
     @Override
     public void initData() {
         super.initData();
+        EventBus.getDefault().register(this);
         setSwipeBackEnable(false);
+        viewModel.getTopicList("user");
+        viewModel.getTopicList("sys");
+        viewModel.getTopicTypeList();
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         binding.recyclerView.setAdapter(adapter = new BaseQuickAdapter<LvjiTopicModel, BaseViewHolder>(R.layout.lvji_item_topic_layout) {
@@ -73,21 +83,27 @@ public class LvjiTopicFragment extends BaseFragment<LvjiFragmentTopicBinding, Lv
                 helper.setText(R.id.tv_topic_title, item.getTopicTitle());
                 helper.setText(R.id.tv_topic_content, item.getTopicContent());
                 helper.setText(R.id.tv_topic_name_value, item.getUserName());
-                Glide.with(mContext).load(item.getTopicPicture()).apply(new RequestOptions()
+                Glide.with(mContext).load(HttpUrl.IMAGE_URL+item.getTopicPicture()).apply(new RequestOptions()
                         .placeholder(R.mipmap.bg_src_tianjin)).into((ImageView) helper.getView(R.id.iv_topic_picture));
             }
         });
         initTopBannerList();
-        viewModel.getTopicList();
-        viewModel.getTopicTypeList();
 
         viewModel.topicModels.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
                 adapter.setNewData(viewModel.topicModels.get());
-                topBannerAdapter.setNewData(viewModel.topicModels.get());
+
             }
         });
+
+        viewModel.topicBannerModels.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                topBannerAdapter.setNewData(viewModel.topicBannerModels.get());
+            }
+        });
+
         viewModel.topicTypeModels.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
@@ -117,7 +133,7 @@ public class LvjiTopicFragment extends BaseFragment<LvjiFragmentTopicBinding, Lv
                 helper.setText(R.id.tv_topic_title, item.getTopicTitle());
                 helper.setText(R.id.tv_topic_content, item.getTopicContent());
                 helper.setText(R.id.tv_topic_name_value, item.getUserName());
-                Glide.with(mContext).load(item.getTopicPicture()).apply(new RequestOptions()
+                Glide.with(mContext).load(HttpUrl.IMAGE_URL+item.getTopicPicture()).apply(new RequestOptions()
                         .placeholder(R.mipmap.bg_src_tianjin)).into((ImageView) helper.getView(R.id.iv_topic_picture));
             }
         });
@@ -136,5 +152,17 @@ public class LvjiTopicFragment extends BaseFragment<LvjiFragmentTopicBinding, Lv
         adapter.addHeaderView(view);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void receiverMessage(EventBean eventBean) {
+        if (eventBean.getMsg().equals("LvJiCreateTopicFragment")) {
+            viewModel.getTopicList("user");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
 }

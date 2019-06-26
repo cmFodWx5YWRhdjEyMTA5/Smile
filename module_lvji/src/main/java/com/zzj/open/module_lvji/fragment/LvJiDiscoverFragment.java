@@ -14,6 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.amap.api.services.weather.LocalWeatherForecastResult;
+import com.amap.api.services.weather.LocalWeatherLive;
+import com.amap.api.services.weather.LocalWeatherLiveResult;
+import com.amap.api.services.weather.WeatherSearch;
+import com.amap.api.services.weather.WeatherSearchQuery;
+import com.zzj.open.base.base.BaseModuleInit;
 import com.zzj.open.base.router.RouterFragmentPath;
 import com.zzj.open.base.utils.ToolbarHelper;
 import com.zzj.open.module_lvji.BR;
@@ -43,11 +49,14 @@ import me.goldze.mvvmhabit.base.BaseViewModel;
  * @version: 1.0
  */
 @Route(path = RouterFragmentPath.Lvji.PAGER_DISCOVER)
-public class LvJiDiscoverFragment extends BaseFragment<LvjiFragmentDiscoverBinding, BaseViewModel> {
-
+public class LvJiDiscoverFragment extends BaseFragment<LvjiFragmentDiscoverBinding, BaseViewModel>
+        implements WeatherSearch.OnWeatherSearchListener {
+    WeatherSearchQuery mquery;
+    WeatherSearch mweathersearch;
     private List<BaseFragment> fragments = new ArrayList<>();
 
-    private String[] titles = new String[]{"附近","话题"};
+    private String[] titles = new String[]{"附近", "话题"};
+
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return R.layout.lvji_fragment_discover;
@@ -61,8 +70,23 @@ public class LvJiDiscoverFragment extends BaseFragment<LvjiFragmentDiscoverBindi
     @Override
     public void initData() {
         super.initData();
+
+        BaseModuleInit.getInstance().setLocationChangeListener(new BaseModuleInit.LocationChangeListener() {
+            @Override
+            public void getLocationSuccess(String city, String address) {
+                //检索参数为城市和天气类型，实况天气为WEATHER_TYPE_LIVE、天气预报为WEATHER_TYPE_FORECAST
+                mquery = new WeatherSearchQuery(city, WeatherSearchQuery.WEATHER_TYPE_LIVE);
+                mweathersearch = new WeatherSearch(_mActivity);
+                mweathersearch.setOnWeatherSearchListener(LvJiDiscoverFragment.this);
+                mweathersearch.setQuery(mquery);
+                mweathersearch.searchWeatherAsyn(); //异步搜索
+            }
+        });
+        BaseModuleInit.startLocation();
+
+
         setSwipeBackEnable(false);
-        new ToolbarHelper(_mActivity,binding.toolbar,"",false);
+        new ToolbarHelper(_mActivity, binding.toolbar, "", false);
         setHasOptionsMenu(true);
         fragments.add(new LvjiNearbyFragment());
         fragments.add(new LvjiTopicFragment());
@@ -113,12 +137,13 @@ public class LvJiDiscoverFragment extends BaseFragment<LvjiFragmentDiscoverBindi
             }
         });
         binding.tabSegment.setNavigator(commonNavigator);
-        ViewPagerHelper.bind( binding.tabSegment,  binding.contentViewPager);
+        ViewPagerHelper.bind(binding.tabSegment, binding.contentViewPager);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        ((Toolbar) binding.toolbar).getMenu().clear();
         binding.toolbar.inflateMenu(R.menu.lvji_menu_create_topic);
         (binding.toolbar).setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -130,5 +155,22 @@ public class LvJiDiscoverFragment extends BaseFragment<LvjiFragmentDiscoverBindi
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onWeatherLiveSearched(LocalWeatherLiveResult weatherLiveResult, int rCode) {
+        if (rCode == 1000) {
+            if (weatherLiveResult != null && weatherLiveResult.getLiveResult() != null) {
+                LocalWeatherLive weatherlive = weatherLiveResult.getLiveResult();
+                binding.toolbar.setTitle(weatherlive.getWeather());
+            } else {
+            }
+        } else {
+        }
+    }
+
+    @Override
+    public void onWeatherForecastSearched(LocalWeatherForecastResult localWeatherForecastResult, int i) {
+
     }
 }

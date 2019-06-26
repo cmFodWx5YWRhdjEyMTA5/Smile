@@ -145,31 +145,34 @@ dependencies {
     //图片选择器
     api 'com.zhihu.android:matisse:0.5.2-beta4'
     api 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
-
     api 'de.hdodenhof:circleimageview:2.2.0'
-
     api files('libs/star_rtc_sdk.jar')
 
     // 状态栏管理基础依赖包，必须要依赖
     api 'com.gyf.immersionbar:immersionbar:3.0.0-beta03'
-//  状态栏管理fragment快速实现（可选）
+
+    //  状态栏管理fragment快速实现（可选）
     api 'com.gyf.immersionbar:immersionbar-components:3.0.0-beta03'
+
     //阿里云对象存储
-    api ('com.aliyun.dpa:oss-android-sdk:+'){
+    api('com.aliyun.dpa:oss-android-sdk:+') {
         exclude group: 'com.squareup.okhttp3'
     }
+
     //图片查看器
     api 'com.github.iielse:ImageWatcher:1.1.5'
-
     api 'com.lzy.widget:ninegridview:0.2.0'
+
     //高德定位
     api 'com.amap.api:location:latest.integration'
+    api 'com.amap.api:search:latest.integration'
+
     //@
     api 'com.github.luckyandyzhang:MentionEditText:1.0.0'
-
     api 'com.github.hackware1993:MagicIndicator:1.5.0'
+
     //画廊效果
-    api ('github.hellocsl:GalleryLayoutManager:1.0.6'){
-        exclude group: 'com.android.support', module:'recyclerview-v7'
+    api('github.hellocsl:GalleryLayoutManager:1.0.6') {
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
     }
 }

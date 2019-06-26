@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-        <import type="me.goldze.mvvmhabit.base.BaseViewModel" />
+        <import type="com.zzj.open.module_lvji.viewmodel.LvJiHomeViewModel" />
 
         <variable
             name="viewModel"
-            type="me.goldze.mvvmhabit.base.BaseViewModel" />
+            type="com.zzj.open.module_lvji.viewmodel.LvJiHomeViewModel" />
     </data>
     <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
 
-        <TextView
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="附近"
-            android:gravity="center"
-            />
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    >
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     </android.support.constraint.ConstraintLayout>
 </layout>

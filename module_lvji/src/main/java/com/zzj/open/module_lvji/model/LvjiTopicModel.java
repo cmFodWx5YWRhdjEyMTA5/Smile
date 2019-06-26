@@ -25,7 +25,6 @@ public class LvjiTopicModel implements Serializable {
     private String topicTitle;
 
     private String userName;
-
     private String userId;
 
     private String topicLocation;

@@ -28,7 +28,10 @@ import com.zzj.open.module_lvji.BR;
 import com.zzj.open.module_lvji.R;
 import com.zzj.open.module_lvji.api.ApiService;
 import com.zzj.open.module_lvji.databinding.LvjiFragmentCreateTopBinding;
+import com.zzj.open.module_lvji.model.EventBean;
 import com.zzj.open.module_lvji.model.LvjiTopicModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -196,7 +199,7 @@ public class LvJiCreateTopicFragment extends BaseFragment<LvjiFragmentCreateTopB
                 if(o!=null&&o.getCode() == 200){
                     com.blankj.utilcode.util.ToastUtils.showShort("创建成功");
                     pop();
-
+                    EventBus.getDefault().post(new EventBean("LvJiCreateTopicFragment"));
                 }else {
 
                     com.blankj.utilcode.util.ToastUtils.showShort("创建失败");
